@@ -389,7 +389,7 @@ class MediatorAgent:
 
     def _persist_packet(self, packet: MediatorPacket):
         """Persist the mediator packet to disk for audit trail."""
-        output_path = Path(__file__).resolve().parent.parent / "data" / "mediator_packets.jsonl"
+        output_path = Path(__file__).resolve().parent.parent.parent / "data" / "mediator_packets.jsonl"
         try:
             payload = {
                 "claim_id": packet.claim_id,

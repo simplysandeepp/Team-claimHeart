@@ -233,8 +233,10 @@ class DecisionEngine:
                 )
             )
 
-
         # --- NEW AGENT A3 FRAUD CHECKS ---
+
+        # Fetch previous claims for duplicate detection
+        previous_claims = claim_data.get("previous_claims", [])
 
         # 1. Duplicate Claim Suspicion
         # patient_id + diagnosis + time window

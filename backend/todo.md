@@ -85,12 +85,12 @@ This checklist combines the specific backend engineering tasks with the detailed
 - ✅ Generate decision letters and hospital queries
 
 ## 5. Escalation & Quality Gates
-- [ ] **Implement Query Escalation Rule:** Prevent automated models from hard rejecting on ambiguity. Route to Doctor / Verification Member.
-- [ ] End-to-end happy-path test (upload -> extractor -> policy -> fraud -> mediator packet)
-- [ ] End-to-end suspicious-path test (policy pass + fraud flag -> mediator escalation)
-- [ ] End-to-end rejection-path test (policy violation -> denial packet)
+- ✅ **Implement Query Escalation Rule:** Prevent automated models from hard rejecting on ambiguity. Route to Doctor / Verification Member.
+- ✅ End-to-end happy-path test (upload -> extractor -> policy -> fraud -> mediator packet)
+- ✅ End-to-end suspicious-path test (policy pass + fraud flag -> mediator escalation)
+- ✅ End-to-end rejection-path test (policy violation -> denial packet)
 
 ## 6. Future Add-ons
-- [ ] **TAT Monitor (Turnaround Time Monitor):** Design specs to track time taken across claim stages.
-- [ ] Define SLA thresholds per pipeline stage.
+- ✅ **TAT Monitor (Turnaround Time Monitor):** Design specs to track time taken across claim stages.
+- ✅ Define SLA thresholds per pipeline stage.
 - [ ] Integrate TAT Monitor into Insurance Dashboard UI.

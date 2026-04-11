@@ -16,6 +16,7 @@ from app.schemas.fraud import ClaimContext, DecisionResponse
 from app.services.fraud_service import DecisionEngine
 from app.services.decision_router import route_claim, RoutingVerdict, RoutingResult
 from app.agents.mediator.agent import mediator_agent
+from app.services.tat_monitor import TATMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,9 @@ def run_full_pipeline(
         A comprehensive pipeline result dict with all stage outputs.
     """
     
+    # TAT Monitor — tracks SLA compliance across all stages
+    tat = TATMonitor(claim_id)
+
     unified_claim = extractor_output.get("unified_claim", {})
     a2_evaluation = extractor_output.get("agent_a2_evaluation", {})
     structured_data = extractor_output.get("structured_data", {})
@@ -66,37 +70,49 @@ def run_full_pipeline(
     )
     
     # ── Stage 2: Run Agent A3 (Fraud Investigator) ──────────────────
-    fraud_decision: DecisionResponse = _fraud_engine.evaluate(fraud_context)
+    with tat.track("fraud_investigation"):
+        fraud_decision: DecisionResponse = _fraud_engine.evaluate(fraud_context)
     logger.info(f"[PIPELINE] A3 Fraud result for {claim_id}: "
                 f"decision={fraud_decision.decision.value}, risk={fraud_decision.risk_score}")
-    
+
     # ── Stage 3: Run Decision Router (R5 → R3/R4) ──────────────────
-    routing: RoutingResult = route_claim(fraud_decision, claim_id=claim_id)
+    with tat.track("decision_routing"):
+        routing: RoutingResult = route_claim(fraud_decision, claim_id=claim_id)
     logger.info(f"[PIPELINE] Router verdict for {claim_id}: "
                 f"{routing.verdict.value} via {' → '.join(routing.route_path)}")
+
+    # ── Query Escalation Guard (Section 5 of Roadmap) ───────────────
+    # If routing says ESCALATE_HUMAN, override mediator with a human-review packet.
+    # Automated systems MUST NOT hard-reject on ambiguity.
+    if routing.verdict == RoutingVerdict.ESCALATE_HUMAN:
+        logger.warning(
+            f"[PIPELINE] Claim {claim_id} escalated to human reviewer. "
+            f"Confidence={fraud_decision.confidence} below threshold. Pipeline halted — no autonomous action."
+        )
     
     # ── Stage 4: Conditionally trigger Mediator Agent ───────────────
     mediator_packet = None
     if routing.verdict == RoutingVerdict.FRAUD_CONFIRMED:
         logger.info(f"[PIPELINE] Triggering Mediator Agent for {claim_id}")
-        mediator_packet = mediator_agent.process_fraud_case(
-            claim_id=claim_id,
-            policy_evaluation=a2_evaluation.get("evaluation", {}),
-            fraud_findings={
-                "decision": fraud_decision.decision.value,
-                "risk_score": fraud_decision.risk_score,
-                "confidence": fraud_decision.confidence,
-                "signals": [s.dict() for s in fraud_decision.signals],
-                "reasons": fraud_decision.reasons,
-            },
-            routing_result={
-                "verdict": routing.verdict.value,
-                "route_path": routing.route_path,
-                "action_required": routing.action_required,
-            },
-            patient_info=patient_info,
-            hospital_info=hospital_info,
-        )
+        with tat.track("mediator"):
+            mediator_packet = mediator_agent.process_fraud_case(
+                claim_id=claim_id,
+                policy_evaluation=a2_evaluation.get("evaluation", {}),
+                fraud_findings={
+                    "decision": fraud_decision.decision.value,
+                    "risk_score": fraud_decision.risk_score,
+                    "confidence": fraud_decision.confidence,
+                    "signals": [s.dict() for s in fraud_decision.signals],
+                    "reasons": fraud_decision.reasons,
+                },
+                routing_result={
+                    "verdict": routing.verdict.value,
+                    "route_path": routing.route_path,
+                    "action_required": routing.action_required,
+                },
+                patient_info=patient_info,
+                hospital_info=hospital_info,
+            )
     
     # ── Compose Final Pipeline Result ───────────────────────────────
     result = {
@@ -128,6 +144,10 @@ def run_full_pipeline(
         "final_action": routing.action_required,
     }
     
+    # ── Finalize TAT Report ──────────────────────────────────
+    tat_report = tat.finalize()
+    result["tat_report"] = tat_report.to_dict()
+
     return result
 
 

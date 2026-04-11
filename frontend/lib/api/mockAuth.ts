@@ -60,24 +60,33 @@ export const getCurrentUser = async (): Promise<AppUser | null> => {
     }
   }
   
-  // Default to hospital role for demo
-  const defaultUser = MOCK_USERS.hospital;
-  localStorage.setItem(MOCK_USER_KEY, JSON.stringify(defaultUser));
-  localStorage.setItem(MOCK_ROLE_KEY, defaultUser.role);
-  return defaultUser;
+  // No default user - must login first
+  return null;
 };
 
 /**
- * Mock login - just sets the user
+ * Mock login - just sets the user based on role
+ * For demo: any email/password works, just need to select correct role
  */
 export const loginUser = async (
   email: string,
   password: string,
   role: UserRole
 ): Promise<AppUser> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
   const user = MOCK_USERS[role];
   localStorage.setItem(MOCK_USER_KEY, JSON.stringify(user));
   localStorage.setItem(MOCK_ROLE_KEY, role);
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("role", role);
+  
+  // Trigger auth state change event
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("auth-state-changed", { detail: user }));
+  }
+  
   return user;
 };
 
@@ -89,12 +98,23 @@ export const loginWithGoogle = async (role: UserRole): Promise<AppUser> => {
 };
 
 /**
- * Mock signup
+ * Mock signup - creates user based on role
  */
 export const signupUser = async (payload: any): Promise<AppUser> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
   const user = MOCK_USERS[payload.role];
   localStorage.setItem(MOCK_USER_KEY, JSON.stringify(user));
   localStorage.setItem(MOCK_ROLE_KEY, payload.role);
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("role", payload.role);
+  
+  // Trigger auth state change event
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("auth-state-changed", { detail: user }));
+  }
+  
   return user;
 };
 
@@ -121,7 +141,7 @@ export const getDashboardPath = (role: UserRole | null) => {
   if (role === "patient") return "/dashboard/patient";
   if (role === "hospital") return "/dashboard/hospital";
   if (role === "insurer") return "/dashboard/insurer";
-  return "/demo"; // Default to demo page
+  return "/auth/login"; // Default to login page
 };
 
 /**
@@ -141,7 +161,41 @@ export const subscribeToCurrentUser = (
 export const subscribeToAuthState = (
   listener: (user: AppUser | null) => void
 ) => {
+  // Immediately call with current user
   getCurrentUser().then(listener);
+  
+  // Also listen for storage changes (when user logs in/out)
+  const handleStorageChange = (e: StorageEvent) => {
+    if (e.key === MOCK_USER_KEY) {
+      if (e.newValue) {
+        try {
+          listener(JSON.parse(e.newValue));
+        } catch {
+          listener(null);
+        }
+      } else {
+        listener(null);
+      }
+    }
+  };
+  
+  if (typeof window !== "undefined") {
+    window.addEventListener("storage", handleStorageChange);
+    
+    // Also listen for custom event for same-tab updates
+    const handleCustomEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<AppUser | null>;
+      listener(customEvent.detail);
+    };
+    
+    window.addEventListener("auth-state-changed", handleCustomEvent);
+    
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("auth-state-changed", handleCustomEvent);
+    };
+  }
+  
   return () => {};
 };
 
@@ -169,5 +223,11 @@ export const logout = async (withConfirmation: boolean = true) => {
   
   localStorage.removeItem(MOCK_USER_KEY);
   localStorage.removeItem(MOCK_ROLE_KEY);
-  window.location.href = "/demo";
+  localStorage.removeItem("user");
+  localStorage.removeItem("role");
+  
+  // Trigger auth state change event
+  window.dispatchEvent(new CustomEvent("auth-state-changed", { detail: null }));
+  
+  window.location.href = "/auth/login";
 };

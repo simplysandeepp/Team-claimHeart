@@ -9,6 +9,10 @@ Multi-agent AI system for automated medical claims processing with fraud detecti
 ```bash
 cd backend
 
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
 
@@ -40,13 +44,28 @@ npm run dev
 
 Frontend will run at: http://localhost:3000
 
-### 3. Test the Multi-Agent Workflow
+### 3. Login & Use the System
 
-Open http://localhost:3000/demo
+**Three User Roles:**
 
-- Upload a medical document (image or PDF)
-- Watch the complete agent pipeline process it
-- See results from all agents in real-time
+1. **Patient** - Submit claims, track status
+   - Login at: http://localhost:3000/auth/login
+   - Select "Patient" role
+   - Use any email/password (mock auth for demo)
+
+2. **Hospital** - Upload documents, submit claims to insurer
+   - Login at: http://localhost:3000/auth/login
+   - Select "Hospital" role
+   - Upload medical documents
+   - Documents go through multi-agent pipeline
+
+3. **Insurer** - Review claims, approve/deny
+   - Login at: http://localhost:3000/auth/login
+   - Select "Insurer" role
+   - Review fraud detection results
+   - Make final decisions
+
+**Note:** For demo purposes, any email/password works - just select the correct role. The system uses mock authentication (Firebase is commented out).
 
 ## 🤖 Multi-Agent Architecture
 
@@ -123,7 +142,35 @@ claimheart/
 └── README.md
 ```
 
-## 🧪 Testing
+## 🎯 Complete Workflow
+
+### Hospital Flow:
+1. Login as Hospital
+2. Go to Dashboard → Submit Claim
+3. Upload medical documents (bills, discharge summary, prescriptions)
+4. Documents processed through multi-agent pipeline:
+   - **Agent 01 (Extractor)**: OCR + Entity extraction
+   - **Agent A2 (Policy)**: Policy compliance check
+   - **Agent A3 (Fraud)**: Fraud detection & risk scoring
+   - **Router**: Routes to appropriate action
+   - **Agent 04 (Mediator)**: Handles communication
+5. Claim submitted to insurer
+
+### Insurer Flow:
+1. Login as Insurer
+2. View incoming claims in dashboard
+3. Review fraud detection results
+4. See risk scores, signals, and recommendations
+5. Approve/Deny/Request more info
+
+### Patient Flow:
+1. Login as Patient
+2. View claim status
+3. Track progress through pipeline
+4. Receive notifications
+
+### Direct API Testing (Optional):
+Visit http://localhost:3000/demo to directly test document upload and see raw pipeline output.
 
 ### Test Backend
 ```bash

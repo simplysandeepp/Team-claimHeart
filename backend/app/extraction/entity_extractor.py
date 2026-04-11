@@ -250,6 +250,20 @@ def _extract_frequency(line: str) -> Optional[str]:
     return None
 
 
+def _coerce_quantity(value: Any, default: int = 1) -> Any:
+    if value in (None, ""):
+        return default
+
+    try:
+        numeric = float(str(value).strip())
+    except (TypeError, ValueError):
+        return default
+
+    if numeric.is_integer():
+        return int(numeric)
+    return numeric
+
+
 def _extract_name_candidates(line: str) -> List[str]:
     candidates = []
     lowered = line.lower()
@@ -332,12 +346,13 @@ def extract_text_billing_candidates(lines: List[str]) -> List[Dict[str, Any]]:
 
     for line in lines:
         lowered = line.lower()
+        has_billing_keyword = any(
+            token in lowered for token in ("bill", "amount", "price", "qty", "rs", "total")
+        )
         looks_like_billing_row = bool(
             re.search(r"[A-Za-z].*\d+\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?$", line)
         )
-        if not looks_like_billing_row and not any(
-            token in lowered for token in ("bill", "amount", "price", "qty", "rs", "total")
-        ):
+        if not looks_like_billing_row and not has_billing_keyword:
             continue
 
         quantity_match = QUANTITY_PATTERN.search(line)
@@ -357,15 +372,22 @@ def extract_text_billing_candidates(lines: List[str]) -> List[Dict[str, Any]]:
             continue
 
         if quantity is None and len(prices) >= 3:
-            quantity = prices[-3]
+            inferred_quantity = prices[-3]
+            inferred_numeric = _coerce_quantity(inferred_quantity, default=None)
+            if inferred_numeric is None:
+                continue
+            if not has_billing_keyword and isinstance(inferred_numeric, float):
+                # Decimal-leading rows in reports are often measurements, not bill items.
+                continue
+            quantity = inferred_numeric
 
-        if not any(token in lowered for token in ("bill", "amount", "price", "qty", "rs", "total")) and len(prices) < 3:
+        if not has_billing_keyword and len(prices) < 3:
             continue
 
         items.append(
             {
                 "item": label,
-                "quantity": int(quantity) if quantity else 1,
+                "quantity": _coerce_quantity(quantity),
                 "price": float(prices[-2]),
                 "total": float(prices[-1]),
                 "source": "text",

@@ -22,6 +22,14 @@ def _to_number(value: str) -> Optional[float]:
         return None
 
 
+def _coerce_quantity(value: Optional[float], default: int = 1) -> Any:
+    if value is None:
+        return default
+    if float(value).is_integer():
+        return int(value)
+    return value
+
+
 def _find_index(header: List[str], candidates: tuple[str, ...]) -> Optional[int]:
     for index, column in enumerate(header):
         if any(candidate in column for candidate in candidates):
@@ -47,7 +55,7 @@ def _parse_billing_table(header: List[str], rows: List[List[str]]) -> List[Dict[
         items.append(
             {
                 "item": label,
-                "quantity": int(qty_value) if qty_value is not None else 1,
+                "quantity": _coerce_quantity(qty_value),
                 "price": _to_number(row[price_index]) if price_index is not None and price_index < len(row) else None,
                 "total": _to_number(row[total_index]) if total_index is not None and total_index < len(row) else None,
                 "source": "table",
@@ -113,7 +121,7 @@ def _infer_semistructured_rows(rows: List[List[str]]) -> Dict[str, List[Dict[str
             billing_items.append(
                 {
                     "item": first_cell,
-                    "quantity": int(first_number) if float(first_number).is_integer() else first_number,
+                    "quantity": _coerce_quantity(first_number),
                     "price": numeric_values[1],
                     "total": numeric_values[-1],
                     "source": "inferred_table",

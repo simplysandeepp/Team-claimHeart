@@ -60,6 +60,15 @@ python test_api.py
 
 ## Troubleshooting
 
+### PDF Processing on Windows
+
+PDF OCR now uses `PyMuPDF`, so you do not need Poppler for PDF support.
+
+If PDF processing fails:
+1. Reinstall backend requirements: `pip install -r requirements.txt`
+2. Confirm `PyMuPDF` is installed: `pip show PyMuPDF`
+3. Retry with the same PDF file
+
 ### Tesseract Not Found
 
 If you get a Tesseract error, install it:

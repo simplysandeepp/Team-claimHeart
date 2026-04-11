@@ -6,7 +6,7 @@ from app.services.claim_builder import build_unified_claim
 from app.services.rag_service import analyze_claim
 
 
-FILE_PATH = "temp_uploads/sample_image1.png"
+FILE_PATH = "temp_uploads/labreportnew - 2026-03-28T193953.597.pdf"
 OUTPUT_DIR = Path("outputs")
 
 

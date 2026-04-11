@@ -12,6 +12,7 @@ import {
 import type { Claim, ClaimEmail, ClaimStatus, Comment, TimelineEntry, UploadedDocument, UserRole } from "@/types";
 
 const buildId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`;
+const buildClaimProcessId = () => `Id-claim${Date.now().toString().slice(-6)}`;
 
 const collectClaimFlags = (claim: Claim) => [
   claim.aiResults.policy.status === "flag" ? `Policy review: ${claim.aiResults.policy.reason}` : null,
@@ -37,6 +38,7 @@ export const buildNewClaim = (data: Partial<Claim>): Claim => {
 
   return {
     id: buildId("CLM"),
+    claimProcessId: buildClaimProcessId(),
     submittedAt: submittedAt.toISOString(),
     status: "pending",
     riskScore: Math.floor(Math.random() * 100),
@@ -53,6 +55,7 @@ export const buildNewClaim = (data: Partial<Claim>): Claim => {
     comments: [],
     emails: [],
     caseType: "planned",
+    serviceType: "cashless",
     diagnosis: "",
     icdCode: "",
     amount: 0,

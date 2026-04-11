@@ -60,11 +60,13 @@ export interface ClaimEmail {
 
 export interface Claim {
   id: string;
+  claimProcessId?: string;
   patientId: string;
   patientName: string;
   patientEmail?: string;
   hospital: string;
   caseType: ClaimCaseType;
+  serviceType?: "cashless" | "reimbursement";
   diagnosis: string;
   icdCode: string;
   amount: number;

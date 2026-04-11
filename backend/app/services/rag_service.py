@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 def load_policy():
-    policy_path = Path(__file__).resolve().parent.parent / "data" / "policy_rules.json"
+    policy_path = Path(__file__).resolve().parent.parent / "data" / "mock_policies.json"
     with policy_path.open("r", encoding="utf-8") as f:
         return json.load(f)
 

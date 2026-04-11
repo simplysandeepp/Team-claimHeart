@@ -1,17 +1,33 @@
 import pytesseract
+from PIL import Image
 from app.utils import image_processing as img_proc
 
 
 def _convert_pdf_pages(pdf_path):
     try:
-        from pdf2image import convert_from_path
+        import fitz
     except ModuleNotFoundError as exc:
         raise RuntimeError(
-            "PDF OCR requires the optional dependency 'pdf2image'. "
+            "PDF OCR requires the optional dependency 'PyMuPDF'. "
             "Install backend requirements before processing PDF files."
         ) from exc
 
-    return convert_from_path(pdf_path)
+    pages = []
+    with fitz.open(pdf_path) as document:
+        for page in document:
+            pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+            pages.append(
+                Image.frombytes(
+                    "RGB",
+                    (pixmap.width, pixmap.height),
+                    pixmap.samples,
+                )
+            )
+
+    if not pages:
+        raise RuntimeError(f"No pages could be rendered from PDF: {pdf_path}")
+
+    return pages
 
 class ClaimHeartOCR:
     def __init__(self):

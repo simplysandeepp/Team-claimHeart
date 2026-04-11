@@ -24,7 +24,6 @@ pillow
 numpy
 
 # PDF PROCESSING
-pdf2image
 PyMuPDF
 
 # AI & LLM

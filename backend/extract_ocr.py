@@ -92,9 +92,9 @@ def main() -> int:
         print("\nError during OCR processing:")
         print(f"   {exc}")
         print("\nTroubleshooting:")
-        print("   1. Check if the image file is valid")
-        print("   2. Ensure EasyOCR/Tesseract is installed")
-        print("   3. Try with a different image")
+        print("   1. Check if the document path and file are valid")
+        print("   2. Ensure backend requirements are installed, including PyMuPDF and EasyOCR")
+        print("   3. Try with a different image or PDF")
         import traceback
 
         print("\nFull error trace:")

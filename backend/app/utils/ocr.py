@@ -44,6 +44,7 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 import easyocr
+from PIL import Image
 
 from app.preprocessing.image_cleaning import preprocess_image
 from app.preprocessing.table_detection import detect_tables, group_tokens_into_lines
@@ -55,14 +56,29 @@ reader = easyocr.Reader(["en"])
 
 def _convert_pdf_pages(file_path: str):
     try:
-        from pdf2image import convert_from_path
+        import fitz
     except ModuleNotFoundError as exc:
         raise RuntimeError(
-            "PDF support requires the optional dependency 'pdf2image'. "
+            "PDF support requires the optional dependency 'PyMuPDF'. "
             "Install backend requirements before processing PDF files."
         ) from exc
 
-    return convert_from_path(file_path)
+    pages: List[Image.Image] = []
+    with fitz.open(file_path) as document:
+        for page in document:
+            # Render at 2x scale for cleaner OCR on scans and lab reports.
+            pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+            image = Image.frombytes(
+                "RGB",
+                (pixmap.width, pixmap.height),
+                pixmap.samples,
+            )
+            pages.append(image)
+
+    if not pages:
+        raise RuntimeError(f"No pages could be rendered from PDF: {file_path}")
+
+    return pages
 
 
 def _ocr_page(image_source: Any, page_number: int) -> Dict[str, Any]:

@@ -15,6 +15,7 @@ from app.schemas.fraud import (
 )
 from app.services.mock_db2_repo import db2_repo
 from app.services.ml_anomaly import ml_anomaly_scorer
+from app.services.rag_3_fraud_context import rag_3_fraud_context
 
 try:
     from openai import OpenAI
@@ -308,6 +309,28 @@ class DecisionEngine:
                 threshold_value="Inlier Cluster Euclidean Distance",
                 metadata={"raw_anomaly_score": ml_result["raw_score"]}
             ))
+
+        claim_summary = ", ".join(
+            [
+                str(claim_data.get("diagnosis") or "Unknown diagnosis"),
+                f"INR {claim_amount if claim_amount is not None else 'unknown'}",
+                f"{hospital_days} hospital days",
+                f"patient {claim_data.get('patient_id') or 'unknown'}",
+            ]
+        )
+        historical_context = rag_3_fraud_context.get_fraud_context(claim_summary)
+        if historical_context:
+            signals.append(
+                FraudSignal(
+                    code="HISTORICAL_PATTERN_MATCH",
+                    weight=15,
+                    reason="RAG 3 found similar historical fraud patterns for this claim type.",
+                    rule_id="RAG3_01",
+                    detected_value=claim_summary,
+                    metadata={"historical_context": historical_context},
+                )
+            )
+            metadata["rag3_historical_context"] = historical_context
 
         fraud_pattern_hits = 0
         for pattern in context.fraud_patterns:

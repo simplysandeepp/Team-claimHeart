@@ -37,6 +37,7 @@ This checklist combines the specific backend engineering tasks with the detailed
 - ✅ OCR upload APIs available (`POST /api/ocr/upload` and `POST /api/ocr/process-local`)
 - ✅ File type and max-size (10MB) validation implemented
 - ✅ OCR text extraction implemented via EasyOCR
+- ✅ Basic parsing to structured fields implemented
 - ✅ Ensure extractor outputs full roadmap fields: patient_id, diagnosis, ICD-10, billed_amount, tests_ordered, hospitalization_days, doctor_name, hospital_name, prescription_items
 - [ ] Add confidence scoring per extracted field
 - [ ] Pass OCR output to Rag 1 (Powers Dr. Chats)

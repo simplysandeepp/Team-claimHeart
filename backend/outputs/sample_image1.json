@@ -1,0 +1,413 @@
+{
+  "raw_text": "IDKC MIEIDIKCAAUL\nCARE HOSPITAL TTIKO)N ARY\nCITY Outpatient Prescription Date 05 years April 2026 Male\nDate: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1`\nPatient with Thrombocytopenia\nDiagnosis: Dengue Fever TDS X 5 days (Take\nR 1. Tab Paracetamol tablet three 6s0mg times twice a day) daily (For Protocol rehydration) Injection)\n2. Syp one Electral Iv 2oOml (Standard Dengue billing)\n3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days\nX Frequency: Pantoprazole 40mg once daily on an advised . empty\n4. Tab (Take one tablet high fluid intake\n5. Complete rest, PakeV\n3 days Dr_ Rakesh (Internal Iyer Medicine)\nFollow-up: MBBS, MD MCI-2011-44892\nReg No::",
+  "structured_data": {
+    "patient_name": "Arjun Mehta",
+    "dates": {
+      "document_date": "05 April 2026"
+    },
+    "diagnosis": [
+      "Dengue Fever TDS"
+    ],
+    "disease": "Dengue Fever TDS",
+    "hospital_stay_days": 5,
+    "medications": [
+      {
+        "name": "Paracetamol",
+        "dosage": null,
+        "frequency": "daily"
+      },
+      {
+        "name": "Electral",
+        "dosage": null,
+        "frequency": null
+      },
+      {
+        "name": "Platemax",
+        "dosage": null,
+        "frequency": "OD"
+      },
+      {
+        "name": "Pantoprazole",
+        "dosage": "40mg",
+        "frequency": "once daily"
+      },
+      {
+        "name": "Paracetamol",
+        "dosage": "6s0mg",
+        "frequency": "twice"
+      },
+      {
+        "name": "Pantoprazole",
+        "dosage": "40mg",
+        "frequency": "once"
+      }
+    ],
+    "treatments": [
+      "injection",
+      "iv"
+    ],
+    "billing_items": [],
+    "total_amount": null,
+    "tables": [
+      {
+        "table_id": 1,
+        "rows": [
+          [
+            "CARE",
+            "HOSPITAL",
+            "TTIKO)N ARY",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "CITY",
+            "Outpatient",
+            "Prescription",
+            "Date",
+            "05",
+            "years",
+            "April",
+            "2026",
+            "Male",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Date: 05 Aprie",
+            "Name:",
+            "2026",
+            "Arjun",
+            "Mehta",
+            "Age: 32",
+            "OPD",
+            "Noa:",
+            "CCH-OPD-2026-09341",
+            "(ICD-1O:",
+            "A97.1`",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Patient",
+            "with",
+            "Thrombocytopenia",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Diagnosis:",
+            "Dengue Fever",
+            "TDS",
+            "X 5",
+            "days",
+            "(Take",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "R",
+            "1.",
+            "Tab",
+            "Paracetamol",
+            "tablet",
+            "three",
+            "6s0mg",
+            "times",
+            "twice",
+            "a",
+            "day)",
+            "daily (For",
+            "Protocol",
+            "rehydration)",
+            "Injection)",
+            "",
+            "",
+            ""
+          ],
+          [
+            "2. Syp",
+            "one",
+            "Electral",
+            "Iv",
+            "2oOml",
+            "(Standard",
+            "Dengue",
+            "billing)",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "3. Inj:",
+            "Dose:",
+            "PlateMax",
+            "1",
+            "vial",
+            "per",
+            "As",
+            "per",
+            "administration",
+            "dengue",
+            "protocol",
+            "OD",
+            "before",
+            "(refer",
+            "food",
+            "stomach)",
+            "X 5",
+            "days"
+          ],
+          [
+            "X",
+            "Frequency:",
+            "Pantoprazole",
+            "40mg",
+            "once",
+            "daily",
+            "on",
+            "an",
+            "advised .",
+            "empty",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "4.",
+            "Tab",
+            "(Take",
+            "one",
+            "tablet",
+            "high",
+            "fluid",
+            "intake",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "5.",
+            "Complete",
+            "rest,",
+            "PakeV",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "3",
+            "days",
+            "Dr_",
+            "Rakesh",
+            "(Internal",
+            "Iyer",
+            "Medicine)",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Follow-up:",
+            "MBBS,",
+            "MD",
+            "MCI-2011-44892",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        "source_lines": [
+          "CARE HOSPITAL TTIKO)N ARY",
+          "CITY Outpatient Prescription Date 05 years April 2026 Male",
+          "Date: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1`",
+          "Patient with Thrombocytopenia",
+          "Diagnosis: Dengue Fever TDS X 5 days (Take",
+          "R 1. Tab Paracetamol tablet three 6s0mg times twice a day) daily (For Protocol rehydration) Injection)",
+          "2. Syp one Electral Iv 2oOml (Standard Dengue billing)",
+          "3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days",
+          "X Frequency: Pantoprazole 40mg once daily on an advised . empty",
+          "4. Tab (Take one tablet high fluid intake",
+          "5. Complete rest, PakeV",
+          "3 days Dr_ Rakesh (Internal Iyer Medicine)",
+          "Follow-up: MBBS, MD MCI-2011-44892"
+        ],
+        "page_number": 1
+      }
+    ],
+    "document_structure": {
+      "line_count": 15,
+      "table_count": 1
+    },
+    "raw_text": "IDKC MIEIDIKCAAUL\nCARE HOSPITAL TTIKO)N ARY\nCITY Outpatient Prescription Date 05 years April 2026 Male\nDate: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1`\nPatient with Thrombocytopenia\nDiagnosis: Dengue Fever TDS X 5 days (Take\nR 1. Tab Paracetamol tablet three 6s0mg times twice a day) daily (For Protocol rehydration) Injection)\n2. Syp one Electral Iv 2oOml (Standard Dengue billing)\n3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days\nX Frequency: Pantoprazole 40mg once daily on an advised . empty\n4. Tab (Take one tablet high fluid intake\n5. Complete rest, PakeV\n3 days Dr_ Rakesh (Internal Iyer Medicine)\nFollow-up: MBBS, MD MCI-2011-44892\nReg No::",
+    "normalized_text": "IDKC MIEIDIKCAAUL\nCARE HOSPITAL TTIKO)N ARY\nCITY Outpatient Prescription Date 05 years April 2026 Male\nDate: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1\nPatient with Thrombocytopenia\nDiagnosis: Dengue Fever TDS X 5 days (Take\nR 1. Tab Paracetamol tablet three 6sOmg times twice a day) daily (For Protocol rehydration) Injection)\n2. Syp one Electral Iv 2oOml (Standard Dengue billing)\n3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days\nX Frequency: Pantoprazole 40mg once daily on an advised . empty\n4. Tab (Take one tablet high fluid intake\n5. Complete rest, PakeV\n3 days Dr_ Rakesh (Internal Iyer Medicine)\nFollow-up: MBBS, MD MCI-2011-44892\nReg No::",
+    "claim_summary": {
+      "disease": "Dengue Fever TDS",
+      "hospital_stay_days": 5,
+      "medications": [
+        {
+          "name": "Paracetamol",
+          "dosage": null,
+          "frequency": "daily"
+        },
+        {
+          "name": "Electral",
+          "dosage": null,
+          "frequency": null
+        },
+        {
+          "name": "Platemax",
+          "dosage": null,
+          "frequency": "OD"
+        },
+        {
+          "name": "Pantoprazole",
+          "dosage": "40mg",
+          "frequency": "once daily"
+        },
+        {
+          "name": "Paracetamol",
+          "dosage": "6s0mg",
+          "frequency": "twice"
+        },
+        {
+          "name": "Pantoprazole",
+          "dosage": "40mg",
+          "frequency": "once"
+        }
+      ],
+      "treatments": [
+        "injection",
+        "iv"
+      ],
+      "billing_items": []
+    }
+  },
+  "unified_claim": {
+    "patient_name": "Arjun Mehta",
+    "disease": "Dengue Fever TDS",
+    "medications": [
+      "Paracetamol",
+      "Electral",
+      "Platemax",
+      "Pantoprazole",
+      "Paracetamol",
+      "Pantoprazole"
+    ],
+    "amount": null,
+    "has_prescription": true,
+    "has_billing": false
+  },
+  "analysis": {
+    "decision": "INCOMPLETE",
+    "flags": [],
+    "reason": [],
+    "validation_issues": [
+      "Missing billing amount"
+    ]
+  },
+  "final_decision": {
+    "decision": "INCOMPLETE",
+    "flags": [],
+    "reason": [],
+    "validation_issues": [
+      "Missing billing amount"
+    ]
+  }
+}

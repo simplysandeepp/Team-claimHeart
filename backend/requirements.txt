@@ -1,20 +1,41 @@
-fastapi==0.104.1
-uvicorn[standard]==0.24.0.post1
-pydantic==2.5.2
-pydantic-settings==2.1.0
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-alembic==1.12.1
-celery==5.3.6
-redis==5.0.1
-python-multipart==0.0.6
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-httpx==0.25.2
-pytest==7.4.3
-requests==2.31.0
-google-generativeai==0.3.1
-pillow==10.1.0
-opencv-python-headless==4.8.1.78
-prometheus_client==0.19.0
-python-json-logger==2.0.7
+# WEB FRAMEWORK
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+# DATABASE
+sqlalchemy
+psycopg2-binary
+alembic
+
+# AUTH & SECURITY
+python-jose[cryptography]
+passlib[bcrypt]
+
+# ENVIRONMENT
+python-dotenv
+
+# OCR & IMAGE PROCESSING
+pytesseract
+easyocr
+opencv-python
+pillow
+numpy
+
+# PDF PROCESSING
+pdf2image
+PyMuPDF
+
+# AI & LLM
+google-generativeai
+openai
+
+# TASK QUEUE 
+celery
+redis
+
+# UTILITIES
+requests
+tqdm
+httpx==0.26.0

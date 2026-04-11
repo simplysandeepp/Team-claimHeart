@@ -1,16 +1,12 @@
-import cv2
-import numpy as np
-from PIL import Image
+from app.preprocessing.image_cleaning import preprocess_image, to_pil_image
+
 
 def preprocess_for_ocr(image_path):
-    # Load the image
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    """
+    Backward-compatible wrapper used by older OCR entry points.
 
-    # Increasing image contrast ans removing noise, resizing for small handwritten
-    img = cv2.resize(img, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-
-    # Apply Adaptive Thresholding to get a binary image
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-                                cv2.THRESH_BINARY, 11, 2)
-
-    return Image.fromarray(img)
+    The new implementation includes grayscale conversion, denoising,
+    thresholding, and deskewing before returning a PIL image.
+    """
+    result = preprocess_image(image_path)
+    return to_pil_image(result.image)

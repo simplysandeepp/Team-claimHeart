@@ -1,0 +1,1568 @@
+{
+    "CARE-COMPREHENSIVE-MASTER-2026": {
+        "policy_metadata": {
+            "policy_name": "Care Comprehensive Master Health Plan",
+            "policy_type": "retail",
+            "currency": "INR",
+            "total_sum_insured": 1500000,
+            "base_copay_percentage": 10,
+            "policy_version": "2026.1",
+            "issuing_authority": "Care Health Insurance Limited",
+            "irdai_registration_no": "CAREHLTH/2026/001",
+            "effective_date": "2026-01-01",
+            "renewal_type": "annual"
+        },
+        "global_conditions": {
+            "initial_waiting_period_days": 30,
+            "pre_existing_disease_waiting_period_days": 730,
+            "maternity_waiting_period_days": 1095,
+            "specific_disease_waiting_period_days": 730,
+            "room_rent_cap_per_day": 8000,
+            "icu_rent_cap_per_day": 15000,
+            "ambulance_cap_per_event": 3000,
+            "ambulance_cap_per_year": 6000,
+            "domiciliary_hospitalization_cap": 50000,
+            "ayush_treatment_cap": 30000,
+            "organ_donor_expenses_cap": 150000,
+            "health_checkup_cap_per_year": 5000,
+            "second_opinion_cap": 3000,
+            "teleconsultation_cap_per_year": 2000,
+            "pharmacy_cap_per_hospitalization": 25000,
+            "consumables_cap_per_day": 500,
+            "rehabilitation_cap": 20000,
+            "hospice_care_cap": 40000
+        },
+        "disease_sub_limits": {
+            "Dengue Fever": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Malaria": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Typhoid Fever": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Chikungunya": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "COVID-19": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 300000
+            },
+            "Tuberculosis": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Cholera": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Hepatitis A": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Hepatitis B": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Hepatitis C": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Leptospirosis": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Scrub Typhus": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Meningitis": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Encephalitis": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 300000
+            },
+            "Acute Febrile Illness": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Urinary Tract Infection": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Acute Gastroenteritis": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Appendicitis and Appendectomy": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 90000
+            },
+            "Cholecystitis and Cholecystectomy": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Pancreatitis": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Peptic Ulcer Disease": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 90000
+            },
+            "Gastrointestinal Bleeding": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Hernia Repair": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Liver Cirrhosis": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Inflammatory Bowel Disease": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Intestinal Obstruction": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Piles and Fistula": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 60000
+            },
+            "CABG Heart Bypass Surgery": {
+                "category": "Cardiology",
+                "max_payable_inr": 800000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 500000
+            },
+            "Angioplasty PTCA": {
+                "category": "Cardiology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Acute Myocardial Infarction": {
+                "category": "Cardiology",
+                "max_payable_inr": 600000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 400000
+            },
+            "Heart Valve Replacement": {
+                "category": "Cardiology",
+                "max_payable_inr": 700000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 500000
+            },
+            "Cardiac Pacemaker Implantation": {
+                "category": "Cardiology",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Congestive Heart Failure": {
+                "category": "Cardiology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Atrial Fibrillation": {
+                "category": "Cardiology",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Deep Vein Thrombosis": {
+                "category": "Cardiology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Pulmonary Embolism": {
+                "category": "Cardiology",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Ischemic Stroke": {
+                "category": "Neurology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Hemorrhagic Stroke": {
+                "category": "Neurology",
+                "max_payable_inr": 600000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 400000
+            },
+            "Epilepsy": {
+                "category": "Neurology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Parkinson Disease": {
+                "category": "Neurology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Alzheimer Disease": {
+                "category": "Neurology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Brain Tumor Craniotomy": {
+                "category": "Neurology",
+                "max_payable_inr": 1000000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 600000
+            },
+            "Guillain Barre Syndrome": {
+                "category": "Neurology",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Multiple Sclerosis": {
+                "category": "Neurology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Spinal Cord Injury": {
+                "category": "Neurology",
+                "max_payable_inr": 600000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 400000
+            },
+            "Total Knee Replacement": {
+                "category": "Orthopedics",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Total Hip Replacement": {
+                "category": "Orthopedics",
+                "max_payable_inr": 280000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Fracture Treatment": {
+                "category": "Orthopedics",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Spinal Disc Surgery": {
+                "category": "Orthopedics",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 7,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Ligament Reconstruction ACL": {
+                "category": "Orthopedics",
+                "max_payable_inr": 180000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 125000
+            },
+            "Osteomyelitis": {
+                "category": "Orthopedics",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Rheumatoid Arthritis": {
+                "category": "Orthopedics",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Lung Cancer": {
+                "category": "Oncology",
+                "max_payable_inr": 1000000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 700000
+            },
+            "Breast Cancer": {
+                "category": "Oncology",
+                "max_payable_inr": 900000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 600000
+            },
+            "Colorectal Cancer": {
+                "category": "Oncology",
+                "max_payable_inr": 900000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 600000
+            },
+            "Leukemia": {
+                "category": "Oncology",
+                "max_payable_inr": 1200000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 800000
+            },
+            "Lymphoma": {
+                "category": "Oncology",
+                "max_payable_inr": 1000000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 700000
+            },
+            "Cervical Cancer": {
+                "category": "Oncology",
+                "max_payable_inr": 750000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 500000
+            },
+            "Prostate Cancer": {
+                "category": "Oncology",
+                "max_payable_inr": 800000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 550000
+            },
+            "Brain Cancer Glioblastoma": {
+                "category": "Oncology",
+                "max_payable_inr": 1200000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 850000
+            },
+            "Chemotherapy": {
+                "category": "Oncology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Radiation Therapy": {
+                "category": "Oncology",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 1,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Cataract Surgery": {
+                "category": "Ophthalmology",
+                "max_payable_inr": 60000,
+                "max_hospitalization_days_allowed": 1,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 45000
+            },
+            "Retinal Detachment Surgery": {
+                "category": "Ophthalmology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Glaucoma": {
+                "category": "Ophthalmology",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 70000
+            },
+            "Corneal Transplant": {
+                "category": "Ophthalmology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Diabetic Retinopathy": {
+                "category": "Ophthalmology",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 1,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 85000
+            },
+            "Type 1 Diabetes Mellitus": {
+                "category": "Endocrinology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Type 2 Diabetes Mellitus": {
+                "category": "Endocrinology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Diabetic Ketoacidosis": {
+                "category": "Endocrinology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Hypothyroidism": {
+                "category": "Endocrinology",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Hyperthyroidism and Thyroidectomy": {
+                "category": "Endocrinology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Cushing Syndrome": {
+                "category": "Endocrinology",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Chronic Kidney Disease": {
+                "category": "Nephrology",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 275000
+            },
+            "Acute Kidney Injury": {
+                "category": "Nephrology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Kidney Transplant": {
+                "category": "Nephrology",
+                "max_payable_inr": 1200000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 5,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 800000
+            },
+            "Hemodialysis": {
+                "category": "Nephrology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Nephrotic Syndrome": {
+                "category": "Nephrology",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Kidney Stone Lithotripsy": {
+                "category": "Nephrology",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 85000
+            },
+            "Pneumonia": {
+                "category": "Respiratory",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Chronic Obstructive Pulmonary Disease": {
+                "category": "Respiratory",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Bronchial Asthma": {
+                "category": "Respiratory",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Pulmonary Fibrosis": {
+                "category": "Respiratory",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Pleural Effusion": {
+                "category": "Respiratory",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Lung Transplant": {
+                "category": "Respiratory",
+                "max_payable_inr": 1400000,
+                "max_hospitalization_days_allowed": 30,
+                "max_diagnostic_tests_per_day": 5,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 1000000
+            },
+            "Sinusitis Surgery": {
+                "category": "ENT",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Tonsillectomy": {
+                "category": "ENT",
+                "max_payable_inr": 60000,
+                "max_hospitalization_days_allowed": 1,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 45000
+            },
+            "Tympanoplasty": {
+                "category": "ENT",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Cochlear Implant": {
+                "category": "ENT",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Thyroid Cancer Surgery": {
+                "category": "ENT",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Hysterectomy": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Ovarian Cyst Removal": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Ectopic Pregnancy": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Normal Delivery": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 50000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 1095,
+                "requires_field_verification_above_inr": 40000
+            },
+            "Caesarean Section": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 1095,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Endometriosis Surgery": {
+                "category": "Obstetrics and Gynecology",
+                "max_payable_inr": 180000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 125000
+            },
+            "Prostatectomy BPH": {
+                "category": "Urology",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Urethral Stricture Surgery": {
+                "category": "Urology",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Varicocelectomy": {
+                "category": "Urology",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Hypospadias Repair": {
+                "category": "Urology",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 90000
+            },
+            "Psoriasis": {
+                "category": "Dermatology",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Stevens Johnson Syndrome": {
+                "category": "Dermatology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Cellulitis": {
+                "category": "Dermatology",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Severe Burns": {
+                "category": "Dermatology",
+                "max_payable_inr": 600000,
+                "max_hospitalization_days_allowed": 30,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 400000
+            },
+            "HIV AIDS": {
+                "category": "Infectious Disease",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Septicemia Sepsis": {
+                "category": "Critical Care",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 5,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Multi Organ Failure": {
+                "category": "Critical Care",
+                "max_payable_inr": 800000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 6,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 600000
+            },
+            "Acute Respiratory Distress Syndrome": {
+                "category": "Critical Care",
+                "max_payable_inr": 600000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 400000
+            },
+            "Sickle Cell Disease": {
+                "category": "Hematology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Thalassemia": {
+                "category": "Hematology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Hemophilia": {
+                "category": "Hematology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Bone Marrow Transplant": {
+                "category": "Hematology",
+                "max_payable_inr": 1400000,
+                "max_hospitalization_days_allowed": 30,
+                "max_diagnostic_tests_per_day": 5,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 1000000
+            },
+            "Aplastic Anemia": {
+                "category": "Hematology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Lupus Erythematosus": {
+                "category": "Rheumatology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Vasculitis": {
+                "category": "Rheumatology",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Ankylosing Spondylitis": {
+                "category": "Rheumatology",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Liver Transplant": {
+                "category": "Transplant Surgery",
+                "max_payable_inr": 1400000,
+                "max_hospitalization_days_allowed": 30,
+                "max_diagnostic_tests_per_day": 5,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 1000000
+            },
+            "Heart Transplant": {
+                "category": "Transplant Surgery",
+                "max_payable_inr": 1500000,
+                "max_hospitalization_days_allowed": 30,
+                "max_diagnostic_tests_per_day": 6,
+                "max_pharmacy_dosages_per_day": 15,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 1200000
+            },
+            "Cleft Lip and Palate Repair": {
+                "category": "Pediatric Surgery",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 90000
+            },
+            "Neonatal Jaundice": {
+                "category": "Pediatrics",
+                "max_payable_inr": 50000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 3,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 35000
+            },
+            "Febrile Seizures": {
+                "category": "Pediatrics",
+                "max_payable_inr": 80000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 60000
+            },
+            "Varicose Veins Surgery": {
+                "category": "Vascular Surgery",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Aortic Aneurysm Repair": {
+                "category": "Vascular Surgery",
+                "max_payable_inr": 700000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 500000
+            },
+            "Peripheral Artery Disease Surgery": {
+                "category": "Vascular Surgery",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Renal Artery Stenosis": {
+                "category": "Vascular Surgery",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Schizophrenia": {
+                "category": "Psychiatry",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 21,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Bipolar Disorder": {
+                "category": "Psychiatry",
+                "max_payable_inr": 120000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 5,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 90000
+            },
+            "Major Depressive Disorder": {
+                "category": "Psychiatry",
+                "max_payable_inr": 100000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 75000
+            },
+            "Acute Pancreatitis Alcoholic": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Splenic Rupture": {
+                "category": "General Surgery",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Esophageal Varices Banding": {
+                "category": "Gastrointestinal",
+                "max_payable_inr": 150000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 100000
+            },
+            "Bariatric Surgery": {
+                "category": "General Surgery",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Carotid Endarterectomy": {
+                "category": "Vascular Surgery",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Electrophysiology Study and Ablation": {
+                "category": "Cardiology",
+                "max_payable_inr": 300000,
+                "max_hospitalization_days_allowed": 2,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 200000
+            },
+            "Ventricular Septal Defect Closure": {
+                "category": "Cardiology",
+                "max_payable_inr": 450000,
+                "max_hospitalization_days_allowed": 7,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 300000
+            },
+            "Atrial Septal Defect Closure": {
+                "category": "Cardiology",
+                "max_payable_inr": 400000,
+                "max_hospitalization_days_allowed": 5,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 275000
+            },
+            "Robotic Prostatectomy": {
+                "category": "Urology",
+                "max_payable_inr": 350000,
+                "max_hospitalization_days_allowed": 4,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 250000
+            },
+            "Pediatric Congenital Heart Surgery": {
+                "category": "Pediatric Cardiology",
+                "max_payable_inr": 800000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 4,
+                "max_pharmacy_dosages_per_day": 12,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 600000
+            },
+            "Tracheostomy": {
+                "category": "Critical Care",
+                "max_payable_inr": 200000,
+                "max_hospitalization_days_allowed": 14,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 8,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 150000
+            },
+            "Testicular Cancer Orchiectomy": {
+                "category": "Urology",
+                "max_payable_inr": 250000,
+                "max_hospitalization_days_allowed": 3,
+                "max_diagnostic_tests_per_day": 2,
+                "max_pharmacy_dosages_per_day": 6,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 175000
+            },
+            "Bladder Cancer Cystectomy": {
+                "category": "Urology",
+                "max_payable_inr": 500000,
+                "max_hospitalization_days_allowed": 10,
+                "max_diagnostic_tests_per_day": 3,
+                "max_pharmacy_dosages_per_day": 10,
+                "specific_waiting_period_days": 0,
+                "requires_field_verification_above_inr": 350000
+            },
+            "Dental Surgery Under General Anesthesia": {
+                "category": "Dental",
+                "max_payable_inr": 50000,
+                "max_hospitalization_days_allowed": 1,
+                "max_diagnostic_tests_per_day": 1,
+                "max_pharmacy_dosages_per_day": 4,
+                "specific_waiting_period_days": 730,
+                "requires_field_verification_above_inr": 35000
+            }
+        },
+        "surgical_procedure_tariffs": {
+            "Appendectomy Open": {
+                "max_surgeon_fee_inr": 25000,
+                "max_anesthesia_fee_inr": 8000,
+                "max_ot_charges_inr": 20000
+            },
+            "Laparoscopic Appendectomy": {
+                "max_surgeon_fee_inr": 35000,
+                "max_anesthesia_fee_inr": 10000,
+                "max_ot_charges_inr": 25000
+            },
+            "Laparoscopic Cholecystectomy": {
+                "max_surgeon_fee_inr": 40000,
+                "max_anesthesia_fee_inr": 12000,
+                "max_ot_charges_inr": 25000
+            },
+            "Open Cholecystectomy": {
+                "max_surgeon_fee_inr": 30000,
+                "max_anesthesia_fee_inr": 10000,
+                "max_ot_charges_inr": 20000
+            },
+            "CABG Coronary Artery Bypass": {
+                "max_surgeon_fee_inr": 150000,
+                "max_anesthesia_fee_inr": 50000,
+                "max_ot_charges_inr": 100000
+            },
+            "Angioplasty with Stenting": {
+                "max_surgeon_fee_inr": 80000,
+                "max_anesthesia_fee_inr": 25000,
+                "max_ot_charges_inr": 60000
+            },
+            "Total Knee Replacement Surgery": {
+                "max_surgeon_fee_inr": 60000,
+                "max_anesthesia_fee_inr": 20000,
+                "max_ot_charges_inr": 40000
+            },
+            "Total Hip Replacement Surgery": {
+                "max_surgeon_fee_inr": 65000,
+                "max_anesthesia_fee_inr": 20000,
+                "max_ot_charges_inr": 42000
+            },
+            "Spine Discectomy": {
+                "max_surgeon_fee_inr": 70000,
+                "max_anesthesia_fee_inr": 22000,
+                "max_ot_charges_inr": 45000
+            },
+            "Craniotomy Brain Tumor": {
+                "max_surgeon_fee_inr": 200000,
+                "max_anesthesia_fee_inr": 60000,
+                "max_ot_charges_inr": 120000
+            },
+            "Cataract Phacoemulsification": {
+                "max_surgeon_fee_inr": 15000,
+                "max_anesthesia_fee_inr": 3000,
+                "max_ot_charges_inr": 10000
+            },
+            "Hysterectomy Abdominal": {
+                "max_surgeon_fee_inr": 45000,
+                "max_anesthesia_fee_inr": 15000,
+                "max_ot_charges_inr": 30000
+            },
+            "Laparoscopic Hysterectomy": {
+                "max_surgeon_fee_inr": 60000,
+                "max_anesthesia_fee_inr": 18000,
+                "max_ot_charges_inr": 35000
+            },
+            "Hernia Inguinal Repair Open": {
+                "max_surgeon_fee_inr": 20000,
+                "max_anesthesia_fee_inr": 7000,
+                "max_ot_charges_inr": 15000
+            },
+            "Laparoscopic Hernia Repair": {
+                "max_surgeon_fee_inr": 30000,
+                "max_anesthesia_fee_inr": 10000,
+                "max_ot_charges_inr": 20000
+            },
+            "Heart Valve Replacement Surgery": {
+                "max_surgeon_fee_inr": 130000,
+                "max_anesthesia_fee_inr": 45000,
+                "max_ot_charges_inr": 90000
+            },
+            "Kidney Transplant Surgery": {
+                "max_surgeon_fee_inr": 200000,
+                "max_anesthesia_fee_inr": 60000,
+                "max_ot_charges_inr": 150000
+            },
+            "Mastectomy Breast Cancer": {
+                "max_surgeon_fee_inr": 50000,
+                "max_anesthesia_fee_inr": 18000,
+                "max_ot_charges_inr": 35000
+            },
+            "Tonsillectomy Surgery": {
+                "max_surgeon_fee_inr": 12000,
+                "max_anesthesia_fee_inr": 4000,
+                "max_ot_charges_inr": 8000
+            },
+            "Prostatectomy TURP": {
+                "max_surgeon_fee_inr": 35000,
+                "max_anesthesia_fee_inr": 12000,
+                "max_ot_charges_inr": 25000
+            },
+            "Caesarean Section Surgery": {
+                "max_surgeon_fee_inr": 20000,
+                "max_anesthesia_fee_inr": 8000,
+                "max_ot_charges_inr": 15000
+            },
+            "Bariatric Gastric Sleeve": {
+                "max_surgeon_fee_inr": 70000,
+                "max_anesthesia_fee_inr": 22000,
+                "max_ot_charges_inr": 45000
+            },
+            "ACL Reconstruction": {
+                "max_surgeon_fee_inr": 45000,
+                "max_anesthesia_fee_inr": 15000,
+                "max_ot_charges_inr": 30000
+            },
+            "Aortic Aneurysm Open Repair": {
+                "max_surgeon_fee_inr": 150000,
+                "max_anesthesia_fee_inr": 50000,
+                "max_ot_charges_inr": 100000
+            },
+            "Tympanoplasty Ear Surgery": {
+                "max_surgeon_fee_inr": 25000,
+                "max_anesthesia_fee_inr": 8000,
+                "max_ot_charges_inr": 18000
+            },
+            "Endoscopic Sinus Surgery": {
+                "max_surgeon_fee_inr": 20000,
+                "max_anesthesia_fee_inr": 7000,
+                "max_ot_charges_inr": 15000
+            },
+            "Retinal Detachment Surgery": {
+                "max_surgeon_fee_inr": 40000,
+                "max_anesthesia_fee_inr": 12000,
+                "max_ot_charges_inr": 25000
+            },
+            "Colostomy Formation": {
+                "max_surgeon_fee_inr": 35000,
+                "max_anesthesia_fee_inr": 12000,
+                "max_ot_charges_inr": 25000
+            },
+            "Piles Haemorrhoidectomy": {
+                "max_surgeon_fee_inr": 15000,
+                "max_anesthesia_fee_inr": 5000,
+                "max_ot_charges_inr": 10000
+            },
+            "Thyroidectomy Total": {
+                "max_surgeon_fee_inr": 40000,
+                "max_anesthesia_fee_inr": 13000,
+                "max_ot_charges_inr": 28000
+            }
+        },
+        "consumables_and_non_payables": {
+            "absolutely_excluded_items": [
+                "Disposable Gloves",
+                "Surgical Mask",
+                "Face Shield",
+                "N95 Mask",
+                "Gown and Apron",
+                "Shoe Cover",
+                "Cap and Bonnet",
+                "Admission Kit",
+                "Patient Amenity Kit",
+                "Tooth Brush",
+                "Tooth Paste",
+                "Shaving Kit",
+                "Comb",
+                "Soap",
+                "Shampoo",
+                "Lotion",
+                "Tissues and Napkins",
+                "Diapers Adult",
+                "Diapers Pediatric",
+                "Sanitary Pads",
+                "Blanket and Pillow",
+                "Bed Sheet",
+                "Mattress Cover",
+                "Towel",
+                "Thermometer",
+                "Pulse Oximeter Personal",
+                "BP Cuff Personal",
+                "Water Bottle",
+                "Tupperware",
+                "Diet Charges Standard Meals",
+                "Visitor Meal Charges",
+                "Attendant Food",
+                "Newspaper",
+                "TV Charges",
+                "Telephone Charges",
+                "Internet Charges WiFi",
+                "Refrigerator Charges",
+                "Parking Charges",
+                "Courier and Postage",
+                "Stamp Duty",
+                "Notary Charges",
+                "Documentation Fees",
+                "Admission Processing Fee",
+                "Discharge Processing Fee",
+                "Medical Record Copy Fee",
+                "Certificate Charges",
+                "Medico Legal Charges",
+                "Surcharge Weekend",
+                "Emergency Surcharge Avoidable",
+                "Registration Charges Outpatient",
+                "Packing Charges",
+                "Administrative Overhead Surcharge",
+                "Electric Charges Room",
+                "Laundry Charges",
+                "Specimen Collection Tube Plain",
+                "Specimen Bag",
+                "Urine Bag Standard",
+                "Nebulizer Mask Single Use",
+                "Lancet",
+                "Glucometer Strip Routine",
+                "Alcohol Swabs",
+                "Band Aid",
+                "Cotton Rolls",
+                "Tape and Bandage Routine",
+                "Sticking Plaster",
+                "Waste Bag Biohazard",
+                "Tray and Trolley Cleaning",
+                "Decontamination Charges",
+                "Stretcher Use Charges Ward",
+                "Wheelchair Use Charges Ward",
+                "Waiting Room Charges",
+                "Visitor Badge",
+                "Patient Identification Band"
+            ]
+        },
+        "policy_exclusions": [
+            "Cosmetic or aesthetic surgery and treatment including rhinoplasty, breast augmentation, liposuction, and skin lightening procedures not medically necessary",
+            "Self-inflicted injuries, suicide attempts, and deliberate harm",
+            "Treatment arising from or related to alcohol abuse, alcoholism, or intoxication",
+            "Treatment arising from or related to use of narcotics, illegal drugs, or substance abuse",
+            "War, invasion, acts of foreign enemies, hostilities, civil war, rebellion, insurrection, or military operations",
+            "Nuclear, chemical, or biological contamination or warfare",
+            "Treatment of sexually transmitted diseases except HIV AIDS which is covered after the specific waiting period",
+            "Experimental or unproven treatments not recognized by the Indian Council of Medical Research or equivalent international bodies",
+            "Organ harvesting or procurement costs for transplants covered separately under organ donor benefit",
+            "Weight loss programs, slimming treatments, obesity management without documented comorbid medical necessity",
+            "Dental treatments and oral surgeries except those requiring general anesthesia or arising from accidental injury",
+            "Vision correction procedures including LASIK and refractive surgeries",
+            "Infertility treatments, IVF, IUI, surrogacy, and assisted reproductive technology",
+            "Circumcision unless medically necessary and recommended by a physician",
+            "Injuries sustained during participation in professional or hazardous sports including motorsport, mountaineering above 5000 metres, skydiving, and bungee jumping",
+            "Outpatient consultations, investigations, and pharmacy unless specifically listed under outpatient benefit endorsement",
+            "Vitamins, supplements, health tonics, and protein powders unless specifically prescribed for diagnosed deficiency during hospitalization",
+            "Treatment outside India unless covered under specific international travel add-on endorsement",
+            "Genetic disorders and congenital conditions detected after policy commencement unless specifically included",
+            "Rest cure, convalescence care, and general debility without acute medical indication",
+            "Non-allopathic treatments except AYUSH which is covered up to the AYUSH sub-limit"
+        ]
+    }
+}

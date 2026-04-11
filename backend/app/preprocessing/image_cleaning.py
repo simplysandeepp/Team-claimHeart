@@ -15,7 +15,7 @@ class ImagePreprocessingResult:
 
 
 def load_image(image_source: Any) -> np.ndarray:
-    #Load a file path, PIL image, or numpy array into a BGR numpy array.
+    """Load a file path, PIL image, or numpy array into a BGR numpy array."""
     if isinstance(image_source, np.ndarray):
         image = image_source.copy()
         if image.ndim == 2:

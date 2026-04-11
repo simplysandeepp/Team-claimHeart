@@ -1,0 +1,44 @@
+{
+  "raw_text": "HOSPITAL\nDate\n05\nAge: 32\nNo::\nDate: 05\nA97 .1]\nName:\nFever\nx 5 days\nRx\n650mg\na\nday)\n1.\ndaily (For\n2.\nSyp\nIv\nbilling)\n3. Inj:\nX 5 days\n1\nAs\n4Omg\nOD\nempty\ndaily\n4.\nrest, high\n5.\n3 days\nDr_\nReg No::\nMEDICAL\nDICTIONARY\nCARE\nCITY\nPrescription\nOutpatient\n2026\nApril\nMale\nCCH-OPD-2026-09341\nyears\n2026\nOPD\nApril\nMehta\nArjun\n(ICD-10:\nThrombocytopenia\nPatient\nwith\nDengue\n(Take\nDiagnosis:\nTDS\nrehydration)\nParacetamol\nInjection)\ntimes\nTab\nthree\nProtocol\ntwice\ntablet\n2oOml\none\nDengue\nElectral\n(Standard\nadministration\n(refer\nPlateMax\nprotocol\nfood\nper\nvial\ndengue\nstomach)\nbefore\nDose:\nper\nFrequency:\nan\nPantoprazole\non\nadvised .\nonce\nintake\nTab\ntablet\nfluid\none\n(Take\nYakeb\nComplete\nIyer\nRakesh\nMedicine)\n(Internal\nMCI-2011-44892\nFollow-up:\nMD\nMBBS,",
+  "structured_data": {
+    "patient_name": "Arjun Mehta",
+    "age": 32,
+    "gender": "Male",
+    "medical_record_number": "MEDICAL",
+    "hospital_info": {
+      "name": "MEDICAL\nDICTIONARY\nCARE",
+      "address": "Prescription\nOutpatient",
+      "phone": null
+    },
+    "dates": {
+      "admission_date": null,
+      "discharge_date": null,
+      "bill_date": null,
+      "prescription_date": "05 April 2026"
+    },
+    "diagnosis": [
+      "Dengue"
+    ],
+    "medications": [
+      {
+        "name": "Paracetamol",
+        "type": "Medication"
+      },
+      {
+        "name": "Pantoprazole",
+        "type": "Medication"
+      },
+      {
+        "name": "Platemax",
+        "type": "Medication"
+      },
+      {
+        "name": "Electral",
+        "type": "Medication"
+      }
+    ],
+    "vital_signs": {},
+    "ward_room": null,
+    "attending_physician": "MBBS"
+  }
+}

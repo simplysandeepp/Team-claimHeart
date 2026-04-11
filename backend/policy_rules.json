@@ -1,0 +1,24 @@
+{
+  "Dengue": {
+    "covered": true,
+    "max_amount": 50000,
+    "allowed_medications": [
+      "Paracetamol",
+      "Electral",
+      "Pantoprazole"
+    ],
+    "waiting_period_days": 30
+  },
+  "Fracture": {
+    "covered": true,
+    "max_amount": 80000,
+    "allowed_medications": [
+      "Painkiller",
+      "Antibiotic"
+    ],
+    "waiting_period_days": 0
+  },
+  "Dental": {
+    "covered": false
+  }
+}

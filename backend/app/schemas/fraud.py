@@ -16,6 +16,9 @@ class FraudSignal(BaseModel):
     code: str = Field(..., description="Stable machine-readable signal code.")
     weight: float = Field(..., ge=0, le=100, description="Risk contribution weight.")
     reason: str = Field(..., min_length=3, description="Human-readable explanation.")
+    rule_id: Optional[str] = Field(default=None, description="The specific policy or system rule ID violated.")
+    detected_value: Optional[Any] = Field(default=None, description="The exact value detected from the claim.")
+    threshold_value: Optional[Any] = Field(default=None, description="The rigid threshold that was crossed.")
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 

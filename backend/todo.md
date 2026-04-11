@@ -65,12 +65,12 @@ This checklist combines the specific backend engineering tasks with the detailed
 - ✅ Fraud decision endpoint exists (`POST /api/fraud/decision`)
 - ✅ Deterministic fraud scoring engine implemented
 - ✅ Rule signals for missing fields, high amount, OCR quality, and pattern hits implemented
-- [ ] Add duplicate-claim detection using patient_id + diagnosis + time window
-- [ ] Add tests/day fraud check: `tests_per_day > max_diagnostic_tests_per_day`
-- [ ] Add sub-limit bust fraud signal: `amount > max_payable_inr`
-- [ ] Add Isolation Forest anomaly scoring with feature pipeline
-- [ ] Add explainable fraud evidence array with rule id, value, threshold
-- [ ] Write findings to DB2
+- ✅ Add duplicate-claim detection using patient_id + diagnosis + time window
+- ✅ Add tests/day fraud check: `tests_per_day > max_diagnostic_tests_per_day`
+- ✅ Add sub-limit bust fraud signal: `amount > max_payable_inr`
+- ✅ Add Isolation Forest anomaly scoring with feature pipeline
+- ✅ Add explainable fraud evidence array with rule id, value, threshold
+- ✅ Write findings to DB2
 
 ### Decision Routing — Nodes R5, R3, R4
 - [ ] **Node R5 (Fraud Verdict):** Evaluates Fraud Agent output (Routes to YES or NO)

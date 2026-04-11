@@ -13,6 +13,8 @@ from app.schemas.fraud import (
     FraudSignal,
     LLMDecisionPayload,
 )
+from app.services.mock_db2_repo import db2_repo
+from app.services.ml_anomaly import ml_anomaly_scorer
 
 try:
     from openai import OpenAI
@@ -76,7 +78,13 @@ class DecisionEngine:
     def evaluate(self, context: ClaimContext) -> DecisionResponse:
         rule_result = self._compute_rule_risk(context)
         llm_payload = self._evaluate_with_llm(context, rule_result)
-        return self._compose_decision(context, rule_result, llm_payload)
+        decision = self._compose_decision(context, rule_result, llm_payload)
+        
+        # Write findings to DB2 module (Simulated)
+        claim_id = context.claim_data.get("claim_id", "UNKNOWN_CLAIM")
+        db2_repo.save_fraud_decision(claim_id, decision)
+        
+        return decision
 
     def build_prompt(self, context: ClaimContext, rule_result: RuleScoreResult) -> str:
         compact_context = {
@@ -225,21 +233,79 @@ class DecisionEngine:
                 )
             )
 
+
+        # --- NEW AGENT A3 FRAUD CHECKS ---
+
+        # 1. Duplicate Claim Suspicion
+        # patient_id + diagnosis + time window
+        diagnosis = str(claim_data.get("diagnosis", "")).lower()
+        if diagnosis:
+            for prev in previous_claims:
+                if str(prev.get("diagnosis", "")).lower() == diagnosis:
+                    signals.append(
+                        FraudSignal(
+                            code="DUPLICATE_CLAIM_SUSPICION",
+                            weight=30,
+                            reason="Claim matches a recent claim for the exact same diagnosis.",
+                            rule_id="RULE_DUP_01",
+                            detected_value=diagnosis,
+                            threshold_value="1 unique claim per window",
+                            metadata={"duplicate_hit": prev}
+                        )
+                    )
+                    break
+
+        # 2. Sub-Limit Bust interception
         policy_hits = 0
         for rule in context.policy_rules:
-            status = str(rule.get("status", "")).upper()
-            if status in {"VIOLATION", "DENY", "REJECT"}:
+            status = str(rule.get("decision", "APPROVE")).upper()
+            if status in {"FLAG", "REJECT"}:
                 policy_hits += 1
-                signals.append(
-                    FraudSignal(
-                        code="POLICY_VIOLATION",
+                
+                # Check what type of policy violation happened (From Agent A2)
+                reason_str = str(rule.get("reason", []))
+                if "amount_exceeds_sublimit" in str(rule.get("flags", [])):
+                    signals.append(FraudSignal(
+                        code="SUB_LIMIT_BUST",
+                        weight=35,
+                        reason="Claim significantly exceeded the disease sub-limit cap.",
+                        rule_id="POL_CAP_01",
+                        detected_value=claim_amount,
+                        metadata={"rule_text": reason_str}
+                    ))
+                elif "protocol_violation_tests" in str(rule.get("flags", [])):
+                    signals.append(FraudSignal(
+                        code="TESTS_PER_DAY_EXCEEDED",
                         weight=20,
-                        reason=str(
-                            rule.get("reason") or "Policy rule indicates a violation."
-                        ),
-                        metadata={"rule": rule},
+                        reason="Diagnostic tests ordered per day exceeded the protocol allowed limit.",
+                        rule_id="POL_PROT_01",
+                        metadata={"rule_text": reason_str}
+                    ))
+                else:
+                    signals.append(
+                        FraudSignal(
+                            code="POLICY_VIOLATION",
+                            weight=20,
+                            reason="Agent A2 Policy validation failed: " + reason_str,
+                            rule_id="POL_GEN_01"
+                        )
                     )
-                )
+
+        # 3. Isolation Forest ML Anomaly Scoring
+        hospital_days = self._coerce_float(claim_data.get("hospital_stay_days")) or 2
+        # Use our ML module to find cluster outliers
+        ml_result = ml_anomaly_scorer.run_inference(claim_amount, ocr_confidence, hospital_days)
+        
+        if ml_result["is_outlier"]:
+            signals.append(FraudSignal(
+                code="ISOLATION_FOREST_ANOMALY",
+                weight=25,
+                reason="ML model detected an anomaly vector cluster across Amount/Days/Confidence.",
+                rule_id="ML_IF_01",
+                detected_value=str(ml_result["features"]),
+                threshold_value="Inlier Cluster Euclidean Distance",
+                metadata={"raw_anomaly_score": ml_result["raw_score"]}
+            ))
 
         fraud_pattern_hits = 0
         for pattern in context.fraud_patterns:
@@ -258,21 +324,6 @@ class DecisionEngine:
                         metadata={"pattern": pattern},
                     )
                 )
-
-        # Detect frequent claims (basic fraud pattern)
-        previous_claims = context.claim_data.get("previous_claims", [])
-
-        if isinstance(previous_claims, list) and len(previous_claims) >= 3:
-            signals.append(
-                FraudSignal(
-                    code="FREQUENT_CLAIMS",
-                    weight=18,
-                    reason="Multiple claims submitted in short period (suspicious).",
-                    metadata={"count": len(previous_claims)},
-                )
-            )
-
-        # Abhi synthetic data me manually pass kar sakte ho
 
         metadata["policy_hits"] = policy_hits
         metadata["fraud_pattern_hits"] = fraud_pattern_hits

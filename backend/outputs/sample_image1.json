@@ -335,6 +335,13 @@
       "line_count": 15,
       "table_count": 1
     },
+    "confidence_scores": {
+      "patient_name": 0.87,
+      "diagnosis": 0.87,
+      "medications": 0.94,
+      "billing_items": 0.89,
+      "hospital_stay_days": 0.89
+    },
     "raw_text": "IDKC MIEIDIKCAAUL\nCARE HOSPITAL TTIKO)N ARY\nCITY Outpatient Prescription Date 05 years April 2026 Male\nDate: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1`\nPatient with Thrombocytopenia\nDiagnosis: Dengue Fever TDS X 5 days (Take\nR 1. Tab Paracetamol tablet three 6s0mg times twice a day) daily (For Protocol rehydration) Injection)\n2. Syp one Electral Iv 2oOml (Standard Dengue billing)\n3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days\nX Frequency: Pantoprazole 40mg once daily on an advised . empty\n4. Tab (Take one tablet high fluid intake\n5. Complete rest, PakeV\n3 days Dr_ Rakesh (Internal Iyer Medicine)\nFollow-up: MBBS, MD MCI-2011-44892\nReg No::",
     "normalized_text": "IDKC MIEIDIKCAAUL\nCARE HOSPITAL TTIKO)N ARY\nCITY Outpatient Prescription Date 05 years April 2026 Male\nDate: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341 (ICD-1O: A97.1\nPatient with Thrombocytopenia\nDiagnosis: Dengue Fever TDS X 5 days (Take\nR 1. Tab Paracetamol tablet three 6sOmg times twice a day) daily (For Protocol rehydration) Injection)\n2. Syp one Electral Iv 2oOml (Standard Dengue billing)\n3. Inj: Dose: PlateMax 1 vial per As per administration dengue protocol OD before (refer food stomach) X 5 days\nX Frequency: Pantoprazole 40mg once daily on an advised . empty\n4. Tab (Take one tablet high fluid intake\n5. Complete rest, PakeV\n3 days Dr_ Rakesh (Internal Iyer Medicine)\nFollow-up: MBBS, MD MCI-2011-44892\nReg No::",
     "claim_summary": {
@@ -390,17 +397,30 @@
       "Paracetamol",
       "Pantoprazole"
     ],
+    "medications_count": 6,
     "amount": null,
+    "hospital_stay_days": 5,
+    "diagnostic_tests_count": 2,
     "has_prescription": true,
     "has_billing": false
   },
-  "analysis": {
-    "decision": "INCOMPLETE",
-    "flags": [],
-    "reason": [],
-    "validation_issues": [
-      "Missing billing amount"
-    ]
+  "rag_1_status": {
+    "status": "success",
+    "message": "Document successfully ingested into RAG 1.",
+    "document_length": 752,
+    "pages_processed": 1,
+    "chunks_indexed": 1
+  },
+  "agent_a2_evaluation": {
+    "source": "Agent_A2",
+    "evaluation": {
+      "decision": "INCOMPLETE",
+      "flags": [],
+      "reason": [],
+      "validation_issues": [
+        "Missing billing amount"
+      ]
+    }
   },
   "final_decision": {
     "decision": "INCOMPLETE",

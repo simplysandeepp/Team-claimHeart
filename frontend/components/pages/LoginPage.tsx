@@ -139,14 +139,6 @@ export default function LoginPage() {
                     })}
                   </div>
 
-                  <div className="rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ch-subtle)]">Workspace check</p>
-                    <p className="mt-1 text-sm font-semibold text-slate-900">{AUTH_ROLE_META[role].label}</p>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">
-                      Sign in with the workspace you registered for. ClaimHeart uses that role to route you to the correct dashboard and review tools.
-                    </p>
-                  </div>
-
                   <div>
                     <label htmlFor="login-email" className="text-sm font-semibold text-slate-800">Email address</label>
                     <input

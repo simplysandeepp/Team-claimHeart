@@ -2,14 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Check, ShieldCheck, X } from "lucide-react";
-import { DashboardCard, DecisionBanner, DecisionSupportCard, EvidenceDrawer, MetricCard, ReasonCard, StepTracker, StatusChip } from "@/components/dashboard/SharedDashboard";
+import { Building2, Check, FileText, Landmark, ShieldCheck, Wallet, X } from "lucide-react";
+import { DashboardCard, DecisionBanner, DecisionSupportCard, EvidenceDrawer, MetricCard, StepTracker, StatusChip } from "@/components/dashboard/SharedDashboard";
 import { SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import usePageReady from "@/hooks/usePageReady";
-import { getCurrentUser } from "@/lib/api/auth";
+import { getCurrentUser, subscribeToCurrentUser } from "@/lib/api/auth";
 import { addClaimDocument } from "@/lib/api/claims";
 import { formatCurrency, formatRelativeTime } from "@/lib/claimUi";
-import { buildClaimActivity, buildPatientSteps, buildTechnicalDetails, dashboardCoverageByCase } from "@/lib/dashboardContent";
+import { buildClaimActivity, buildPatientSteps, dashboardCoverageByCase, type PatientJourneyMode } from "@/lib/dashboardContent";
 import { getActiveDemoCaseId, getDemoCaseById, resolveViewerForRole, type DemoCaseId } from "@/lib/demoWorkflow";
 import { useAppStore } from "@/store/useAppStore";
 import type { AppUser, UploadedDocument } from "@/types";
@@ -21,11 +21,40 @@ const activityDotClasses = {
   gray: "bg-slate-400",
 } as const;
 
+const inferJourneyMode = (requestedAtLabel: string, decisionLetter: string): PatientJourneyMode =>
+  /cashless|pre-auth/i.test(`${requestedAtLabel} ${decisionLetter}`) ? "cashless" : "reimbursement";
+
+const formatProfileDate = (value?: string) => {
+  if (!value) {
+    return "Not added yet";
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return parsed.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+};
+
+const formatPolicyType = (value?: string) => {
+  if (!value) {
+    return "Not added yet";
+  }
+
+  return value
+    .split(/[_\s-]+/)
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(" ");
+};
+
 export default function PatientDashboardPage() {
   const ready = usePageReady();
   const claims = useAppStore((state) => state.claims);
   const [viewer, setViewer] = useState<AppUser | null>(null);
   const [activeCaseId, setActiveCaseId] = useState<DemoCaseId>("case-2");
+  const [journeyMode, setJourneyMode] = useState<PatientJourneyMode>("cashless");
   const [appealFiles, setAppealFiles] = useState<UploadedDocument[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -33,6 +62,8 @@ export default function PatientDashboardPage() {
     const caseId = getActiveDemoCaseId();
     setActiveCaseId(caseId);
     getCurrentUser().then((currentUser) => setViewer(resolveViewerForRole("patient", currentUser, caseId)));
+    const unsubscribe = subscribeToCurrentUser((currentUser) => setViewer(resolveViewerForRole("patient", currentUser, caseId)));
+    return unsubscribe;
   }, []);
 
   const patientClaims = useMemo(() => {
@@ -49,38 +80,140 @@ export default function PatientDashboardPage() {
   const caseId = (activeClaim?.workflowCaseId as DemoCaseId | undefined) ?? activeCaseId;
   const demoCase = getDemoCaseById(caseId);
   const coverage = dashboardCoverageByCase[caseId];
+  const inferredJourneyMode = inferJourneyMode(demoCase.requestedAtLabel, demoCase.decisionLetter);
+
+  useEffect(() => {
+    setJourneyMode(inferredJourneyMode);
+  }, [caseId, inferredJourneyMode]);
+
+  const requestedAmount = activeClaim?.amount ?? demoCase.amount;
   const approvedAmount = activeClaim?.amountApproved ?? demoCase.amountApproved;
   const status = activeClaim?.status ?? demoCase.finalStatus;
   const bannerTone = status === "approved" ? "green" : status === "denied" ? "red" : "amber";
-  const bannerTitle = status === "approved" ? "Approved" : status === "denied" ? "Denied" : "Manual review";
-  const bannerAmount = status === "denied" ? formatCurrency(0) : formatCurrency(approvedAmount);
+  const bannerTitle = status === "approved" ? "Approved" : status === "denied" ? "Denied" : "In review";
   const bannerBackgroundClassName =
     status === "approved"
       ? "bg-[linear-gradient(135deg,#123f64_0%,#1f5f95_54%,#1d7ca8_100%)]"
       : status === "denied"
         ? "bg-[linear-gradient(135deg,#112843_0%,#164876_54%,#1f6e9d_100%)]"
         : "bg-[linear-gradient(135deg,#17324f_0%,#23517a_54%,#3a6f97_100%)]";
-  const steps = buildPatientSteps(activeClaim ?? ({ status } as typeof activeClaim));
+  const bannerAmount =
+    status === "approved"
+      ? journeyMode === "cashless"
+        ? `${formatCurrency(approvedAmount)} settlement`
+        : `${formatCurrency(approvedAmount)} approved`
+      : status === "denied"
+        ? `${formatCurrency(requestedAmount)} request`
+        : `${formatCurrency(requestedAmount)} in review`;
+
   const activity = buildClaimActivity(activeClaim?.timeline ?? []);
-  const technical = activeClaim ? buildTechnicalDetails(activeClaim.auditTrail ?? [], activeClaim) : null;
-  const annualLimitUsedPercent = Math.round((coverage.usedThisYear / coverage.sumInsured) * 100);
-  const claimAgeDays = activeClaim ? Math.max(1, Math.ceil((Date.now() - new Date(activeClaim.submittedAt).getTime()) / 86400000)) : 0;
   const latestTimelineTime = activeClaim?.timeline.length ? activeClaim.timeline[activeClaim.timeline.length - 1]?.time : activeClaim?.submittedAt;
+  const steps = buildPatientSteps(activeClaim ?? ({ status } as typeof activeClaim), journeyMode);
+  const activeStepIndex = steps.findIndex((step) => step.state === "active");
+  const claimReference = activeClaim?.id ?? demoCase.shortLabel;
+  const isDemoViewer = viewer?.id.startsWith("P-DEMO") ?? false;
+  const policyName = viewer?.policyName ?? coverage.policyName ?? demoCase.insurer.planName;
+  const policyNumber = viewer?.policyNumber ?? activeClaim?.policyNumber ?? demoCase.patient.policyNumber ?? "Not added yet";
+  const policyType = formatPolicyType(viewer?.policyType ?? (isDemoViewer ? "individual" : undefined));
+  const policyStartDate = formatProfileDate(viewer?.policyStartDate ?? activeClaim?.policyStartDate ?? demoCase.policyStartDate);
+  const policyEndDate = formatProfileDate(viewer?.policyEndDate ?? (isDemoViewer ? coverage.renewalDate : undefined));
+  const sumInsuredValue = viewer?.sumInsured ?? coverage.sumInsured;
+  const insurerName = viewer?.insuranceCompany ?? coverage.insurerName ?? demoCase.insurer.name;
+  const annualLimitUsedPercent = Math.round((coverage.usedThisYear / sumInsuredValue) * 100);
+
+  const journeyMeta =
+    journeyMode === "cashless"
+      ? {
+          label: "Cashless",
+          badge: "Hospital settlement",
+          title: "Hospital bills the insurer directly",
+          summary: "Hospital handles insurer settlement during treatment.",
+          destinationLabel: "Settlement destination",
+          destinationValue: activeClaim?.hospital ?? demoCase.hospital.name,
+          destinationHelper:
+            status === "approved"
+              ? "The approved amount moves directly to the treating hospital."
+              : "The hospital remains the settlement destination for this claim.",
+          documentTitle: "Documents to keep ready",
+          documentList: [
+            coverage.documentRequest ?? "Discharge summary if requested by the insurer.",
+            "Pre-authorisation form or admission note from the hospital.",
+            "Doctor notes, investigations, and any clarifications requested during review.",
+          ],
+          breakdownTitle: "Cashless settlement breakdown",
+          breakdownDescription: "Covered hospital charges are listed below with the approved amount and any reduction reason.",
+        }
+      : {
+          label: "Reimbursement",
+          badge: "Member payout",
+          title: "You pay first and claim after discharge",
+          summary: "Submit final bills after treatment to get paid back.",
+          destinationLabel: "Payout destination",
+          destinationValue: "Your registered bank account",
+          destinationHelper:
+            status === "approved"
+              ? "The approved amount is reimbursed to the account linked with your claim profile."
+              : "Payout is released after bill and receipt review is completed.",
+          documentTitle: "Documents usually required",
+          documentList: [
+            "Final hospital bill and payment receipt.",
+            coverage.documentRequest ?? "Discharge summary and treating doctor papers.",
+            "Prescriptions, reports, and any insurer clarification requested for repayment.",
+          ],
+          breakdownTitle: "Reimbursement review breakdown",
+          breakdownDescription: "Eligible expenses are checked against your submitted bills and payment proofs.",
+        };
+
+  const nextAction =
+    status === "approved"
+      ? journeyMode === "cashless"
+        ? "Keep discharge and decision records."
+        : "Track bank payout status."
+      : status === "denied"
+        ? "Upload documents if you want to appeal."
+        : journeyMode === "cashless"
+          ? coverage.documentRequest ?? "Wait for the insurer to finish hospital review."
+          : coverage.documentRequest ?? "Keep bills, receipts, and discharge papers ready.";
 
   const bannerDetail =
     status === "approved"
-      ? `Settlement has been released to ${activeClaim?.hospital ?? demoCase.hospital.name} - no action needed from you.`
+      ? journeyMode === "cashless"
+        ? `Your insurer approved ${formatCurrency(approvedAmount)} and released settlement to ${activeClaim?.hospital ?? demoCase.hospital.name}.`
+        : `Your insurer approved ${formatCurrency(approvedAmount)} and will release reimbursement to your registered bank account.`
       : status === "denied"
         ? activeClaim?.decisionNote ?? demoCase.decisionNote
-        : activeClaim?.decisionNote ?? "Your insurer is reviewing one billed item before settlement can be released.";
+        : journeyMode === "cashless"
+          ? activeClaim?.decisionNote ?? "The insurer is still reviewing the hospital file before releasing settlement."
+          : activeClaim?.decisionNote ?? "The insurer is still reviewing your bills, receipts, and discharge papers before releasing reimbursement.";
 
-  const summaryCards = [
+  const summaryCards: Array<{
+    label: string;
+    value: string;
+    helper: string;
+    tone: "blue" | "green" | "red" | "amber" | "gray";
+    badge: string;
+    className: string;
+    valueClassName?: string;
+  }> = [
     {
-      label: "Decision state",
+      label: "Claim path",
+      value: journeyMeta.label,
+      helper: journeyMode === "cashless" ? "Hospital coordinates settlement with the insurer." : "You pay first and claim repayment later.",
+      tone: "blue" as const,
+      badge: journeyMeta.badge,
+      className: "bg-[linear-gradient(180deg,#ffffff_0%,#eef6ff_100%)]",
+    },
+    {
+      label: "Status",
       value: bannerTitle,
-      helper: status === "approved" ? "Claim closed and settlement released." : status === "denied" ? "Formal denial shared for appeal review." : "One billed item is still under review.",
-      tone: status === "approved" ? "green" as const : status === "denied" ? "red" as const : "amber" as const,
-      badge: status === "approved" ? "Closed" : status === "denied" ? "Appeal open" : "In review",
+      helper:
+        status === "approved"
+          ? "The insurer has finished review for this claim."
+          : status === "denied"
+            ? "The insurer shared a denial and appeal is still possible."
+            : "The claim is moving through insurer review.",
+      tone: bannerTone,
+      badge: status === "approved" ? "Closed" : status === "denied" ? "Appeal open" : "Processing",
       className:
         status === "approved"
           ? "bg-[linear-gradient(180deg,#ffffff_0%,#ecfbf1_100%)]"
@@ -89,102 +222,109 @@ export default function PatientDashboardPage() {
             : "bg-[linear-gradient(180deg,#ffffff_0%,#fff3e6_100%)]",
     },
     {
-      label: "Settlement destination",
-      value: activeClaim?.hospital ?? demoCase.hospital.name,
-      helper: status === "approved" ? "Funds move directly to the treating hospital." : "Provider tied to the current claim record.",
-      tone: "blue" as const,
-      badge: "Provider",
-      className: "bg-[linear-gradient(180deg,#ffffff_0%,#eaf4ff_100%)]",
-      valueClassName: "text-[17px] sm:text-[18px]",
+      label: journeyMode === "cashless" ? (status === "approved" ? "Settlement amount" : "Requested amount") : status === "approved" ? "Reimbursement amount" : "Claimed amount",
+      value: formatCurrency(status === "approved" ? approvedAmount : requestedAmount),
+      helper:
+        journeyMode === "cashless"
+          ? status === "approved"
+            ? "This amount is settled directly with the hospital."
+            : "This is the amount currently under hospital-settlement review."
+          : status === "approved"
+            ? "This amount is approved for repayment to you."
+            : "This is the amount currently under reimbursement review.",
+      tone: status === "approved" ? "green" as const : "blue" as const,
+      badge: journeyMode === "cashless" ? "Hospital" : "Member",
+      className: "bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]",
     },
     {
-      label: "Annual cover used",
-      value: `${annualLimitUsedPercent}%`,
-      helper: `${formatCurrency(coverage.usedThisYear)} used from your yearly limit.`,
-      tone: annualLimitUsedPercent >= 70 ? "amber" as const : "blue" as const,
-      badge: annualLimitUsedPercent >= 70 ? "Watch limit" : "Healthy",
-      className: "bg-[linear-gradient(180deg,#ffffff_0%,#f0f7ff_100%)]",
-    },
-    {
-      label: "Next step",
-      value: status === "approved" ? "No action needed" : status === "denied" ? "Raise appeal" : "Wait for review",
-      helper: status === "approved" ? "Keep the decision letter for your records." : status === "denied" ? "Upload supporting documents if you want to challenge the outcome." : "We will notify you when the insurer clears the last check.",
+      label: "Next action",
+      value:
+        status === "approved"
+          ? journeyMode === "cashless"
+            ? "No action needed"
+            : "Watch for payout"
+          : status === "denied"
+            ? "Prepare appeal"
+            : coverage.documentRequest
+              ? "Share documents"
+              : "Wait for update",
+      helper: nextAction,
       tone: status === "approved" ? "gray" as const : "amber" as const,
       badge: status === "approved" ? "Stable" : "Actionable",
-      className:
-        status === "approved"
-          ? "bg-[linear-gradient(180deg,#ffffff_0%,#f7fafc_100%)]"
-          : status === "denied"
-            ? "bg-[linear-gradient(180deg,#ffffff_0%,#fff4e8_100%)]"
-            : "bg-[linear-gradient(180deg,#ffffff_0%,#fff4e8_100%)]",
+      className: "bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]",
       valueClassName: "text-[17px] sm:text-[18px]",
-    },
-    {
-      label: "Claim age",
-      value: `${claimAgeDays} days`,
-      helper: claimAgeDays <= 2 ? "Within expected processing window." : "Keep notifications on for final closure updates.",
-      tone: claimAgeDays <= 2 ? "green" as const : "amber" as const,
-      badge: claimAgeDays <= 2 ? "On time" : "Keep watch",
-      className: claimAgeDays <= 2 ? "bg-[linear-gradient(180deg,#ffffff_0%,#ecfbf3_100%)]" : "bg-[linear-gradient(180deg,#ffffff_0%,#fff3e8_100%)]",
     },
   ];
 
-  const decisionSupport =
+  const overviewCard =
     status === "approved"
       ? {
           tone: "green" as const,
-          title: "Settlement cleared",
-          summary: `Your insurer has approved ${formatCurrency(approvedAmount)} and released settlement instructions to ${activeClaim?.hospital ?? demoCase.hospital.name}.`,
+          title: journeyMode === "cashless" ? "Cashless settlement approved" : "Reimbursement approved",
+          summary:
+            journeyMode === "cashless"
+              ? `The insurer approved ${formatCurrency(approvedAmount)} and released it to ${activeClaim?.hospital ?? demoCase.hospital.name}.`
+              : `The insurer approved ${formatCurrency(approvedAmount)} for reimbursement and payout is ready for member disbursal.`,
           points: [
-            { label: "Amount settled", value: formatCurrency(approvedAmount), helper: "This is the final approved amount for the current claim." },
-            { label: "Money goes to", value: activeClaim?.hospital ?? demoCase.hospital.name, helper: "Hospital settlement is handled directly." },
-            { label: "Your next step", value: "Keep records", helper: "Save the decision letter and policy excerpt for future reference." },
+            { label: "Review stage", value: "Approved and closed", helper: journeyMode === "cashless" ? "Cashless review is complete and the hospital settlement has been released." : "Reimbursement review is complete and member payout can proceed." },
+            { label: journeyMeta.destinationLabel, value: journeyMeta.destinationValue, helper: journeyMeta.destinationHelper },
+            { label: "Your next step", value: journeyMode === "cashless" ? "Keep records" : "Watch payout", helper: nextAction },
           ],
         }
       : status === "denied"
         ? {
             tone: "red" as const,
-            title: "Appeal path open",
-            summary: "This claim is currently denied, but you can still add supporting evidence and challenge the outcome with a clearer medical or policy record.",
+            title: journeyMode === "cashless" ? "Cashless request denied" : "Reimbursement claim denied",
+            summary: "The insurer has shared a denial. You can still upload stronger supporting documents if you want to appeal the decision.",
             points: [
-              { label: "Decision basis", value: "Policy or document mismatch", helper: activeClaim?.decisionNote ?? demoCase.decisionNote },
-              { label: "Best next move", value: "Upload supporting proof", helper: "Use discharge papers, continuity proof, or doctor clarification." },
-              { label: "Member task", value: "Review the letter", helper: "The formal reason is available in the drawer below." },
+              { label: "Review stage", value: "Decision issued", helper: journeyMode === "cashless" ? "Cashless review is complete and the insurer has shared its decision." : "Reimbursement review is complete and the insurer has shared its decision." },
+              { label: "Decision note", value: "Review insurer reason", helper: activeClaim?.decisionNote ?? demoCase.decisionNote },
+              { label: "Next step", value: "Upload appeal proof", helper: "Share any missing document, clarification, or continuity evidence." },
             ],
           }
         : {
             tone: "amber" as const,
-            title: "Review still in progress",
-            summary: "The claim is mostly processed, but one billed item still needs insurer confirmation before settlement can be released.",
+            title: journeyMode === "cashless" ? "Cashless review in progress" : "Reimbursement review in progress",
+            summary:
+              journeyMode === "cashless"
+                ? "The insurer is still checking the hospital file before it releases settlement."
+                : "The insurer is still reviewing your bills, receipts, and discharge papers before it releases reimbursement.",
             points: [
-              { label: "Current blocker", value: "Manual insurer check", helper: activeClaim?.decisionNote ?? "One billed item needs additional review before closure." },
-              { label: "What to expect", value: "Final update soon", helper: "You will receive a notification when the insurer closes the review." },
-              { label: "Member action", value: coverage.documentRequest ? "Keep documents ready" : "Wait for update", helper: coverage.documentRequest ?? "No extra file is required from you right now." },
+              {
+                label: "Review stage",
+                value: journeyMode === "cashless" ? "Hospital file under review" : "Bills under review",
+                helper: journeyMode === "cashless" ? "The insurer is checking the hospital pack before settlement is released." : "The insurer is checking bills, receipts, and discharge papers before payout is released.",
+              },
+              {
+                label: "Open requirement",
+                value: coverage.documentRequest ? "Documents requested" : "Review in progress",
+                helper:
+                  coverage.documentRequest ??
+                  (journeyMode === "cashless"
+                    ? "No new hospital file is needed from you right now."
+                    : "No extra reimbursement proof is needed from you right now."),
+              },
+              {
+                label: "Expected outcome",
+                value: journeyMode === "cashless" ? "Hospital settlement update" : "Member payout update",
+                helper: "You will get a notification once this review is closed.",
+              },
             ],
           };
 
-  const coveragePulse = [
-    {
-      label: "Covered items",
-      value: `${coverage.lineItems.filter((item) => item.covered).length}/${coverage.lineItems.length}`,
-      helper: "Approved line items in the billed treatment set.",
-    },
-    {
-      label: "Plan name",
-      value: coverage.policyName,
-      helper: "Active policy used for this claim.",
-    },
-    {
-      label: "Requested document",
-      value: coverage.documentRequest ? "Needed" : "Clear",
-      helper: coverage.documentRequest ?? "No open document request on this case.",
-    },
-    {
-      label: "Last update",
-      value: formatRelativeTime(latestTimelineTime ?? new Date().toISOString()),
-      helper: "Most recent workflow event shown in your claim activity.",
-    },
-  ];
+  const documentButtonLabel =
+    status === "denied"
+      ? "Upload appeal proof"
+      : journeyMode === "reimbursement"
+        ? "Upload reimbursement proof"
+        : coverage.documentRequest
+          ? "Upload requested file"
+          : "Upload supporting file";
+
+  const uploadSuccessMessage =
+    journeyMode === "cashless"
+      ? "Your supporting documents were shared for the hospital-settlement review."
+      : "Your reimbursement documents were shared with the insurer.";
 
   const selectAppealFiles = (incoming: FileList | null) => {
     if (!incoming) {
@@ -216,7 +356,7 @@ export default function PatientDashboardPage() {
     }
 
     setAppealFiles([]);
-    toast.success("Your supporting documents were shared with the insurer.");
+    toast.success(uploadSuccessMessage);
   };
 
   if (!ready || !viewer) {
@@ -239,31 +379,15 @@ export default function PatientDashboardPage() {
     <div className="space-y-5 lg:space-y-6">
       <DecisionBanner
         backgroundClassName={bannerBackgroundClassName}
-        amount={`${bannerAmount} ${bannerTitle.toLowerCase()}`}
+        amount={bannerAmount}
         title={bannerTitle}
         tone={bannerTone}
         timestamp={formatRelativeTime(activeClaim?.pipelineCompletedAt ?? activeClaim?.submittedAt ?? new Date().toISOString())}
-        subtitle={`${activeClaim?.id ?? "No active claim"} - ${activeClaim?.hospital ?? demoCase.hospital.name}`}
+        subtitle={`${claimReference} • ${journeyMeta.label} claim • ${activeClaim?.hospital ?? demoCase.hospital.name}`}
         detail={bannerDetail}
-        actions={
-          status === "denied" ? (
-            <>
-              <button
-                type="button"
-                onClick={() => toast.success("Decision letter ready in the evidence drawer below.")}
-                className="rounded-[12px] border border-white/15 bg-white/8 px-3 py-2 text-[12px] font-semibold text-white"
-              >
-                Download letter
-              </button>
-              <button type="button" onClick={() => fileInputRef.current?.click()} className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.22)]">
-                Raise appeal
-              </button>
-            </>
-          ) : null
-        }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {summaryCards.map((item) => (
           <MetricCard
             key={item.label}
@@ -278,40 +402,26 @@ export default function PatientDashboardPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
         <DecisionSupportCard
-          eyebrow="Decision desk"
-          title={decisionSupport.title}
-          summary={decisionSupport.summary}
-          tone={decisionSupport.tone}
-          points={decisionSupport.points}
-          actions={
-            <>
-              <button
-                type="button"
-                onClick={() => toast.success("Decision letter ready in the evidence drawer below.")}
-                className="rounded-[12px] border border-slate-200 bg-white px-3 py-2 text-[12px] font-semibold text-slate-700"
-              >
-                View letter
-              </button>
-              {status !== "approved" ? (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.18)]"
-                >
-                  {status === "denied" ? "Upload appeal proof" : "Upload requested file"}
-                </button>
-              ) : null}
-            </>
-          }
+          eyebrow="Claim overview"
+          title={overviewCard.title}
+          summary={overviewCard.summary}
+          tone={overviewCard.tone}
+          points={overviewCard.points}
+          pointsClassName="lg:grid-cols-3"
+          contentClassName="max-w-none"
+          className="self-start"
           footer={
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5 border-t border-slate-200/80 pt-4">
               <div className="rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-[11px] font-medium text-slate-600">
-                {activeClaim?.id ?? "Pending claim"}
+                {journeyMeta.label}
               </div>
               <div className="rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-[11px] font-medium text-slate-600">
-                {coverage.policyName}
+                {bannerTitle}
+              </div>
+              <div className="rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-[11px] font-medium text-slate-600">
+                {status === "denied" ? "Appeal option" : coverage.documentRequest ? "Docs needed" : "On track"}
               </div>
             </div>
           }
@@ -320,32 +430,71 @@ export default function PatientDashboardPage() {
         <DashboardCard className="bg-[linear-gradient(180deg,#ffffff_0%,#f7fbff_100%)]">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">Coverage pulse</p>
-              <p className="mt-2 text-[20px] font-semibold tracking-[-0.04em] text-slate-900">See coverage health and open requests in one glance.</p>
+              <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">Claim path</p>
+              <p className="mt-2 max-w-[28rem] text-[20px] font-semibold tracking-[-0.04em] text-slate-900">
+                Switch between cashless and reimbursement journeys.
+              </p>
             </div>
-            <StatusChip label={bannerTitle} tone={bannerTone} />
+            <StatusChip label={journeyMeta.badge} tone="blue" />
           </div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {coveragePulse.map((item) => (
-              <div key={item.label} className="rounded-[16px] border border-slate-200 bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-                <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">{item.label}</p>
-                <p className="mt-1 text-sm font-semibold text-slate-900">{item.value}</p>
-                <p className="mt-1 text-[12px] leading-5 text-slate-500">{item.helper}</p>
-              </div>
-            ))}
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            {(["cashless", "reimbursement"] as PatientJourneyMode[]).map((mode) => {
+              const selected = journeyMode === mode;
+              const iconClassName = selected ? "border-[var(--ch-blue)] bg-[var(--ch-blue)] text-white" : "border-slate-200 bg-white text-slate-500";
+
+              return (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setJourneyMode(mode)}
+                  className={`h-full rounded-[20px] border p-5 text-left transition-all ${
+                    selected
+                      ? "border-[var(--ch-blue)] bg-[linear-gradient(180deg,rgba(74,142,219,0.1),rgba(255,255,255,0.98))] shadow-[0_14px_32px_rgba(74,142,219,0.12)]"
+                      : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+                  }`}
+                >
+                  <div className="flex h-full items-start gap-4">
+                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${iconClassName}`}>
+                      {mode === "cashless" ? <Building2 className="h-4 w-4" /> : <Wallet className="h-4 w-4" />}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[15px] font-semibold text-slate-900">{mode === "cashless" ? "Cashless" : "Reimbursement"}</p>
+                      <p className="mt-2 max-w-[20rem] text-[13px] leading-6 text-slate-500">
+                        {mode === "cashless"
+                          ? "Hospital coordinates insurer settlement during treatment."
+                          : "Patient pays first and submits final documents later."}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="h-full rounded-[18px] border border-slate-200 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+              <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">{journeyMeta.destinationLabel}</p>
+              <p className="mt-2 text-[15px] font-semibold text-slate-900">{journeyMeta.destinationValue}</p>
+              <p className="mt-2 text-[12px] leading-6 text-slate-500">{journeyMeta.destinationHelper}</p>
+            </div>
+            <div className="h-full rounded-[18px] border border-slate-200 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+              <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">Last update</p>
+              <p className="mt-2 text-[15px] font-semibold text-slate-900">{formatRelativeTime(latestTimelineTime ?? new Date().toISOString())}</p>
+              <p className="mt-2 text-[12px] leading-6 text-slate-500">Most recent workflow activity on this claim.</p>
+            </div>
           </div>
         </DashboardCard>
       </div>
 
-      <StepTracker steps={steps} activeIndex={steps.findIndex((step) => step.state === "active")} />
+      <StepTracker steps={steps} activeIndex={activeStepIndex >= 0 ? activeStepIndex : undefined} />
 
-      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+      <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <DashboardCard>
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[14px] font-medium text-slate-900">What's covered</p>
-              <p className="mt-1 text-[12px] text-slate-500">Each billed item is shown with the approved amount and a plain-language reason when something changed.</p>
+              <p className="text-[14px] font-medium text-slate-900">{journeyMeta.breakdownTitle}</p>
+              <p className="mt-1 text-[12px] text-slate-500">{journeyMeta.breakdownDescription}</p>
             </div>
             <StatusChip label={bannerTitle} tone={bannerTone} />
           </div>
@@ -367,9 +516,10 @@ export default function PatientDashboardPage() {
                 </div>
               </div>
             ))}
+
             <div className="flex items-center justify-between rounded-[14px] border border-slate-200 bg-white p-3">
-              <p className="text-[14px] font-medium text-slate-900">Total approved</p>
-              <p className="text-base font-semibold text-slate-900">{formatCurrency(approvedAmount)}</p>
+              <p className="text-[14px] font-medium text-slate-900">{status === "approved" ? "Total approved" : "Amount under review"}</p>
+              <p className="text-base font-semibold text-slate-900">{formatCurrency(status === "approved" ? approvedAmount : requestedAmount)}</p>
             </div>
           </div>
         </DashboardCard>
@@ -377,87 +527,125 @@ export default function PatientDashboardPage() {
         <DashboardCard>
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-[var(--ch-blue)]" />
-            <p className="text-[14px] font-medium text-slate-900">Your coverage</p>
+            <p className="text-[14px] font-medium text-slate-900">Policy and documents</p>
           </div>
 
           <div className="mt-4 space-y-3 text-[12px] text-slate-600">
             <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
-              <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy</p>
-              <p className="mt-1 text-sm font-medium text-slate-900">{coverage.policyName}</p>
+              <div className="flex items-start gap-2">
+                <FileText className="mt-0.5 h-4 w-4 text-slate-500" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy name</p>
+                  <p className="mt-1 text-sm font-medium text-slate-900">{policyName}</p>
+                  <p className="mt-1 text-[11px] text-slate-500">{insurerName}</p>
+                </div>
+              </div>
             </div>
+
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Sum insured</p>
-                <p className="mt-1 text-sm font-medium text-slate-900">{formatCurrency(coverage.sumInsured)}</p>
+                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy number</p>
+                <p className="mt-1 text-sm font-medium text-slate-900">{policyNumber}</p>
               </div>
               <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Renewal date</p>
-                <p className="mt-1 text-sm font-medium text-slate-900">{coverage.renewalDate}</p>
+                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy type</p>
+                <p className="mt-1 text-sm font-medium text-slate-900">{policyType}</p>
+              </div>
+              <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy start date</p>
+                <p className="mt-1 text-sm font-medium text-slate-900">{policyStartDate}</p>
+              </div>
+              <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Policy end date</p>
+                <p className="mt-1 text-sm font-medium text-slate-900">{policyEndDate}</p>
               </div>
             </div>
+
+            <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+              <div className="flex items-start gap-2">
+                <Landmark className="mt-0.5 h-4 w-4 text-slate-500" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Sum insured</p>
+                  <p className="mt-1 text-sm font-medium text-slate-900">{formatCurrency(sumInsuredValue)}</p>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
               <div className="flex items-center justify-between gap-3">
                 <span>Annual limit used</span>
                 <span className="font-medium text-slate-900">{annualLimitUsedPercent}%</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
-                <div className="h-full rounded-full bg-[var(--ch-blue)]" style={{ width: `${(coverage.usedThisYear / coverage.sumInsured) * 100}%` }} />
+                <div className="h-full rounded-full bg-[var(--ch-blue)]" style={{ width: `${(coverage.usedThisYear / sumInsuredValue) * 100}%` }} />
               </div>
               <p className="mt-2 text-[11px] text-slate-500">{formatCurrency(coverage.usedThisYear)} used this year</p>
             </div>
-            <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
-              <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Insurer</p>
-              <p className="mt-1 text-sm font-medium text-slate-900">{coverage.insurerName}</p>
+
+            <div className="rounded-[14px] border border-dashed border-slate-200 bg-white p-3">
+              <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">{journeyMeta.documentTitle}</p>
+              <div className="mt-3 space-y-2">
+                {journeyMeta.documentList.map((item) => (
+                  <div key={item} className="flex items-start gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-[var(--ch-blue)]" />
+                    <p className="text-[12px] leading-5 text-slate-600">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[14px] border border-dashed border-slate-200 bg-white p-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-[14px] font-medium text-slate-900">Upload documents</p>
+                  <p className={`mt-1 text-[12px] ${coverage.documentRequest ? "text-amber-700" : "text-slate-500"}`}>
+                    {status === "denied"
+                      ? "Add stronger evidence if you want the insurer to review an appeal."
+                      : journeyMode === "reimbursement"
+                        ? coverage.documentRequest ?? "Share bills, receipts, discharge papers, or any requested proof."
+                        : coverage.documentRequest ?? "Share any hospital document or clarification requested by the insurer."}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(event) => selectAppealFiles(event.target.files)} />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`rounded-[12px] px-3 py-2 text-[12px] font-semibold ${coverage.documentRequest || status === "denied" ? "bg-amber-500 text-white" : "border border-slate-200 bg-white text-slate-700"}`}
+                  >
+                    {documentButtonLabel}
+                  </button>
+                  {appealFiles.length ? (
+                    <button
+                      type="button"
+                      onClick={uploadAppealFiles}
+                      className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.22)]"
+                    >
+                      Send
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+
+              {appealFiles.length ? (
+                <div className="mt-4 space-y-2">
+                  {appealFiles.map((file) => (
+                    <div key={`${file.name}-${file.uploadedAt}`} className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-[12px]">
+                      <div>
+                        <p className="font-medium text-slate-900">{file.name}</p>
+                        <p className="text-slate-500">{Math.max(1, Math.round(file.size / 1024))} KB</p>
+                      </div>
+                      <button type="button" onClick={() => removeAppealFile(file.name)} className="text-slate-500 hover:text-slate-900">
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
         </DashboardCard>
       </div>
-
-      {coverage.clauseReasons.map((reason) => (
-        <ReasonCard key={reason.title} tone={reason.tone} title={reason.title} description={reason.description} />
-      ))}
-
-      <DashboardCard className="border-dashed">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-[14px] font-medium text-slate-900">Supporting documents</p>
-            <p className={`mt-1 text-[12px] ${coverage.documentRequest ? "text-amber-700" : "text-slate-500"}`}>
-              {coverage.documentRequest ?? "Need to add supporting documents for an appeal?"}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(event) => selectAppealFiles(event.target.files)} />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className={`rounded-[12px] px-3 py-2 text-[12px] font-semibold ${coverage.documentRequest ? "bg-amber-500 text-white" : "border border-slate-200 bg-white text-slate-700"}`}
-            >
-              Upload file
-            </button>
-            {appealFiles.length ? (
-              <button type="button" onClick={uploadAppealFiles} className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.22)]">
-                Send
-              </button>
-            ) : null}
-          </div>
-        </div>
-
-        {appealFiles.length ? (
-          <div className="mt-4 space-y-2">
-            {appealFiles.map((file) => (
-              <div key={`${file.name}-${file.uploadedAt}`} className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-white p-3 text-[12px]">
-                <div>
-                  <p className="font-medium text-slate-900">{file.name}</p>
-                  <p className="text-slate-500">{Math.max(1, Math.round(file.size / 1024))} KB</p>
-                </div>
-                <button type="button" onClick={() => removeAppealFile(file.name)} className="text-slate-500 hover:text-slate-900">
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </DashboardCard>
 
       <EvidenceDrawer buttonLabel="Claim activity" title="Recent events for this claim, newest first">
         <div className="space-y-3">
@@ -477,58 +665,13 @@ export default function PatientDashboardPage() {
         </div>
       </EvidenceDrawer>
 
-      <div className="grid gap-4 xl:grid-cols-2">
-        <EvidenceDrawer buttonLabel="View full decision letter" title="Formal patient communication">
-          {activeClaim?.decisionLetter ?? demoCase.decisionLetter ? (
-            <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700 whitespace-pre-wrap">
-              {activeClaim?.decisionLetter ?? demoCase.decisionLetter}
-            </div>
-          ) : (
-            <p className="text-sm text-slate-500">The full letter will appear after the insurer finishes review.</p>
-          )}
-        </EvidenceDrawer>
-
-        <EvidenceDrawer buttonLabel="View policy excerpt" title={`${coverage.policyExcerpt.clause} - ${coverage.policyExcerpt.title}`}>
-          <blockquote className="rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700">
-            {coverage.policyExcerpt.body}
-          </blockquote>
-        </EvidenceDrawer>
-      </div>
-
-      <EvidenceDrawer buttonLabel="Technical details (for reference)" title="Agent outcomes, confidence, and structured data" defaultOpen={false}>
-        {activeClaim ? (
-          <div className="space-y-4">
-            <div className="grid gap-3 lg:grid-cols-3">
-              <DashboardCard className="p-3">
-                <p className="text-[12px] font-medium text-slate-900">Policy result</p>
-                <p className="mt-1 text-sm text-slate-600">{activeClaim.aiResults.policy.reason}</p>
-              </DashboardCard>
-              <DashboardCard className="p-3">
-                <p className="text-[12px] font-medium text-slate-900">Medical result</p>
-                <p className="mt-1 text-sm text-slate-600">{activeClaim.aiResults.medical.reason}</p>
-              </DashboardCard>
-              <DashboardCard className="p-3">
-                <p className="text-[12px] font-medium text-slate-900">Cross validation</p>
-                <p className="mt-1 text-sm text-slate-600">{activeClaim.aiResults.cross.reason}</p>
-              </DashboardCard>
-            </div>
-            <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-4">
-              <p className="text-[12px] font-medium text-slate-900">Structured claim snapshot</p>
-              <pre className="mt-3 overflow-auto text-[12px] leading-6 text-slate-700">{JSON.stringify(technical?.policyJson, null, 2)}</pre>
-            </div>
-            <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-4">
-              <p className="text-[12px] font-medium text-slate-900">Workflow log</p>
-              <div className="mt-3 space-y-2">
-                {(technical?.auditTrail ?? []).map((entry, index) => (
-                  <div key={`${entry.time}-${index}`} className="text-[12px] text-slate-600">
-                    {formatRelativeTime(entry.time)} - {entry.label}
-                  </div>
-                ))}
-              </div>
-            </div>
+      <EvidenceDrawer buttonLabel="View decision letter" title="Formal patient communication">
+        {activeClaim?.decisionLetter ?? demoCase.decisionLetter ? (
+          <div className="whitespace-pre-wrap rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+            {activeClaim?.decisionLetter ?? demoCase.decisionLetter}
           </div>
         ) : (
-          <p className="text-sm text-slate-500">Technical details will appear after a claim is created.</p>
+          <p className="text-sm text-slate-500">The full letter will appear after the insurer finishes review.</p>
         )}
       </EvidenceDrawer>
     </div>

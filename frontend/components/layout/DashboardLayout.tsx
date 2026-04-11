@@ -21,8 +21,11 @@ import {
   X,
 } from "lucide-react";
 import { useSyncStore } from "@/hooks/useSyncStore";
-import { getCurrentUser, logout } from "@/lib/api/auth";
+import { getCurrentUser, logout, subscribeToCurrentUser } from "@/lib/api/auth";
 import { getActiveDemoCaseId, getDefaultDemoCaseId, resolveViewerForRole, type DemoCaseId } from "@/lib/demoWorkflow";
+import { getProfileCompletion } from "@/lib/profileCompletion";
+import ProfileCompletionPrompt from "@/components/profile/ProfileCompletionPrompt";
+import ProfileCompletionRing from "@/components/profile/ProfileCompletionRing";
 import LiveBadge from "@/components/ui/LiveBadge";
 import NotifBell from "@/components/ui/NotifBell";
 import PageTransition from "@/components/ui/PageTransition";
@@ -42,19 +45,21 @@ const NAV_ITEMS: Record<UserRole, { label: string; href: string; icon: typeof La
     { label: "Notifications", href: "/dashboard/insurer/notifications", icon: Bell },
     { label: "Policy Library", href: "/policies", icon: BookOpen },
     { label: "Reports", href: "/reports", icon: BarChart3 },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Profile", href: "/settings", icon: Settings },
   ],
   hospital: [
     { label: "Dashboard", href: "/dashboard/hospital", icon: LayoutDashboard },
     { label: "Notifications", href: "/dashboard/hospital/notifications", icon: Bell },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Profile", href: "/settings", icon: Settings },
   ],
   patient: [
     { label: "Dashboard", href: "/dashboard/patient", icon: LayoutDashboard },
     { label: "Notifications", href: "/dashboard/patient/notifications", icon: Bell },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Profile", href: "/settings", icon: Settings },
   ],
 };
+
+const getProfilePromptDismissKey = (userId?: string) => (userId ? `claimheart.profilePrompt.dismissed.${userId}` : null);
 
 const ROLE_META: Record<UserRole, { workspace: string; summary: string; accent: string }> = {
   insurer: {
@@ -69,7 +74,7 @@ const ROLE_META: Record<UserRole, { workspace: string; summary: string; accent: 
   },
   patient: {
     workspace: "Member Claims Workspace",
-    summary: "Decision clarity, coverage visibility, and next steps",
+    summary: "Track claim status, required documents, and payout progress",
     accent: "from-[#f4f8ff] via-[#fcfdff] to-white",
   },
 };
@@ -80,12 +85,16 @@ function SidebarContent({
   user,
   collapsed,
   activeNavHref,
+  completionPercentage,
+  showCompletionIndicator,
 }: {
   navItems: { label: string; href: string; icon: typeof LayoutDashboard }[];
   role: UserRole;
   user: AppUser | null;
   collapsed: boolean;
   activeNavHref: string | null;
+  completionPercentage: number;
+  showCompletionIndicator: boolean;
 }) {
   return (
     <>
@@ -120,28 +129,70 @@ function SidebarContent({
       </nav>
 
       <div className="border-t border-white/10 p-4">
-        <div className={`flex items-center rounded-2xl bg-white/10 py-2.5 ${collapsed ? "justify-center px-2" : "gap-3 px-3.5"}`}>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--ch-blue)] text-white">
-            <User className="h-4 w-4" />
-          </div>
-          <div className={`min-w-0 overflow-hidden transition-all duration-200 ${collapsed ? "w-0 opacity-0" : "w-auto opacity-100"}`}>
-            <p className="truncate whitespace-nowrap text-[14px] font-semibold text-white">{user?.name ?? "Loading user"}</p>
-            <p className="whitespace-nowrap text-[11px] capitalize text-white/60">{role}</p>
-          </div>
-          {!collapsed ? (
+        {collapsed ? (
+          <div className="space-y-2">
+            <Link
+              href="/settings"
+              className="flex justify-center rounded-2xl border border-white/10 bg-white/10 px-1 py-3 transition-all hover:bg-white/14"
+              title="Open profile"
+            >
+              <div className="relative">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white">
+                  <User className="h-4 w-4" />
+                </div>
+                {showCompletionIndicator ? (
+                  <div className="absolute -bottom-1 -right-1 rounded-full bg-[var(--ch-blue-dark)] p-0.5">
+                    <ProfileCompletionRing percentage={completionPercentage} size={26} strokeWidth={4} />
+                  </div>
+                ) : null}
+              </div>
+            </Link>
+
             <motion.button
               type="button"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => logout()}
-              className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-white transition-all hover:bg-white/14"
+              className="inline-flex h-10 w-full items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-white transition-all hover:bg-white/14"
               title="Logout"
               aria-label="Logout"
             >
               <LogOut className="h-4 w-4" />
             </motion.button>
-          ) : null}
-        </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 rounded-[1.45rem] border border-white/10 bg-white/10 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+            <Link href="/settings" className="flex min-w-0 flex-1 items-center gap-3 rounded-[1.1rem] transition-all hover:opacity-95" title="Open profile">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white">
+                <User className="h-4 w-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate whitespace-nowrap text-[14px] font-semibold text-white">{user?.name ?? "Loading user"}</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="text-[11px] text-white/60">Profile</span>
+                  {showCompletionIndicator ? (
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-white/90">
+                      {completionPercentage}%
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+              {showCompletionIndicator ? <ProfileCompletionRing percentage={completionPercentage} size={42} strokeWidth={5} /> : null}
+            </Link>
+
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => logout()}
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-white/8 text-white transition-all hover:bg-white/14"
+              title="Logout"
+              aria-label="Logout"
+            >
+              <LogOut className="h-4 w-4" />
+            </motion.button>
+          </div>
+        )}
       </div>
     </>
   );
@@ -157,6 +208,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [activeCaseId, setActiveCaseId] = useState<DemoCaseId>(getDefaultDemoCaseId());
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [profilePromptOpen, setProfilePromptOpen] = useState(false);
 
   const routeRole: UserRole | null = pathname.startsWith("/dashboard/patient")
     ? "patient"
@@ -169,6 +221,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     getCurrentUser().then(setUser);
+    const unsubscribe = subscribeToCurrentUser(setUser);
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
     setActiveCaseId(getActiveDemoCaseId());
   }, [pathname]);
 
@@ -178,6 +235,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   const navItems = useMemo(() => NAV_ITEMS[role], [role]);
   const viewer = useMemo(() => resolveViewerForRole(role, user, activeCaseId), [activeCaseId, role, user]);
+  const profileCompletion = useMemo(() => getProfileCompletion(user?.role === role ? user : null), [role, user]);
+  const showSidebarProfileCompletion = pathname !== "/settings" && profileCompletion.percentage < 100;
   const activeNavHref = useMemo(() => {
     const matches = navItems.filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
     if (matches.length === 0) {
@@ -215,7 +274,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       patient: [
         { label: "My claims", href: "/dashboard/patient", hint: "Track status, letters, and coverage" },
         { label: "Decision updates", href: "/dashboard/patient/notifications", hint: "See status changes and new actions" },
-        { label: "Coverage details", href: "/dashboard/patient", hint: "Policy, approvals, and next steps" },
+        { label: "Coverage details", href: "/dashboard/patient", hint: "Policy, payouts, and claim details" },
       ],
     };
 
@@ -240,8 +299,59 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     setSearchQuery("");
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const promptDismissKey = getProfilePromptDismissKey(user?.uid ?? user?.id);
+
+    if (!user || user.role !== role || pathname === "/settings" || profileCompletion.percentage >= 100) {
+      if (promptDismissKey && profileCompletion.percentage >= 100) {
+        window.sessionStorage.removeItem(promptDismissKey);
+      }
+
+      setProfilePromptOpen(false);
+      return;
+    }
+
+    setProfilePromptOpen(window.sessionStorage.getItem(promptDismissKey ?? "") !== "1");
+  }, [pathname, profileCompletion.percentage, role, user]);
+
+  const handleDismissProfilePrompt = () => {
+    if (typeof window !== "undefined") {
+      const promptDismissKey = getProfilePromptDismissKey(user?.uid ?? user?.id);
+      if (promptDismissKey) {
+        window.sessionStorage.setItem(promptDismissKey, "1");
+      }
+    }
+
+    setProfilePromptOpen(false);
+  };
+
+  const handleProfileSaved = (nextUser: AppUser) => {
+    if (typeof window !== "undefined") {
+      const promptDismissKey = getProfilePromptDismissKey(nextUser.uid ?? nextUser.id);
+      if (promptDismissKey) {
+        window.sessionStorage.removeItem(promptDismissKey);
+      }
+    }
+
+    setUser(nextUser);
+    setProfilePromptOpen(false);
+  };
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--ch-surface)]">
+      {user && user.role === role ? (
+        <ProfileCompletionPrompt
+          user={user}
+          open={profilePromptOpen}
+          onClose={handleDismissProfilePrompt}
+          onSaved={handleProfileSaved}
+        />
+      ) : null}
+
       <AnimatePresence>
         {mobileMenuOpen ? (
           <motion.button
@@ -295,15 +405,27 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </nav>
 
             <div className="border-t border-white/10 p-4">
-              <div className="flex items-center gap-3 rounded-2xl bg-white/10 px-3.5 py-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--ch-blue)] text-white">
-                  <User className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[14px] font-semibold text-white">{viewer?.name ?? "Loading user"}</p>
-                  <p className="text-[11px] capitalize text-white/60">{role}</p>
-                </div>
-                <motion.button type="button" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => logout()} className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-white transition-all hover:bg-white/14" title="Logout" aria-label="Logout">
+              <div className="flex items-center gap-2 rounded-[1.45rem] border border-white/10 bg-white/10 px-3 py-3">
+                <Link href="/settings" className="flex min-w-0 flex-1 items-center gap-3 rounded-[1rem] transition-all hover:opacity-95">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.14)] text-white">
+                    <User className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[14px] font-semibold text-white">{viewer?.name ?? "Loading user"}</p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-[11px] text-white/60">Profile</span>
+                      {showSidebarProfileCompletion ? (
+                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-white/90">
+                          {profileCompletion.percentage}%
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                  {showSidebarProfileCompletion ? (
+                    <ProfileCompletionRing percentage={profileCompletion.percentage} size={42} strokeWidth={5} />
+                  ) : null}
+                </Link>
+                <motion.button type="button" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => logout()} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-white/8 text-white transition-all hover:bg-white/14" title="Logout" aria-label="Logout">
                   <LogOut className="h-4 w-4" />
                 </motion.button>
               </div>
@@ -313,7 +435,15 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </AnimatePresence>
 
       <aside className={`fixed inset-y-0 left-0 z-50 hidden flex-col bg-[linear-gradient(180deg,var(--ch-blue-dark)_0%,var(--ch-blue)_100%)] shadow-[2px_0_18px_rgba(63,121,180,0.18)] transition-[width] duration-200 lg:flex ${sidebarWidth}`}>
-        <SidebarContent navItems={navItems} role={role} user={viewer} collapsed={collapsed} activeNavHref={activeNavHref} />
+        <SidebarContent
+          navItems={navItems}
+          role={role}
+          user={viewer}
+          collapsed={collapsed}
+          activeNavHref={activeNavHref}
+          completionPercentage={profileCompletion.percentage}
+          showCompletionIndicator={showSidebarProfileCompletion}
+        />
       </aside>
 
       <motion.button

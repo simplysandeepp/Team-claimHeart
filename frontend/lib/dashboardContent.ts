@@ -134,19 +134,32 @@ export const dashboardCoverageByCase: Record<
 
 type TrackerState = "complete" | "active" | "upcoming";
 
-export const buildPatientSteps = (claim: Claim | null): { label: string; state: TrackerState }[] => {
+export type PatientJourneyMode = "cashless" | "reimbursement";
+
+export const buildPatientSteps = (claim: Claim | null, journeyMode: PatientJourneyMode = "cashless"): { label: string; state: TrackerState }[] => {
   const finalStepLabel = claim?.status === "denied" ? "Denied" : "Approved";
-  const paymentStepState: TrackerState = claim?.status === "approved" ? "complete" : claim?.status === "denied" ? "upcoming" : "active";
+  const hasClaim = Boolean(claim);
+  const reviewState: TrackerState =
+    claim?.status === "under_review" ? "active" : claim?.status === "approved" || claim?.status === "denied" ? "complete" : "upcoming";
+  const finalDecisionState: TrackerState = claim?.status === "approved" || claim?.status === "denied" ? "complete" : "upcoming";
+  const payoutState: TrackerState = claim?.status === "approved" ? "complete" : "upcoming";
+
+  if (journeyMode === "reimbursement") {
+    return [
+      { label: "Treatment completed", state: hasClaim ? "complete" : "active" },
+      { label: "Bills uploaded", state: hasClaim ? "complete" : "upcoming" },
+      { label: "Insurer review", state: reviewState },
+      { label: finalStepLabel, state: finalDecisionState },
+      { label: "Member reimbursed", state: payoutState },
+    ];
+  }
 
   return [
-    { label: "Submitted", state: claim ? "complete" : "active" },
-    { label: "Documents verified", state: claim ? "complete" : "upcoming" },
-    { label: "Policy checked", state: claim ? "complete" : "upcoming" },
-    {
-      label: finalStepLabel,
-      state: claim?.status === "approved" || claim?.status === "denied" || claim?.status === "under_review" ? "complete" : "upcoming",
-    },
-    { label: "Payment sent", state: paymentStepState },
+    { label: "Request submitted", state: hasClaim ? "complete" : "active" },
+    { label: "Hospital documents checked", state: hasClaim ? "complete" : "upcoming" },
+    { label: "Insurer review", state: reviewState },
+    { label: finalStepLabel, state: finalDecisionState },
+    { label: "Hospital settled", state: payoutState },
   ];
 };
 

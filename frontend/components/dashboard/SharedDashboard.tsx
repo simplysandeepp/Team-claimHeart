@@ -103,6 +103,7 @@ export function DecisionBanner({
   detail,
   tone,
   timestamp,
+  aside,
   actions,
 }: {
   backgroundClassName?: string;
@@ -112,6 +113,7 @@ export function DecisionBanner({
   detail: string;
   tone: SemanticTone;
   timestamp: string;
+  aside?: ReactNode;
   actions?: ReactNode;
 }) {
   return (
@@ -119,7 +121,7 @@ export function DecisionBanner({
       <div className="pointer-events-none absolute -right-10 top-0 h-28 w-28 rounded-full bg-white/8 blur-2xl" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-24 w-40 bg-[linear-gradient(90deg,rgba(74,142,219,0.25),transparent)]" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-48 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_58%)]" />
-      <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className={`relative grid gap-5 ${aside || actions ? "xl:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)] xl:items-stretch" : ""}`}>
         <div className="min-w-0">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/76">Decision summary</p>
           <p className="mt-3 text-[22px] font-medium tracking-[-0.04em] text-white sm:text-[28px]">{amount}</p>
@@ -130,7 +132,12 @@ export function DecisionBanner({
           <p className="mt-3 text-[12px] text-white/72">{subtitle}</p>
           <p className="mt-4 max-w-2xl text-sm leading-6 text-white">{detail}</p>
         </div>
-        {actions ? <div className="flex shrink-0 flex-wrap gap-2">{actions}</div> : null}
+        {aside || actions ? (
+          <div className="flex h-full flex-col justify-between rounded-[24px] border border-white/12 bg-white/[0.08] p-4 backdrop-blur-sm">
+            {aside ? <div>{aside}</div> : <div />}
+            {actions ? <div className="mt-4 flex flex-wrap gap-2 xl:justify-end">{actions}</div> : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -219,6 +226,8 @@ export function DecisionSupportCard({
   summary,
   tone = "blue",
   points = [],
+  pointsClassName = "",
+  contentClassName = "max-w-3xl",
   actions,
   footer,
   className = "",
@@ -228,6 +237,8 @@ export function DecisionSupportCard({
   summary: string;
   tone?: SemanticTone;
   points?: { label: string; value: string; helper?: string }[];
+  pointsClassName?: string;
+  contentClassName?: string;
   actions?: ReactNode;
   footer?: ReactNode;
   className?: string;
@@ -235,7 +246,7 @@ export function DecisionSupportCard({
   return (
     <DashboardCard className={`${toneClasses[tone].tint} ${className}`}>
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-3xl">
+        <div className={contentClassName}>
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{eyebrow}</p>
             <StatusChip label={title} tone={tone} />
@@ -244,9 +255,9 @@ export function DecisionSupportCard({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{summary}</p>
 
           {points.length ? (
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={`mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 ${pointsClassName}`}>
               {points.map((point) => (
-                <div key={`${point.label}-${point.value}`} className="rounded-[16px] border border-slate-200/90 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.92))] p-3 shadow-[0_12px_28px_rgba(15,23,42,0.06)]">
+                <div key={`${point.label}-${point.value}`} className="flex h-full flex-col rounded-[16px] border border-slate-200/90 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.92))] p-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]">
                   <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">{point.label}</p>
                   <p className="mt-1 text-sm font-semibold text-slate-900">{point.value}</p>
                   {point.helper ? <p className="mt-1 text-[12px] leading-5 text-slate-500">{point.helper}</p> : null}

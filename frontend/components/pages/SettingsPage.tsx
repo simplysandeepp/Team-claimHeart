@@ -1,40 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCurrentUser, subscribeToCurrentUser } from "@/lib/api/auth";
+import { getProfileCompletion, getProfilePromptCopy } from "@/lib/profileCompletion";
+import ProfileCompletionRing from "@/components/profile/ProfileCompletionRing";
+import ProfileCompletionForm from "@/components/profile/ProfileCompletionForm";
+import type { AppUser } from "@/types";
 
 export default function SettingsPage() {
-  const [autoApprove, setAutoApprove] = useState(true);
-  const [fraudReview, setFraudReview] = useState(true);
-  const [emailAlerts, setEmailAlerts] = useState(true);
-  const [piiRedaction, setPiiRedaction] = useState(true);
+  const [user, setUser] = useState<AppUser | null>(null);
 
-  const settings = [
-    ["Auto-approve low-risk claims", autoApprove, setAutoApprove],
-    ["Escalate high fraud scores", fraudReview, setFraudReview],
-    ["Email alerts for critical flags", emailAlerts, setEmailAlerts],
-    ["PII redaction before external models", piiRedaction, setPiiRedaction],
-  ] as const;
+  useEffect(() => {
+    getCurrentUser().then(setUser);
+    const unsubscribe = subscribeToCurrentUser(setUser);
+    return unsubscribe;
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ch-blue-dark)]">Profile</p>
+          <h1 className="mt-3 text-2xl font-bold tracking-[-0.04em] text-slate-900">Loading your profile</h1>
+          <p className="mt-2 text-sm text-slate-500">Pulling the latest saved details from your workspace.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const completion = getProfileCompletion(user);
+  const copy = getProfilePromptCopy(user.role);
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-[-0.04em] text-slate-900 md:text-[2.1rem]">Settings</h1>
-        <p className="mt-2 text-base text-[var(--ch-muted)] md:text-lg">Configure ClaimHeart AI agents, notifications, and compliance settings</p>
-      </div>
+      <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_45%,#f8fbff_100%)] p-6 shadow-[0_18px_44px_rgba(15,23,42,0.08)] sm:p-7">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ch-blue-dark)]">Profile & Verification</p>
+            <h1 className="mt-3 text-3xl font-bold tracking-[-0.05em] text-slate-900 md:text-[2.2rem]">Manage your workspace identity</h1>
+            <p className="mt-3 text-sm leading-6 text-[var(--ch-muted)] sm:text-[15px]">
+              {copy.description} Everything you skip on first login can be completed here anytime without interrupting the rest of the product.
+            </p>
+            <p className="mt-4 text-sm font-medium text-slate-600">
+              {completion.completedCount} of {completion.totalCount} role-specific details saved.
+            </p>
+          </div>
 
-      <article className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-        <h2 className="text-2xl font-bold text-slate-900 md:text-[1.7rem]">Platform Controls</h2>
-        <div className="mt-6 space-y-4">
-          {settings.map(([label, value, setter]) => (
-            <div key={label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
-              <p className="font-medium text-slate-800">{label}</p>
-              <button onClick={() => setter(!value)} className={`rounded-full px-4 py-2 text-sm font-semibold ${value ? "bg-[var(--ch-blue)] text-white" : "bg-white text-slate-600 border border-slate-200"}`}>
-                {value ? "Enabled" : "Disabled"}
-              </button>
+          {completion.percentage < 100 ? (
+            <div className="rounded-[1.5rem] border border-[var(--ch-blue-border)] bg-white/92 p-4 shadow-[0_16px_34px_rgba(74,142,219,0.08)]">
+              <ProfileCompletionRing
+                percentage={completion.percentage}
+                size={78}
+                strokeWidth={6}
+                trackClassName="stroke-slate-100"
+                progressClassName="stroke-[var(--ch-blue)]"
+                textClassName="text-slate-900"
+              />
             </div>
-          ))}
+          ) : null}
         </div>
-      </article>
+      </section>
+
+      <ProfileCompletionForm
+        user={user}
+        title={copy.title}
+        description="Update the role-specific details below. Changes save to the same profile used by the sidebar completion ring and first-login prompt."
+        submitLabel="Save changes"
+        onSaved={setUser}
+        variant="page"
+      />
     </div>
   );
 }

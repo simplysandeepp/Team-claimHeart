@@ -1,10 +1,4 @@
-import json
-from pathlib import Path
-
-def load_policy():
-    policy_path = Path(__file__).resolve().parent.parent / "data" / "mock_policies.json"
-    with policy_path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+from app.utils.policy_loader import get_policy_data
 
 
 def validate_claim(claim):
@@ -20,7 +14,7 @@ def validate_claim(claim):
 
 
 def analyze_claim(claim):
-    policy = load_policy()
+    policy = get_policy_data()
 
     result = {
         "decision": "APPROVE",

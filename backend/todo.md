@@ -46,10 +46,10 @@ This checklist combines the specific backend engineering tasks with the detailed
 ### Agent A1 — Policy OCR Agent (Foundation)
 - ✅ Keep a single source policy file at `backend/app/data/mock_policies.json`
 - ✅ Confirm core policy blocks exist: policy_metadata, global_conditions, disease_sub_limits
-- [ ] Ensure A1 generates hard-coded JSON from policy documents
-- [ ] Pass A1 output to Rag 2 (Powers Patient Rag / Patient Structured Info & Policy Chatbot)
-- [ ] Create policy loader utility with validation + clear error handling
-- [ ] Add cache layer for policy lookups
+- ✅ Ensure A1 generates hard-coded JSON from policy documents
+- ✅ Pass A1 output to Rag 2 (Powers Patient Rag / Patient Structured Info & Policy Chatbot)
+- ✅ Create policy loader utility with validation + clear error handling
+- ✅ Add cache layer for policy lookups
 
 ### Agent A2 — Policy Agent
 - ✅ Initial policy analysis step logically wired (via `app/services/rag_service.py`)

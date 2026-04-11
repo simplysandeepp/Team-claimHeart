@@ -12,6 +12,7 @@ alembic
 # AUTH & SECURITY
 python-jose[cryptography]
 passlib[bcrypt]
+pyjwt
 
 # ENVIRONMENT
 python-dotenv
@@ -26,9 +27,13 @@ numpy
 # PDF PROCESSING
 PyMuPDF
 
-# AI & LLM
-google-generativeai
-openai
+# AI & LLM (GROQ ONLY)
+httpx
+tenacity
+
+# EMBEDDINGS & RAG
+sentence-transformers
+chromadb
 
 # TASK QUEUE 
 celery
@@ -37,4 +42,3 @@ redis
 # UTILITIES
 requests
 tqdm
-httpx==0.26.0

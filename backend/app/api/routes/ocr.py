@@ -2,9 +2,13 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 from pydantic import BaseModel
 import os
 import uuid
+import logging
+
 from app.tasks.extraction import process_document
+from app.services.pipeline import run_full_pipeline
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -31,7 +35,11 @@ def save_file(file_bytes: bytes, ext: str = "jpg") -> str:
 
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    """Upload and process an image or PDF file"""
+    """
+    Upload and process an image or PDF file through complete pipeline
+    
+    Flow: OCR → Extraction → Policy Check → Fraud Detection → Decision Routing → Mediator
+    """
     try:
         if file.content_type not in ALLOWED_EXTENSIONS:
             raise HTTPException(
@@ -48,27 +56,55 @@ async def upload_file(file: UploadFile = File(...)):
         file_path = save_file(contents, ext)
 
         try:
-            result = process_document(file_path)
+            # Step 1: Extract data from document (OCR + Parsing)
+            logger.info(f"Processing document: {file.filename}")
+            extraction_result = process_document(file_path)
+            
+            # Generate unique claim ID
+            claim_id = f"CLM-{uuid.uuid4().hex[:8].upper()}"
+            
+            # Step 2: Run through complete fraud detection pipeline
+            logger.info(f"Running fraud pipeline for claim: {claim_id}")
+            pipeline_result = run_full_pipeline(
+                extractor_output=extraction_result,
+                claim_id=claim_id,
+                patient_info=None,  # Can be enriched from extraction
+                hospital_info=None,
+            )
+            
+            # Combine extraction and pipeline results
+            response = {
+                "mode": "file_upload",
+                "filename": file.filename,
+                "claim_id": claim_id,
+                "status": "success",
+                "extraction": {
+                    "structured_data": extraction_result.get("structured_data", {}),
+                    "unified_claim": extraction_result.get("unified_claim", {}),
+                },
+                "pipeline": pipeline_result,
+            }
+            
+            logger.info(f"Pipeline complete for {claim_id}: {pipeline_result.get('final_verdict')}")
+            return response
+            
         finally:
+            # Clean up uploaded file
             if os.path.exists(file_path):
                 os.remove(file_path)
-
-        return {
-            "mode": "file_upload",
-            "filename": file.filename,
-            "status": "success",
-            "extracted_data": result
-        }
 
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception(f"Error processing file: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
 @router.post("/process-local")
 async def process_local_file(request: LocalPathRequest):
-    """Process a file from local path"""
+    """
+    Process a file from local path through complete pipeline
+    """
     try:
         local_path = request.local_path
 
@@ -94,18 +130,40 @@ async def process_local_file(request: LocalPathRequest):
         if file_size > MAX_FILE_SIZE:
             raise HTTPException(status_code=400, detail="File too large (max 10MB)")
         
-        # Process the file
-        result = process_document(local_path)
-
-        return {
+        # Step 1: Extract data from document
+        logger.info(f"Processing local file: {local_path}")
+        extraction_result = process_document(local_path)
+        
+        # Generate unique claim ID
+        claim_id = f"CLM-{uuid.uuid4().hex[:8].upper()}"
+        
+        # Step 2: Run through complete fraud detection pipeline
+        logger.info(f"Running fraud pipeline for claim: {claim_id}")
+        pipeline_result = run_full_pipeline(
+            extractor_output=extraction_result,
+            claim_id=claim_id,
+            patient_info=None,
+            hospital_info=None,
+        )
+        
+        response = {
             "mode": "local_path",
             "path_used": local_path,
             "filename": os.path.basename(local_path),
+            "claim_id": claim_id,
             "status": "success",
-            "extracted_data": result
+            "extraction": {
+                "structured_data": extraction_result.get("structured_data", {}),
+                "unified_claim": extraction_result.get("unified_claim", {}),
+            },
+            "pipeline": pipeline_result,
         }
+        
+        logger.info(f"Pipeline complete for {claim_id}: {pipeline_result.get('final_verdict')}")
+        return response
 
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception(f"Error processing file: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
+from app.core.groq_client import get_groq_client, GroqAPIError
 from app.schemas.fraud import (
     ClaimContext,
     DecisionResponse,
@@ -17,10 +19,7 @@ from app.services.mock_db2_repo import db2_repo
 from app.services.ml_anomaly import ml_anomaly_scorer
 from app.services.rag_3_fraud_context import rag_3_fraud_context
 
-try:
-    from openai import OpenAI
-except ImportError:  # pragma: no cover - handled gracefully in runtime paths.
-    OpenAI = None  # type: ignore[assignment]
+logger = logging.getLogger(__name__)
 
 
 class LLMClient(Protocol):
@@ -36,45 +35,82 @@ class RuleScoreResult:
     metadata: Dict[str, Any]
 
 
-class OpenAIDecisionClient:
-    def __init__(self, model: str = "gpt-4o-mini", api_key: Optional[str] = None) -> None:
-        if OpenAI is None:
-            raise RuntimeError("openai package is not installed")
-        resolved_api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not resolved_api_key:
-            raise RuntimeError("OPENAI_API_KEY is not configured")
-        self._client = OpenAI(api_key=resolved_api_key)
-        self._model = model
+class GroqDecisionClient:
+    """Groq-based LLM client for fraud decision making"""
+
+    def __init__(self, model: Optional[str] = None) -> None:
+        """
+        Initialize Groq decision client
+
+        Args:
+            model: Groq model to use (defaults to env GROQ_MODEL)
+        """
+        self._client = get_groq_client()
+        self._model = model or os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+        logger.info(f"Initialized Groq decision client with model: {self._model}")
 
     def complete(self, prompt: str) -> str:
-        response = self._client.chat.completions.create(
-            model=self._model,
-            temperature=0,
-            response_format={"type": "json_object"},
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an insurance fraud decision engine. "
-                        "Return only valid JSON."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
+        """
+        Generate completion using Groq
+
+        Args:
+            prompt: Input prompt
+
+        Returns:
+            JSON string response
+        """
+        system_prompt = (
+            "You are an insurance fraud decision engine. "
+            "Analyze the provided claim context and return a JSON decision. "
+            "Return only valid JSON with no additional text."
         )
-        return response.choices[0].message.content or "{}"
+
+        try:
+            response = self._client.complete(
+                prompt=prompt,
+                system_prompt=system_prompt,
+                temperature=0,
+                max_tokens=2048,
+                json_mode=True,
+            )
+            return response
+        except GroqAPIError as e:
+            logger.error(f"Groq API error: {e}")
+            # Return empty JSON on error to trigger fallback
+            return "{}"
 
 
 class DecisionEngine:
     def __init__(
         self,
-        llm_client=None,   # disable LLM
+        llm_client=None,
         uncertainty_confidence_threshold: float = 0.65,
+        enable_llm: bool = True,
     ) -> None:
-        self._llm_client = None  # LLM disabled for now
-        self._uncertainty_confidence_threshold = uncertainty_confidence_threshold
+        """
+        Initialize fraud decision engine
 
-        # Future me llm enable karna ho to bas yaha llm_client pass kar dena
+        Args:
+            llm_client: Optional LLM client (uses Groq by default)
+            uncertainty_confidence_threshold: Confidence threshold for uncertainty
+            enable_llm: Whether to enable LLM-based decisions
+        """
+        self._uncertainty_confidence_threshold = uncertainty_confidence_threshold
+        self._enable_llm = enable_llm
+
+        # Initialize Groq client if LLM is enabled
+        if enable_llm and llm_client is None:
+            try:
+                self._llm_client = GroqDecisionClient()
+                logger.info("Fraud engine initialized with Groq LLM")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Groq client: {e}. Using rule-based only.")
+                self._llm_client = None
+        else:
+            self._llm_client = llm_client
+
+        if not self._enable_llm or self._llm_client is None:
+            logger.info("Fraud engine running in rule-based mode only")
 
     def evaluate(self, context: ClaimContext) -> DecisionResponse:
         rule_result = self._compute_rule_risk(context)
@@ -131,9 +167,31 @@ class DecisionEngine:
         #     raw_response = self._llm_client.complete(prompt)
         #     return self._parse_llm_response(raw_response)
 
-    def _evaluate_with_llm(self, context, rule_result):
-        # Agar future me OpenAI / Gemini use karna ho to yeh function restore kar dena
-        return None
+    def _evaluate_with_llm(
+        self,
+        context: ClaimContext,
+        rule_result: RuleScoreResult,
+    ) -> Optional[LLMDecisionPayload]:
+        """
+        Evaluate claim using Groq LLM
+
+        Args:
+            context: Claim context
+            rule_result: Rule-based evaluation result
+
+        Returns:
+            LLM decision payload or None if LLM unavailable
+        """
+        if self._llm_client is None:
+            return None
+
+        try:
+            prompt = self.build_prompt(context, rule_result)
+            raw_response = self._llm_client.complete(prompt)
+            return self._parse_llm_response(raw_response)
+        except Exception as e:
+            logger.error(f"LLM evaluation failed: {e}")
+            return None
 
     def _parse_llm_response(self, raw_response: str) -> Optional[LLMDecisionPayload]:
         try:

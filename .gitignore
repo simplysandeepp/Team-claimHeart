@@ -60,6 +60,10 @@ coverage.xml
 *.pkl
 *.joblib
 
+# ChromaDB storage
+**/chroma_store/
+*.chroma
+
 # =========================
 # OCR / Temp files
 # =========================
@@ -69,14 +73,36 @@ coverage.xml
 *.jpeg
 temp/
 uploads/
+temp_uploads/
 outputs/
 
 # =========================
-# Environment / Secrets
+# Environment / Secrets (CRITICAL)
 # =========================
 .env
-.env.*
+.env.local
+.env.*.local
 !.env.example
+
+# API Keys and secrets
+**/secrets/
+*.key
+*.pem
+*.crt
+
+# =========================
+# Docker / Infrastructure
+# =========================
+docker-compose.override.yml
+*.log
+
+# =========================
+# Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
 
 # =========================
 # OS / IDE

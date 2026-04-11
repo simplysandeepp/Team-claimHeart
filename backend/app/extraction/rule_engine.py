@@ -26,6 +26,48 @@ def _merge_unique_dicts(items: List[Dict[str, Any]], key_fields: List[str]) -> L
     return merged
 
 
+def _calculate_confidence_scores(structured_data: Dict[str, Any], pages: List[Dict[str, Any]]) -> Dict[str, float]:
+    """
+    Calculate confidence scores for extracted fields.
+    If the text matches tokens from EasyOCR, use their confidence. Otherwise, baseline to 0.85.
+    """
+    all_tokens = []
+    for page in pages:
+        all_tokens.extend(page.get("ocr_tokens", []))
+    
+    overall_conf = 0.85
+    if all_tokens:
+        overall_conf = sum(t["confidence"] for t in all_tokens) / len(all_tokens)
+
+    scores = {
+        "patient_name": overall_conf,
+        "diagnosis": overall_conf,
+        "medications": overall_conf,
+        "billing_items": overall_conf,
+        "hospital_stay_days": overall_conf
+    }
+    
+    # Simple heuristic to boost/lower based on find-ability
+    raw_text = " ".join(t["text"].lower() for t in all_tokens)
+    
+    name = structured_data.get("patient_name")
+    if name and isinstance(name, str):
+        matching_tokens = [t["confidence"] for t in all_tokens if name.lower() in t["text"].lower() or t["text"].lower() in name.lower()]
+        if matching_tokens:
+            scores["patient_name"] = sum(matching_tokens) / len(matching_tokens)
+
+    disease = structured_data.get("disease")
+    if disease and isinstance(disease, str):
+        matching_tokens = [t["confidence"] for t in all_tokens if disease.lower() in t["text"].lower() or t["text"].lower() in disease.lower()]
+        if matching_tokens:
+            scores["diagnosis"] = sum(matching_tokens) / len(matching_tokens)
+
+    if structured_data.get("medications"):
+        scores["medications"] = min(0.95, overall_conf + 0.05)
+        
+    return {k: round(v, 2) for k, v in scores.items()}
+
+
 def _coerce_price(value: Any) -> Any:
     if isinstance(value, float) and value.is_integer():
         return int(value)
@@ -53,8 +95,10 @@ def build_structured_claim(document_payload: Dict[str, Any]) -> Dict[str, Any]:
     disease = extract_disease(lines, normalized_text)
     total_amount = sum(item.get("total") or item.get("price") or 0 for item in billing_items)
 
+    patient_name = extract_patient_name(normalized_text)
+
     structured_data = {
-        "patient_name": extract_patient_name(normalized_text),
+        "patient_name": patient_name,
         "dates": extract_dates(normalized_text, lines),
         "diagnosis": [disease] if disease else [],
         "disease": disease,
@@ -72,14 +116,16 @@ def build_structured_claim(document_payload: Dict[str, Any]) -> Dict[str, Any]:
         "total_amount": {
             "total_billed": _coerce_price(total_amount),
             "currency": "INR",
-        }
-        if total_amount
-        else None,
+        } if total_amount else None,
         "tables": tables,
         "document_structure": {
             "line_count": len(lines),
             "table_count": len(tables),
         },
+        "confidence_scores": _calculate_confidence_scores(
+            {"patient_name": patient_name, "disease": disease, "medications": medications},
+            document_payload.get("pages", [])
+        ),
         "raw_text": raw_text,
         "normalized_text": normalized_text,
     }
@@ -100,4 +146,3 @@ def build_structured_claim(document_payload: Dict[str, Any]) -> Dict[str, Any]:
     }
     structured_data["claim_summary"] = final_json
     return structured_data
-

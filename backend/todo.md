@@ -39,9 +39,9 @@ This checklist combines the specific backend engineering tasks with the detailed
 - ✅ OCR text extraction implemented via EasyOCR
 - ✅ Basic parsing to structured fields implemented
 - ✅ Ensure extractor outputs full roadmap fields: patient_id, diagnosis, ICD-10, billed_amount, tests_ordered, hospitalization_days, doctor_name, hospital_name, prescription_items
-- [ ] Add confidence scoring per extracted field
-- [ ] Pass OCR output to Rag 1 (Powers Dr. Chats)
-- [ ] Pass OCR output to Agent A2 (Policy Agent)
+- ✅ Add confidence scoring per extracted field
+- ✅ Pass OCR output to Rag 1 (Powers Dr. Chats)
+- ✅ Pass OCR output to Agent A2 (Policy Agent)
 
 ### Agent A1 — Policy OCR Agent (Foundation)
 - ✅ Keep a single source policy file at `backend/app/data/mock_policies.json`

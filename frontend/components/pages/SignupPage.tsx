@@ -132,7 +132,7 @@ export default function SignupPage() {
 
     try {
       const user = await signupWithGoogle(buildSignupPayload());
-      toast.success(`${AUTH_ROLE_META[user.role].label} account is ready. You can complete more workspace details later in Settings.`);
+      toast.success(`${AUTH_ROLE_META[user.role].label} account is ready. You can complete more workspace details later in Profile.`);
       router.push(getDashboardPath(user.role));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to create the account with Google right now.");
@@ -170,7 +170,7 @@ export default function SignupPage() {
           <div className="order-1 flex bg-white/98 px-5 py-5 sm:px-7 xl:h-full xl:min-h-0 xl:overflow-hidden">
             <div className="mx-auto flex w-full max-w-xl flex-col justify-center xl:h-full xl:min-h-0">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--ch-blue-border)] bg-[var(--ch-blue-light)] p-1">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200/90 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-1 shadow-sm">
                   <ClaimHeartLogo className="h-full w-full" imageClassName="scale-110" />
                 </div>
                 <div>
@@ -183,8 +183,8 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <div className="mt-3 rounded-[1.5rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4 shadow-[0_14px_34px_rgba(15,23,42,0.06)] sm:p-5 xl:flex xl:min-h-0 xl:flex-col">
-                <div className="space-y-2.5">
+              <div className="mt-2 rounded-[1.5rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4 shadow-[0_14px_34px_rgba(15,23,42,0.06)] sm:p-5 xl:flex xl:min-h-0 xl:flex-col">
+                <div className="space-y-2">
                   <AuthProviderButtons
                     mode="signup"
                     onSelect={(provider) => {
@@ -203,7 +203,7 @@ export default function SignupPage() {
                   </div>
                 </div>
 
-                <form onSubmit={handleSignup} className="mt-3 space-y-3 xl:flex-1">
+                <form onSubmit={handleSignup} className="mt-2 space-y-2.5 xl:flex-1">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ch-blue-dark)]">
                       {activeStep.title}
@@ -259,7 +259,7 @@ export default function SignupPage() {
                   />
                   <InputField
                     id="signup-email"
-                    label={role === "patient" ? "Personal Email Address" : "Official Email Address"}
+                    label={role === "patient" ? "Email Address" : "Email Address"}
                     value={form.email}
                     onChange={(value) => updateField("email", value)}
                     placeholder="Enter email address"
@@ -268,7 +268,7 @@ export default function SignupPage() {
                   />
                   <InputField
                     id="signup-phone"
-                    label={role === "patient" ? "Phone Number" : "Phone Number (OTP)"}
+                    label={role === "patient" ? "Phone Number" : "Phone Number"}
                     value={form.phone}
                     onChange={(value) => updateField("phone", value)}
                     placeholder="Enter phone number"

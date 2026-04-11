@@ -41,6 +41,7 @@ export const normalizeStoredUserProfile = (
       value.authProvider === "password"
         ? value.authProvider
         : undefined,
+    address: typeof value.address === "string" ? value.address.trim() || undefined : undefined,
     phone: typeof value.phone === "string" ? value.phone.trim() || undefined : undefined,
     state: typeof value.state === "string" ? value.state.trim() || undefined : undefined,
     patientId:
@@ -51,10 +52,16 @@ export const normalizeStoredUserProfile = (
         : undefined,
     dob: typeof value.dob === "string" ? value.dob.trim() || undefined : undefined,
     policyNumber: typeof value.policyNumber === "string" ? value.policyNumber.trim() || undefined : undefined,
+    policyName: typeof value.policyName === "string" ? value.policyName.trim() || undefined : undefined,
+    policyType: typeof value.policyType === "string" ? value.policyType.trim() || undefined : undefined,
+    policyStartDate: typeof value.policyStartDate === "string" ? value.policyStartDate.trim() || undefined : undefined,
+    policyEndDate: typeof value.policyEndDate === "string" ? value.policyEndDate.trim() || undefined : undefined,
     insuranceCompany: typeof value.insuranceCompany === "string" ? value.insuranceCompany.trim() || undefined : undefined,
     sumInsured: typeof value.sumInsured === "number" && Number.isFinite(value.sumInsured) ? value.sumInsured : undefined,
     doctorName: typeof value.doctorName === "string" ? value.doctorName.trim() || undefined : undefined,
     hospitalRegNo: typeof value.hospitalRegNo === "string" ? value.hospitalRegNo.trim() || undefined : undefined,
+    hospitalRegistrationId:
+      typeof value.hospitalRegistrationId === "string" ? value.hospitalRegistrationId.trim() || undefined : undefined,
     city: typeof value.city === "string" ? value.city.trim() || undefined : undefined,
     department: typeof value.department === "string" ? value.department.trim() || undefined : undefined,
     employeeId: typeof value.employeeId === "string" ? value.employeeId.trim() || undefined : undefined,
@@ -62,6 +69,9 @@ export const normalizeStoredUserProfile = (
     organizationType: typeof value.organizationType === "string" ? value.organizationType.trim() || undefined : undefined,
     organizationCode: typeof value.organizationCode === "string" ? value.organizationCode.trim() || undefined : undefined,
     taxId: typeof value.taxId === "string" ? value.taxId.trim() || undefined : undefined,
+    gstNumber: typeof value.gstNumber === "string" ? value.gstNumber.trim() || undefined : undefined,
+    panNumber: typeof value.panNumber === "string" ? value.panNumber.trim() || undefined : undefined,
+    irdaiLicenseNumber: typeof value.irdaiLicenseNumber === "string" ? value.irdaiLicenseNumber.trim() || undefined : undefined,
     npi: typeof value.npi === "string" ? value.npi.trim() || undefined : undefined,
     contactName: typeof value.contactName === "string" ? value.contactName.trim() || undefined : undefined,
     contactEmail: typeof value.contactEmail === "string" ? value.contactEmail.trim() || undefined : undefined,

@@ -16,6 +16,22 @@ import type { AppUser, UserRole } from "@/types";
 
 const CURRENT_USER_KEY = "claimheart.currentUser";
 const ROLE_KEY = "claimheart.role";
+const CURRENT_USER_EVENT = "claimheart:current-user-change";
+
+type EditableProfileFields =
+  | "policyNumber"
+  | "policyName"
+  | "policyType"
+  | "policyStartDate"
+  | "policyEndDate"
+  | "address"
+  | "hospitalRegistrationId"
+  | "gstNumber"
+  | "panNumber"
+  | "irdaiLicenseNumber"
+  | "npi";
+
+export type ProfileUpdatePayload = Partial<Pick<AppUser, EditableProfileFields>>;
 
 export type SignupPayload = {
   name: string;
@@ -23,14 +39,20 @@ export type SignupPayload = {
   phone?: string;
   password: string;
   role: UserRole;
+  address?: string;
   state?: string;
   patientId?: string;
   dob?: string;
   policyNumber?: string;
+  policyName?: string;
+  policyType?: string;
+  policyStartDate?: string;
+  policyEndDate?: string;
   insuranceCompany?: string;
   sumInsured?: number;
   doctorName?: string;
   hospitalRegNo?: string;
+  hospitalRegistrationId?: string;
   city?: string;
   department?: string;
   employeeId?: string;
@@ -38,6 +60,9 @@ export type SignupPayload = {
   organizationType?: string;
   organizationCode?: string;
   taxId?: string;
+  gstNumber?: string;
+  panNumber?: string;
+  irdaiLicenseNumber?: string;
   npi?: string;
   contactName?: string;
   contactEmail?: string;
@@ -86,6 +111,14 @@ const ensureFirebaseConfigured = () => {
   }
 };
 
+const broadcastCurrentUser = (user: AppUser | null) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.dispatchEvent(new CustomEvent<AppUser | null>(CURRENT_USER_EVENT, { detail: user }));
+};
+
 const cacheCurrentUser = (user: AppUser | null) => {
   if (typeof window === "undefined") {
     return;
@@ -96,6 +129,7 @@ const cacheCurrentUser = (user: AppUser | null) => {
     window.localStorage.removeItem("role");
     window.localStorage.removeItem(CURRENT_USER_KEY);
     window.localStorage.removeItem(ROLE_KEY);
+    broadcastCurrentUser(null);
     return;
   }
 
@@ -103,6 +137,7 @@ const cacheCurrentUser = (user: AppUser | null) => {
   writeStorage(ROLE_KEY, user.role);
   window.localStorage.setItem("role", user.role);
   window.localStorage.setItem("user", JSON.stringify(user));
+  broadcastCurrentUser(user);
 };
 
 const buildUserProfile = ({
@@ -112,14 +147,20 @@ const buildUserProfile = ({
   authProvider,
   name,
   phone,
+  address,
   state,
   patientId,
   dob,
   policyNumber,
+  policyName,
+  policyType,
+  policyStartDate,
+  policyEndDate,
   insuranceCompany,
   sumInsured,
   doctorName,
   hospitalRegNo,
+  hospitalRegistrationId,
   city,
   department,
   employeeId,
@@ -127,6 +168,9 @@ const buildUserProfile = ({
   organizationType,
   organizationCode,
   taxId,
+  gstNumber,
+  panNumber,
+  irdaiLicenseNumber,
   npi,
   contactName,
   contactEmail,
@@ -144,15 +188,21 @@ const buildUserProfile = ({
   email: normalizeEmail(email),
   role,
   authProvider,
+  address: toOptionalString(address),
   phone: toOptionalString(phone),
   state: toOptionalString(state),
   patientId: role === "patient" ? toOptionalString(patientId) ?? deriveRoleId("patient", uid) : undefined,
   dob: toOptionalString(dob),
   policyNumber: toOptionalString(policyNumber),
+  policyName: toOptionalString(policyName),
+  policyType: toOptionalString(policyType),
+  policyStartDate: toOptionalString(policyStartDate),
+  policyEndDate: toOptionalString(policyEndDate),
   insuranceCompany: toOptionalString(insuranceCompany),
   sumInsured: toOptionalNumber(sumInsured),
   doctorName: toOptionalString(doctorName),
   hospitalRegNo: toOptionalString(hospitalRegNo),
+  hospitalRegistrationId: toOptionalString(hospitalRegistrationId),
   city: toOptionalString(city),
   department: toOptionalString(department),
   employeeId: toOptionalString(employeeId),
@@ -160,6 +210,9 @@ const buildUserProfile = ({
   organizationType: toOptionalString(organizationType),
   organizationCode: toOptionalString(organizationCode),
   taxId: toOptionalString(taxId),
+  gstNumber: toOptionalString(gstNumber),
+  panNumber: toOptionalString(panNumber),
+  irdaiLicenseNumber: toOptionalString(irdaiLicenseNumber),
   npi: toOptionalString(npi),
   contactName: toOptionalString(contactName),
   contactEmail: toOptionalString(contactEmail),
@@ -233,6 +286,19 @@ const formatAuthError = (error: unknown, fallback: string) => {
 
 export const getCurrentUser = async (): Promise<AppUser | null> => {
   return readStorage<AppUser | null>(CURRENT_USER_KEY, null);
+};
+
+export const subscribeToCurrentUser = (listener: (user: AppUser | null) => void) => {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handleUserChange = (event: Event) => {
+    listener((event as CustomEvent<AppUser | null>).detail ?? null);
+  };
+
+  window.addEventListener(CURRENT_USER_EVENT, handleUserChange as EventListener);
+  return () => window.removeEventListener(CURRENT_USER_EVENT, handleUserChange as EventListener);
 };
 
 export const getRole = async (): Promise<UserRole | null> => {
@@ -328,6 +394,35 @@ export const signupWithGoogle = async (payload: SocialSignupPayload) => {
   } catch (error) {
     throw new Error(formatAuthError(error, "Unable to create the account with Google right now."));
   }
+};
+
+export const updateCurrentUserProfile = async (payload: ProfileUpdatePayload) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("You need to be signed in to update the profile.");
+  }
+
+  const nextUser: AppUser = {
+    ...currentUser,
+    policyNumber: payload.policyNumber !== undefined ? toOptionalString(payload.policyNumber) : currentUser.policyNumber,
+    policyName: payload.policyName !== undefined ? toOptionalString(payload.policyName) : currentUser.policyName,
+    policyType: payload.policyType !== undefined ? toOptionalString(payload.policyType) : currentUser.policyType,
+    policyStartDate: payload.policyStartDate !== undefined ? toOptionalString(payload.policyStartDate) : currentUser.policyStartDate,
+    policyEndDate: payload.policyEndDate !== undefined ? toOptionalString(payload.policyEndDate) : currentUser.policyEndDate,
+    address: payload.address !== undefined ? toOptionalString(payload.address) : currentUser.address,
+    hospitalRegistrationId:
+      payload.hospitalRegistrationId !== undefined ? toOptionalString(payload.hospitalRegistrationId) : currentUser.hospitalRegistrationId,
+    gstNumber: payload.gstNumber !== undefined ? toOptionalString(payload.gstNumber) : currentUser.gstNumber,
+    panNumber: payload.panNumber !== undefined ? toOptionalString(payload.panNumber) : currentUser.panNumber,
+    irdaiLicenseNumber:
+      payload.irdaiLicenseNumber !== undefined ? toOptionalString(payload.irdaiLicenseNumber) : currentUser.irdaiLicenseNumber,
+    npi: payload.npi !== undefined ? toOptionalString(payload.npi) : currentUser.npi,
+  };
+
+  await writeUserProfile(nextUser);
+  cacheCurrentUser(nextUser);
+
+  return nextUser;
 };
 
 export const subscribeToAuthState = (listener: (user: AppUser | null) => void) =>

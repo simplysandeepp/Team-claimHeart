@@ -53,13 +53,13 @@ This checklist combines the specific backend engineering tasks with the detailed
 
 ### Agent A2 — Policy Agent
 - ✅ Initial policy analysis step logically wired (via `app/services/rag_service.py`)
-- [ ] Refactor `rag_service.py`: Currently uses outdated `covered`/`allowed_medications` schema. MUST be updated to parse the new `disease_sub_limits` schema.
-- [ ] Cross-reference OCR Patient Data with Policy info (via DB1/Data)
-- [ ] Add disease-level matching against disease_sub_limits
-- [ ] Enforce waiting-period waterfall: disease-specific override, else global waiting
-- [ ] Enforce sub-limit checks: max_payable_inr and max_hospitalization_days_allowed
-- [ ] Enforce protocol checks: max_diagnostic_tests_per_day and max_pharmacy_dosages_per_day
-- [ ] Emit clean Extracted Structured Data (with policy citations) to Fraud Agent
+- ✅ Refactor `rag_service.py`: Currently uses outdated `covered`/`allowed_medications` schema. MUST be updated to parse the new `disease_sub_limits` schema.
+- ✅ Cross-reference OCR Patient Data with Policy info (via DB1/Data)
+- ✅ Add disease-level matching against disease_sub_limits
+- ✅ Enforce waiting-period waterfall: disease-specific override, else global waiting
+- ✅ Enforce sub-limit checks: max_payable_inr and max_hospitalization_days_allowed
+- ✅ Enforce protocol checks: max_diagnostic_tests_per_day and max_pharmacy_dosages_per_day
+- ✅ Emit clean Extracted Structured Data (with policy citations) to Fraud Agent
 
 ### Agent A3 — Fraud Investigator
 - ✅ Fraud decision endpoint exists (`POST /api/fraud/decision`)

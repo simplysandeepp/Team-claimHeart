@@ -1,104 +1,177 @@
-## Team - ClaimHeart
+# ClaimHeart - AI-Powered Medical Claims Processing
 
-1. Sandeep Prajapati
-2. Sachin Manral
-3. Simran Kukreja
-4. Vaibhav Yadav
+Multi-agent AI system for automated medical claims processing with fraud detection.
 
+## 🚀 Quick Start (Localhost)
 
----
-
-# ClaimHeart - AI-Powered Medical Claims Processing System
-
-## 🎉 Phase 8 Implementation Complete!
-
-ClaimHeart is a production-ready AI-powered medical claims processing system with fraud detection, policy validation, and automated decision-making.
-
-## 🚀 Quick Start
+### 1. Backend Setup
 
 ```bash
-# 1. Add Groq API keys to backend/.env
-# 2. Run the system
-./start.sh
+cd backend
 
-# Or with Docker
-docker-compose up
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env and add your Groq API keys:
+# GROQ_API_KEY_1=your_key_here
+# GROQ_API_KEY_2=your_key_here
+# GROQ_API_KEY_3=your_key_here
+# GROQ_API_KEY_4=your_key_here
+
+# Start backend server
+uvicorn app.main:app --reload --port 8000
 ```
 
-**Access:**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+Backend will run at: http://localhost:8000
 
-## ✨ Key Features
-
-- 🤖 **Groq LLM Integration** - Load-balanced across 4 API keys
-- 🔐 **JWT Authentication** - Secure role-based access control
-- 📄 **OCR Processing** - Extract data from medical documents
-- 🚨 **Fraud Detection** - Multi-layered fraud analysis
-- 📚 **RAG System** - Policy query system
-- 🔄 **Complete Pipeline** - OCR → Policy → Fraud → Decision
-- 🐳 **Docker Ready** - Full stack orchestration
-
-## 📚 Documentation
-
-| Document | Description |
-|----------|-------------|
-| [SETUP_GUIDE.md](SETUP_GUIDE.md) | Complete setup instructions |
-| [TESTING_GUIDE.md](TESTING_GUIDE.md) | Testing procedures |
-| [QUICK_REFERENCE.md](QUICK_REFERENCE.md) | Quick reference card |
-| [FINAL_SUMMARY.md](FINAL_SUMMARY.md) | Complete implementation summary |
-
-## 🏗️ Architecture
-
-```
-Frontend (Next.js) → Backend (FastAPI) → PostgreSQL + Redis + ChromaDB + Groq API
-```
-
-## 🔧 Configuration Required
-
-1. **Groq API Keys** (Get from https://console.groq.com/)
-   ```env
-   # backend/.env
-   GROQ_API_KEY_1=gsk_your_key_1
-   GROQ_API_KEY_2=gsk_your_key_2
-   GROQ_API_KEY_3=gsk_your_key_3
-   GROQ_API_KEY_4=gsk_your_key_4
-   ```
-
-2. **Backend URL**
-   ```env
-   # frontend/.env.local
-   NEXT_PUBLIC_API_URL=http://localhost:8000
-   ```
-
-## 🧪 Quick Test
+### 2. Frontend Setup
 
 ```bash
-# Health check
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start frontend
+npm run dev
+```
+
+Frontend will run at: http://localhost:3000
+
+### 3. Test the Multi-Agent Workflow
+
+Open http://localhost:3000/demo
+
+- Upload a medical document (image or PDF)
+- Watch the complete agent pipeline process it
+- See results from all agents in real-time
+
+## 🤖 Multi-Agent Architecture
+
+```
+Document Upload
+    ↓
+Agent 01: Extractor (OCR + Entity Extraction)
+    ↓
+Agent A2: Policy (Compliance Check)
+    ↓
+Agent A3: Fraud (Risk Analysis)
+    ↓
+Router (R5/R3/R4) (Decision Routing)
+    ↓
+Agent 04: Mediator (Communication & Action)
+```
+
+## 📋 API Endpoints
+
+- `POST /api/ocr/upload` - Upload document for processing
+- `POST /api/ocr/process-local` - Process local file
+- `POST /api/fraud/decision` - Fraud evaluation
+- `POST /api/rag/patient-chat` - Query patient context
+- `POST /api/rag/policy-chat` - Query policy
+- `GET /api/health` - Health check
+
+## 🔧 Configuration
+
+### Backend (.env)
+```env
+# Groq API Keys (required)
+GROQ_API_KEY_1=your_key_1
+GROQ_API_KEY_2=your_key_2
+GROQ_API_KEY_3=your_key_3
+GROQ_API_KEY_4=your_key_4
+
+# JWT (optional for demo)
+JWT_SECRET_KEY=your_secret_key
+
+# CORS
+CORS_ORIGINS=http://localhost:3000
+```
+
+### Frontend (.env.local)
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+## 📁 Project Structure
+
+```
+claimheart/
+├── backend/
+│   ├── app/
+│   │   ├── agents/          # AI agents
+│   │   │   ├── extractor/   # Agent 01
+│   │   │   ├── policy/      # Agent A2
+│   │   │   └── mediator/    # Agent 04
+│   │   ├── api/routes/      # API endpoints
+│   │   ├── services/        # Business logic
+│   │   │   ├── fraud_service.py    # Agent A3
+│   │   │   ├── decision_router.py  # Router
+│   │   │   └── pipeline.py         # Orchestrator
+│   │   └── core/
+│   │       └── groq_client.py      # LLM client
+│   └── requirements.txt
+├── frontend/
+│   ├── app/
+│   │   └── demo/           # Demo page
+│   ├── lib/
+│   │   └── api/
+│   │       └── backend.ts  # API client
+│   └── package.json
+└── README.md
+```
+
+## 🧪 Testing
+
+### Test Backend
+```bash
 curl http://localhost:8000/api/health
-
-# Upload document
-curl -X POST http://localhost:8000/api/ocr/upload -F "file=@document.pdf"
 ```
 
-## 📊 Tech Stack
+### Test File Upload
+```bash
+curl -X POST http://localhost:8000/api/ocr/upload \
+  -F "file=@/path/to/medical/document.pdf"
+```
 
-- **Backend**: FastAPI, Python 3.11, PostgreSQL, Redis, ChromaDB, Groq LLM
-- **Frontend**: Next.js 16, React 19, TypeScript, TailwindCSS
-- **Infrastructure**: Docker, Prometheus, Grafana
+## 🎯 Features
 
-## 🎯 Phase 8 Deliverables
+- ✅ Multi-agent AI workflow
+- ✅ OCR with entity extraction
+- ✅ Policy compliance checking
+- ✅ Fraud detection with risk scoring
+- ✅ Intelligent decision routing
+- ✅ Automated communication
+- ✅ RAG-based context retrieval
+- ✅ Groq LLM integration with load balancing
+- ✅ Real-time pipeline visualization
 
-✅ Groq LLM integration with load balancing  
-✅ JWT authentication middleware  
-✅ OCR → Fraud pipeline connectivity  
-✅ Frontend-backend integration  
-✅ Docker orchestration  
-✅ Complete documentation  
+## 📝 Notes
 
-**See [FINAL_SUMMARY.md](FINAL_SUMMARY.md) for complete details.**
+- **Authentication**: Firebase auth is commented out for demo. Mock auth is used.
+- **Database**: Uses local SQLite and ChromaDB (no PostgreSQL required for demo)
+- **Docker**: Removed for simplicity. Run directly on localhost.
+- **LLM**: Uses Groq API (requires API keys)
 
----
+## 🐛 Troubleshooting
 
-**Built with ❤️ for efficient medical claims processing**
+**Backend won't start:**
+- Check if port 8000 is available
+- Verify Groq API keys in .env
+- Install all requirements: `pip install -r requirements.txt`
+
+**Frontend won't start:**
+- Check if port 3000 is available
+- Run `npm install` first
+- Verify NEXT_PUBLIC_API_URL in .env.local
+
+**Upload fails:**
+- Check backend is running at http://localhost:8000
+- Check file size (max 10MB)
+- Check file type (PNG, JPG, PDF only)
+
+## 📄 License
+
+MIT License - see LICENSE file

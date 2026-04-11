@@ -4,15 +4,15 @@ uvicorn[standard]
 python-multipart
 pydantic
 
-# DATABASE
+# DATABASE (Optional - using SQLite for demo)
 sqlalchemy
-psycopg2-binary
-alembic
+# psycopg2-binary  # Commented out - not needed for localhost demo
+# alembic  # Commented out - not needed for localhost demo
 
-# AUTH & SECURITY
-python-jose[cryptography]
-passlib[bcrypt]
-pyjwt
+# AUTH & SECURITY (Commented out for demo)
+# python-jose[cryptography]
+# passlib[bcrypt]
+# pyjwt
 
 # ENVIRONMENT
 python-dotenv
@@ -35,10 +35,11 @@ tenacity
 sentence-transformers
 chromadb
 
-# TASK QUEUE 
-celery
-redis
+# TASK QUEUE (Commented out - not needed for localhost demo)
+# celery
+# redis
 
 # UTILITIES
 requests
 tqdm
+

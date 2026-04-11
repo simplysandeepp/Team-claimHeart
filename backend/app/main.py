@@ -4,7 +4,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, claims, fraud, health, ocr
+from app.api.routes import claims, fraud, health, ocr  # auth commented out for demo
 from app.services.rag_3_fraud_context import rag_3_fraud_context
 
 # Configure logging
@@ -34,7 +34,7 @@ app.add_middleware(
 
 # Register routes
 app.include_router(health.router, prefix="/api", tags=["Health"])
-app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+# app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])  # Commented out for demo
 app.include_router(ocr.router, prefix="/api/ocr", tags=["OCR"])
 app.include_router(claims.router, prefix="/api/rag", tags=["RAG"])
 app.include_router(fraud.router, prefix="/api/fraud", tags=["Fraud"])

@@ -1,19 +1,32 @@
 "use client";
 
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-  type User as FirebaseUser,
-} from "firebase/auth";
-import { readUserProfileFromStore, writeUserProfileToStore } from "@/lib/api/authProfileStore";
-import { readStorage, writeStorage } from "@/lib/api/storage";
-import { firebaseAuth, googleAuthProvider, hasPlaceholderFirebaseConfig } from "@/lib/firebase";
+// ============================================================================
+// FIREBASE AUTH COMMENTED OUT FOR DEMO - Using Mock Auth Instead
+// ============================================================================
+// import {
+//   createUserWithEmailAndPassword,
+//   onAuthStateChanged,
+//   signInWithEmailAndPassword,
+//   signInWithPopup,
+//   signOut,
+//   updateProfile,
+//   type User as FirebaseUser,
+// } from "firebase/auth";
+// import { readUserProfileFromStore, writeUserProfileToStore } from "@/lib/api/authProfileStore";
+// import { readStorage, writeStorage } from "@/lib/api/storage";
+// import { firebaseAuth, googleAuthProvider, hasPlaceholderFirebaseConfig } from "@/lib/firebase";
+
+// For demo purposes, export mock auth functions
+export * from "@/lib/api/mockAuth";
+
 import type { AppUser, UserRole } from "@/types";
 
+// ============================================================================
+// ALL FIREBASE LOGIC BELOW IS COMMENTED OUT FOR DEMO
+// Using mockAuth.ts instead for localhost testing
+// ============================================================================
+
+/*
 const CURRENT_USER_KEY = "claimheart.currentUser";
 const ROLE_KEY = "claimheart.role";
 const CURRENT_USER_EVENT = "claimheart:current-user-change";
@@ -458,3 +471,6 @@ export const logout = async (withConfirmation: boolean = true) => {
     window.location.href = "/auth/login";
   }
 };
+*/
+
+// End of commented Firebase auth code

@@ -67,3 +67,19 @@ def test_parse_tables_maps_billing_columns():
             "source": "table",
         },
     ]
+
+
+def test_parse_medical_text_recovers_name_and_date_from_noisy_ocr():
+    sample = """
+    CARE HOSPITAL
+    CITY Outpatient Prescription Date 05 years April 2026 Male
+    Date: 05 Aprie Name: 2026 Arjun Mehta Age: 32 OPD Noa: CCH-OPD-2026-09341
+    Patient with Thrombocytopenia
+    Diagnosis: Dengue Fever TDS X 5 days
+    """
+
+    result = parse_medical_text(sample)
+
+    assert result["patient_name"] == "Arjun Mehta"
+    assert result["dates"]["document_date"] == "05 April 2026"
+    assert result["claim_summary"]["disease"] == "Dengue Fever TDS"

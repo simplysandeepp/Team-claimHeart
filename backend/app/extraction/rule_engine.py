@@ -55,7 +55,7 @@ def build_structured_claim(document_payload: Dict[str, Any]) -> Dict[str, Any]:
 
     structured_data = {
         "patient_name": extract_patient_name(normalized_text),
-        "dates": extract_dates(normalized_text),
+        "dates": extract_dates(normalized_text, lines),
         "diagnosis": [disease] if disease else [],
         "disease": disease,
         "hospital_stay_days": hospital_stay_days,

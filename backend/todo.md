@@ -73,16 +73,16 @@ This checklist combines the specific backend engineering tasks with the detailed
 - ✅ Write findings to DB2
 
 ### Decision Routing — Nodes R5, R3, R4
-- [ ] **Node R5 (Fraud Verdict):** Evaluates Fraud Agent output (Routes to YES or NO)
-- [ ] **Node R3 & R4 (No Fraud / Route NO):** Re-route clean claims, ask for confirmation or additional documents.
-- [ ] **(Route YES):** Directly trigger Mediator Agent for fraud handling.
+- ✅ **Node R5 (Fraud Verdict):** Evaluates Fraud Agent output (Routes to YES or NO)
+- ✅ **Node R3 & R4 (No Fraud / Route NO):** Re-route clean claims, ask for confirmation or additional documents.
+- ✅ **(Route YES):** Directly trigger Mediator Agent for fraud handling.
 
 ### Agent 04 — Mediator Agent
-- [ ] Triggered only on R5 -> YES (Fraud Detected)
-- [ ] Aggregate policy + fraud outputs into final decision packet
-- [ ] Fire **Email channel:** Notification to insurer/patient/hospital
-- [ ] Fire **OTP channel:** One-Time Password for identity verification/follow-up action
-- [ ] Generate decision letters and hospital queries
+- ✅ Triggered only on R5 -> YES (Fraud Detected)
+- ✅ Aggregate policy + fraud outputs into final decision packet
+- ✅ Fire **Email channel:** Notification to insurer/patient/hospital
+- ✅ Fire **OTP channel:** One-Time Password for identity verification/follow-up action
+- ✅ Generate decision letters and hospital queries
 
 ## 5. Escalation & Quality Gates
 - [ ] **Implement Query Escalation Rule:** Prevent automated models from hard rejecting on ambiguity. Route to Doctor / Verification Member.

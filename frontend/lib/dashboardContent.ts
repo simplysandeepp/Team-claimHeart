@@ -24,6 +24,189 @@ export type ChecklistDocument = {
   billingRows?: { item: string; amount: number }[];
 };
 
+export type OngoingPatientPhase = "pre_admission" | "admitted" | "during_stay" | "discharge";
+
+export type OngoingPatientTest = {
+  name: string;
+  status: "pending" | "completed" | "ordered";
+  result?: string;
+  date?: string;
+};
+
+export type OngoingPatientBillingItem = {
+  item: string;
+  amount: number;
+  category: "room" | "medicine" | "test" | "procedure" | "consumable";
+};
+
+export type DischargeSummaryFields = {
+  daysOfAdmission: number;
+  medicines: string[];
+  diagnosis: string;
+  hospitalName: string;
+  admissionDate: string;
+  dischargeDate: string;
+  attendingDoctor: string;
+  finalBillAmount: number;
+};
+
+export type OngoingPatient = {
+  id: string;
+  alNumber: string;
+  patientName: string;
+  policyNumber: string;
+  diagnosis: string;
+  admissionDate: string;
+  phase: OngoingPatientPhase;
+  serviceType: "cashless" | "reimbursement";
+  preAdmissionDocs: { label: string; uploaded: boolean }[];
+  insuranceNotified: boolean;
+  initialPaymentPercent: number;
+  tests: OngoingPatientTest[];
+  billingItems: OngoingPatientBillingItem[];
+  dischargeSummary: DischargeSummaryFields | null;
+};
+
+export const PHASE_LABELS: Record<OngoingPatientPhase, string> = {
+  pre_admission: "Pre-Admission",
+  admitted: "Admitted",
+  during_stay: "During Stay",
+  discharge: "Discharge",
+};
+
+export const PHASE_ORDER: OngoingPatientPhase[] = ["pre_admission", "admitted", "during_stay", "discharge"];
+
+export const MOCK_ONGOING_PATIENTS: OngoingPatient[] = [
+  {
+    id: "OP-001",
+    alNumber: "AL-2026-04-0871",
+    patientName: "Arjun Mehta",
+    policyNumber: "HDFC-ERGO-2025-991203",
+    diagnosis: "Dengue Fever with Thrombocytopenia",
+    admissionDate: "2026-04-05",
+    phase: "during_stay",
+    serviceType: "cashless",
+    preAdmissionDocs: [
+      { label: "Re-auth Form", uploaded: true },
+      { label: "Prescription", uploaded: true },
+      { label: "Diagnosis Report", uploaded: true },
+    ],
+    insuranceNotified: true,
+    initialPaymentPercent: 45,
+    tests: [
+      { name: "Complete Blood Count (CBC)", status: "completed", result: "Platelets: 42,000/μL", date: "2026-04-05" },
+      { name: "NS1 Antigen Test", status: "completed", result: "Positive", date: "2026-04-05" },
+      { name: "Dengue IgM/IgG", status: "completed", result: "IgM Positive", date: "2026-04-06" },
+      { name: "Liver Function Test", status: "pending" },
+    ],
+    billingItems: [
+      { item: "Semi-private room (per day)", amount: 3500, category: "room" },
+      { item: "PlateMax IV - Dose 1", amount: 4200, category: "medicine" },
+      { item: "PlateMax IV - Dose 2", amount: 4200, category: "medicine" },
+      { item: "CBC + NS1 Antigen Panel", amount: 2800, category: "test" },
+      { item: "IV Fluid Administration", amount: 1200, category: "procedure" },
+      { item: "Nursing charges", amount: 1500, category: "consumable" },
+    ],
+    dischargeSummary: null,
+  },
+  {
+    id: "OP-002",
+    alNumber: "AL-2026-04-0872",
+    patientName: "Riya Sharma",
+    policyNumber: "HDFC-ERGO-2025-784512",
+    diagnosis: "Acute Febrile Illness",
+    admissionDate: "2026-04-02",
+    phase: "discharge",
+    serviceType: "cashless",
+    preAdmissionDocs: [
+      { label: "Re-auth Form", uploaded: true },
+      { label: "Prescription", uploaded: true },
+      { label: "Diagnosis Report", uploaded: true },
+    ],
+    insuranceNotified: true,
+    initialPaymentPercent: 50,
+    tests: [
+      { name: "Blood Culture", status: "completed", result: "No growth", date: "2026-04-02" },
+      { name: "Chest X-Ray", status: "completed", result: "Normal", date: "2026-04-03" },
+      { name: "Urine Analysis", status: "completed", result: "Normal", date: "2026-04-03" },
+    ],
+    billingItems: [
+      { item: "General ward (per day × 3)", amount: 6000, category: "room" },
+      { item: "Antibiotics IV course", amount: 8500, category: "medicine" },
+      { item: "Blood culture + panel", amount: 3200, category: "test" },
+      { item: "Chest X-Ray", amount: 800, category: "test" },
+      { item: "IV setup and consumables", amount: 2400, category: "consumable" },
+    ],
+    dischargeSummary: {
+      daysOfAdmission: 3,
+      medicines: ["Ceftriaxone 1g IV BD", "Paracetamol 650mg QID", "Pantoprazole 40mg OD"],
+      diagnosis: "Acute Febrile Illness — resolved with IV antibiotics",
+      hospitalName: "City Care Hospital, Mumbai",
+      admissionDate: "2026-04-02",
+      dischargeDate: "2026-04-05",
+      attendingDoctor: "Dr. Priya Menon",
+      finalBillAmount: 20900,
+    },
+  },
+  {
+    id: "OP-003",
+    alNumber: "AL-2026-04-0873",
+    patientName: "Sneha Patil",
+    policyNumber: "HDFC-ERGO-2025-556780",
+    diagnosis: "Appendicitis — Laparoscopic Appendectomy",
+    admissionDate: "2026-04-10",
+    phase: "pre_admission",
+    serviceType: "cashless",
+    preAdmissionDocs: [
+      { label: "Re-auth Form", uploaded: true },
+      { label: "Prescription", uploaded: false },
+      { label: "Diagnosis Report", uploaded: true },
+    ],
+    insuranceNotified: false,
+    initialPaymentPercent: 0,
+    tests: [
+      { name: "Ultrasound Abdomen", status: "completed", result: "Inflamed appendix", date: "2026-04-09" },
+      { name: "Pre-op Blood Work", status: "ordered" },
+    ],
+    billingItems: [],
+    dischargeSummary: null,
+  },
+  {
+    id: "OP-004",
+    alNumber: "AL-2026-04-0874",
+    patientName: "Vikram Singh",
+    policyNumber: "HDFC-ERGO-2025-889001",
+    diagnosis: "Acute Gastroenteritis",
+    admissionDate: "2026-04-08",
+    phase: "admitted",
+    serviceType: "cashless",
+    preAdmissionDocs: [
+      { label: "Re-auth Form", uploaded: true },
+      { label: "Prescription", uploaded: true },
+      { label: "Diagnosis Report", uploaded: true },
+    ],
+    insuranceNotified: true,
+    initialPaymentPercent: 40,
+    tests: [
+      { name: "Stool Culture", status: "pending" },
+      { name: "Electrolyte Panel", status: "completed", result: "Mild hyponatremia", date: "2026-04-08" },
+    ],
+    billingItems: [
+      { item: "Semi-private room (per day)", amount: 3500, category: "room" },
+      { item: "ORS + IV Fluids", amount: 800, category: "medicine" },
+      { item: "Electrolyte panel", amount: 1200, category: "test" },
+    ],
+    dischargeSummary: null,
+  },
+];
+
+export const REIMBURSEMENT_REQUIRED_DOCS = [
+  { slotId: "hospital-docs", label: "All Hospital Documents" },
+  { slotId: "prescription", label: "Prescription" },
+  { slotId: "additional-form", label: "Additional Form" },
+  { slotId: "discharge-summary", label: "Discharge Summary *" },
+];
+
 export const dashboardCoverageByCase: Record<
   DemoCaseId,
   {

@@ -1,0 +1,2293 @@
+{
+  "users": [
+    {
+      "uid": "p-1d89083e",
+      "id": "P-1D89083E",
+      "name": "Live Patient",
+      "email": "live-patient-1775958376@example.com",
+      "phone": "9999999999",
+      "role": "patient",
+      "authProvider": "password",
+      "address": null,
+      "state": null,
+      "patientId": "P-1D89083E",
+      "dob": null,
+      "policyNumber": "POL-LIVE-1001",
+      "policyName": "Care Comprehensive",
+      "policyType": "individual",
+      "policyStartDate": "2024-03-10",
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": null,
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": null,
+      "panNumber": null,
+      "irdaiLicenseNumber": null,
+      "npi": null,
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$CZGJaJBQnndwguLxoUljwA==$zTrNebMKNegzv10Yg7/UYkOEQe2aLZVIuLK5HiHgsjM="
+    },
+    {
+      "uid": "h-1b393f0c",
+      "id": "H-1B393F0C",
+      "name": "Live Hospital",
+      "email": "live-hospital-1775958376@example.com",
+      "phone": "8888888888",
+      "role": "hospital",
+      "authProvider": "password",
+      "address": null,
+      "state": null,
+      "patientId": null,
+      "dob": null,
+      "policyNumber": null,
+      "policyName": null,
+      "policyType": null,
+      "policyStartDate": null,
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": "HOSP-LIVE-101",
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": null,
+      "panNumber": null,
+      "irdaiLicenseNumber": null,
+      "npi": "NPI-LIVE-100",
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$c+ot9d0T9CFZWnNr81mpdQ==$t4Ouu3grUzZV7E6EMNmKfwd5+Cb0UIRDRkaBffcauaU="
+    },
+    {
+      "uid": "i-41387348",
+      "id": "I-41387348",
+      "name": "Live Insurer Desk",
+      "email": "live-insurer-1775958376@example.com",
+      "phone": "7777777777",
+      "role": "insurer",
+      "authProvider": "password",
+      "address": "Mumbai",
+      "state": null,
+      "patientId": null,
+      "dob": null,
+      "policyNumber": null,
+      "policyName": null,
+      "policyType": null,
+      "policyStartDate": null,
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": null,
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": "27ABCDE1234F1Z5",
+      "panNumber": "ABCDE1234F",
+      "irdaiLicenseNumber": "IRDAI-LIVE-9090",
+      "npi": null,
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$42oyRn8aIehY+KavB9f4Ig==$Jjib1E6L+22wvqGa0v6Y0P6g3Zn7Guo6XjL0eMNFZgk="
+    },
+    {
+      "uid": "p-eaf53e54",
+      "id": "P-EAF53E54",
+      "name": "Patient",
+      "email": "patient@gmail.com",
+      "phone": "9567893453",
+      "role": "patient",
+      "authProvider": "password",
+      "address": null,
+      "state": null,
+      "patientId": "P-EAF53E54",
+      "dob": null,
+      "policyNumber": null,
+      "policyName": null,
+      "policyType": null,
+      "policyStartDate": null,
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": null,
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": null,
+      "panNumber": null,
+      "irdaiLicenseNumber": null,
+      "npi": null,
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$rRTQSBkKHZialGW9iJccpQ==$U9MveZ5d0X0SoL3L/ggJtIvBkT3VKQ6UUm8grNAzkb8="
+    },
+    {
+      "uid": "h-5331170d",
+      "id": "H-5331170D",
+      "name": "Kukreja Hospital",
+      "email": "hospital@gmail.com",
+      "phone": "9489568212",
+      "role": "hospital",
+      "authProvider": "password",
+      "address": null,
+      "state": null,
+      "patientId": null,
+      "dob": null,
+      "policyNumber": null,
+      "policyName": null,
+      "policyType": null,
+      "policyStartDate": null,
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": null,
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": null,
+      "panNumber": null,
+      "irdaiLicenseNumber": null,
+      "npi": null,
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$680pnzsXi2OazIPcMfFk4w==$FxovYPKDcj2iNqfuWLuI1ayOCkHiGvruGRB0iyXJUdI="
+    },
+    {
+      "uid": "i-b63e957c",
+      "id": "I-B63E957C",
+      "name": "Policy Bazar",
+      "email": "policy@gmail.com",
+      "phone": "9128459343",
+      "role": "insurer",
+      "authProvider": "password",
+      "address": null,
+      "state": null,
+      "patientId": null,
+      "dob": null,
+      "policyNumber": null,
+      "policyName": null,
+      "policyType": null,
+      "policyStartDate": null,
+      "policyEndDate": null,
+      "insuranceCompany": null,
+      "sumInsured": null,
+      "doctorName": null,
+      "hospitalRegNo": null,
+      "hospitalRegistrationId": null,
+      "city": null,
+      "department": null,
+      "employeeId": null,
+      "website": null,
+      "organizationType": null,
+      "organizationCode": null,
+      "taxId": null,
+      "gstNumber": null,
+      "panNumber": null,
+      "irdaiLicenseNumber": null,
+      "npi": null,
+      "contactName": null,
+      "contactEmail": null,
+      "contactPhone": null,
+      "registrationCertificateName": null,
+      "policyDocumentName": null,
+      "passwordHash": "200000$FBFmy4BmarH3eP5nRTQvcg==$SS1ScBCoQ6PEnqxd1CuxwQePA4+dNFJGzl76/KWCeKA="
+    }
+  ],
+  "claims": [
+    {
+      "id": "CLM-78196579",
+      "claimProcessId": "Id-claima3409c",
+      "patientId": "P-DEMO-001",
+      "patientName": "dummy",
+      "patientEmail": "riya.demo@claimheart.ai",
+      "hospital": "Kukreja Hospital",
+      "caseType": "planned",
+      "serviceType": "cashless",
+      "diagnosis": "hiii",
+      "icdCode": "R50.9",
+      "amount": 22150.0,
+      "status": "approved",
+      "riskScore": 34,
+      "submittedAt": "2026-04-12T03:31:33.824262+00:00",
+      "documents": [
+        {
+          "name": "pre-auth-riya.pdf",
+          "type": "application/pdf",
+          "size": 43504,
+          "uploadedAt": "2026-04-12T03:31:33.814Z",
+          "uploadedBy": "hospital",
+          "category": "Pre-authorisation Form",
+          "previewText": "HOSPITAL PRE-AUTHORISATION REQUEST FORM\nHospital Name: City Care Hospital, Mumbai\nHospital Registration No.: MH-2019-HC-00472\nDate of Request: 01 April 2026\n\n--- PATIENT DETAILS ---\nPatient Name: Riya Sharma\nDate of Birth: 14 March 1995\nPolicy Number: HDFC-ERGO-2025-784512\nPolicy Start Date: 25 January 2025\nInsurance Company: HDFC ERGO General Insurance\n\n--- ADMISSION DETAILS ---\nProposed Date of Admission: 02 April 2026\nDiagnosis: Acute Febrile Illness (ICD-10: R50.9)\nProposed Treatment: IV Fluids, Antipyretics, 2-day observation\nEstimated Cost: INR 28,000\nWard Type: General\n\nAttending Doctor: Dr. Priya Menon (Reg No. MCI-2014-88721)\nSignature: [signed]",
+          "sourceUrl": "/docs/pre-auth.txt",
+          "uploadedFileName": "WhatsApp Image 2026-04-12 at 08.30.53.pdf",
+          "processingStatus": "ready"
+        }
+      ],
+      "timeline": [
+        {
+          "label": "Claim submitted",
+          "time": "2026-04-12T03:31:33.824262+00:00",
+          "actor": "hospital"
+        },
+        {
+          "label": "Claim queued for insurer review",
+          "time": "2026-04-12T03:31:33.824262+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T03:32:14.868015+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T03:32:14.885303+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T03:32:14.885371+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T03:32:14.885389+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T03:32:14.885415+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T03:38:30.771140+00:00",
+          "actor": "insurer"
+        }
+      ],
+      "aiResults": {
+        "policy": {
+          "status": "flag",
+          "reason": "Disease 'hiii' not explicitly mapped in sub-limits. Requires manual review.",
+          "confidence": 78,
+          "durationMs": null,
+          "highlights": [
+            "unknown_disease"
+          ]
+        },
+        "medical": {
+          "status": "pass",
+          "reason": "Document set contains the core medical evidence required for review.",
+          "confidence": 89,
+          "durationMs": null,
+          "highlights": [
+            "Pre-authorisation Form"
+          ]
+        },
+        "cross": {
+          "status": "flag",
+          "reason": "Additional documents are required before the claim can move forward.",
+          "confidence": 73,
+          "durationMs": null,
+          "highlights": [
+            "Query owner: hospital",
+            "R5_FRAUD_VERDICT",
+            "R5_NO",
+            "R4_NEEDS_DOCUMENTS"
+          ]
+        }
+      },
+      "comments": [],
+      "emails": [
+        {
+          "id": "MAIL-A3749CC114",
+          "to": "riya.demo@claimheart.ai",
+          "subject": "Claim decision for CLM-78196579",
+          "body": "Dear dummy,\n\nYour claim CLM-78196579 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: hiii\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T03:38:30.772614+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        }
+      ],
+      "workflowCaseId": "case-1",
+      "caseLabel": "Waiting Period Rejection",
+      "policyNumber": "HDFC-ERGO-2025-991203",
+      "policyStartDate": "2025-01-25",
+      "insurerName": "HDFC ERGO General Insurance",
+      "hospitalRegNo": "MH-2019-HC-00472",
+      "attendingDoctor": "Dr. Priya Menon",
+      "decisionLetter": "Dear dummy,\n\nYour claim CLM-78196579 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: hiii\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+      "amountApproved": 22150.0,
+      "workflowState": "completed",
+      "auditTrail": [
+        {
+          "time": "2026-04-12T03:31:33.824262+00:00",
+          "label": "Claim created from the hospital dashboard.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:32:14.868250+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:32:14.885357+00:00",
+          "label": "Policy agent marked the claim as flag. Disease 'hiii' not explicitly mapped in sub-limits. Requires manual review. Confidence 78%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:32:14.885381+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T03:32:14.885397+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:32:14.885407+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 34.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:32:14.885422+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:38:30.771683+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        }
+      ],
+      "pipelineCompletedAt": "2026-04-12T03:32:14.885297+00:00",
+      "decisionNote": "More documents are required before the claim can be decided."
+    },
+    {
+      "id": "CLM-D6D2DC2F",
+      "claimProcessId": "Id-claim06da32",
+      "patientId": "P-DEMO-001",
+      "patientName": "Dummy",
+      "patientEmail": "riya.demo@claimheart.ai",
+      "hospital": "Kukreja Hospital",
+      "caseType": "planned",
+      "serviceType": "cashless",
+      "diagnosis": "Fahhhhh ho gya",
+      "icdCode": "R50.9",
+      "amount": 22150.0,
+      "status": "under_review",
+      "riskScore": 34,
+      "submittedAt": "2026-04-12T03:08:36.484793+00:00",
+      "documents": [
+        {
+          "name": "pre-auth-riya.pdf",
+          "type": "application/pdf",
+          "size": 43504,
+          "uploadedAt": "2026-04-12T03:08:36.472Z",
+          "uploadedBy": "hospital",
+          "category": "Pre-authorisation Form",
+          "previewText": "HOSPITAL PRE-AUTHORISATION REQUEST FORM\nHospital Name: City Care Hospital, Mumbai\nHospital Registration No.: MH-2019-HC-00472\nDate of Request: 01 April 2026\n\n--- PATIENT DETAILS ---\nPatient Name: Riya Sharma\nDate of Birth: 14 March 1995\nPolicy Number: HDFC-ERGO-2025-784512\nPolicy Start Date: 25 January 2025\nInsurance Company: HDFC ERGO General Insurance\n\n--- ADMISSION DETAILS ---\nProposed Date of Admission: 02 April 2026\nDiagnosis: Acute Febrile Illness (ICD-10: R50.9)\nProposed Treatment: IV Fluids, Antipyretics, 2-day observation\nEstimated Cost: INR 28,000\nWard Type: General\n\nAttending Doctor: Dr. Priya Menon (Reg No. MCI-2014-88721)\nSignature: [signed]",
+          "sourceUrl": "/docs/pre-auth.txt",
+          "uploadedFileName": "WhatsApp Image 2026-04-12 at 08.30.53.pdf",
+          "processingStatus": "ready"
+        }
+      ],
+      "timeline": [
+        {
+          "label": "Claim submitted",
+          "time": "2026-04-12T03:08:36.484793+00:00",
+          "actor": "hospital"
+        },
+        {
+          "label": "Claim queued for insurer review",
+          "time": "2026-04-12T03:08:36.484793+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T03:09:18.408855+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T03:09:18.419068+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T03:09:18.419098+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T03:09:18.419114+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T03:09:18.419136+00:00",
+          "actor": "system"
+        }
+      ],
+      "aiResults": {
+        "policy": {
+          "status": "flag",
+          "reason": "Disease 'Fahhhhh ho gya' not explicitly mapped in sub-limits. Requires manual review.",
+          "confidence": 78,
+          "durationMs": null,
+          "highlights": [
+            "unknown_disease"
+          ]
+        },
+        "medical": {
+          "status": "pass",
+          "reason": "Document set contains the core medical evidence required for review.",
+          "confidence": 89,
+          "durationMs": null,
+          "highlights": [
+            "Pre-authorisation Form"
+          ]
+        },
+        "cross": {
+          "status": "flag",
+          "reason": "Additional documents are required before the claim can move forward.",
+          "confidence": 73,
+          "durationMs": null,
+          "highlights": [
+            "Query owner: hospital",
+            "R5_FRAUD_VERDICT",
+            "R5_NO",
+            "R4_NEEDS_DOCUMENTS"
+          ]
+        }
+      },
+      "comments": [],
+      "emails": [],
+      "workflowCaseId": "case-1",
+      "caseLabel": "Waiting Period Rejection",
+      "policyNumber": "HDFC-ERGO-2025-991203",
+      "policyStartDate": "2025-01-25",
+      "insurerName": "HDFC ERGO General Insurance",
+      "hospitalRegNo": "MH-2019-HC-00472",
+      "attendingDoctor": "Dr. Priya Menon",
+      "decisionLetter": "Dear Dummy,\n\nYour claim CLM-D6D2DC2F is under review.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: Fahhhhh ho gya\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+      "amountApproved": 0.0,
+      "workflowState": "completed",
+      "auditTrail": [
+        {
+          "time": "2026-04-12T03:08:36.484793+00:00",
+          "label": "Claim created from the hospital dashboard.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:09:18.411011+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:09:18.419087+00:00",
+          "label": "Policy agent marked the claim as flag. Disease 'Fahhhhh ho gya' not explicitly mapped in sub-limits. Requires manual review. Confidence 78%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:09:18.419106+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T03:09:18.419121+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:09:18.419128+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 34.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:09:18.419142+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        }
+      ],
+      "pipelineCompletedAt": "2026-04-12T03:09:18.419063+00:00",
+      "decisionNote": "More documents are required before the claim can be decided."
+    },
+    {
+      "id": "CLM-FDA8673B",
+      "claimProcessId": "Id-claim849b89",
+      "patientId": "P-DEMO-001",
+      "patientName": "Simran",
+      "patientEmail": "riya.demo@claimheart.ai",
+      "hospital": "Kukreja Hospital",
+      "caseType": "planned",
+      "serviceType": "cashless",
+      "diagnosis": "fahhhh",
+      "icdCode": "R50.9",
+      "amount": 22150.0,
+      "status": "under_review",
+      "riskScore": 34,
+      "submittedAt": "2026-04-12T03:04:21.635882+00:00",
+      "documents": [
+        {
+          "name": "pre-auth-riya.pdf",
+          "type": "application/pdf",
+          "size": 46979,
+          "uploadedAt": "2026-04-12T03:04:21.621Z",
+          "uploadedBy": "hospital",
+          "category": "Pre-authorisation Form",
+          "previewText": "HOSPITAL PRE-AUTHORISATION REQUEST FORM\nHospital Name: City Care Hospital, Mumbai\nHospital Registration No.: MH-2019-HC-00472\nDate of Request: 01 April 2026\n\n--- PATIENT DETAILS ---\nPatient Name: Riya Sharma\nDate of Birth: 14 March 1995\nPolicy Number: HDFC-ERGO-2025-784512\nPolicy Start Date: 25 January 2025\nInsurance Company: HDFC ERGO General Insurance\n\n--- ADMISSION DETAILS ---\nProposed Date of Admission: 02 April 2026\nDiagnosis: Acute Febrile Illness (ICD-10: R50.9)\nProposed Treatment: IV Fluids, Antipyretics, 2-day observation\nEstimated Cost: INR 28,000\nWard Type: General\n\nAttending Doctor: Dr. Priya Menon (Reg No. MCI-2014-88721)\nSignature: [signed]",
+          "sourceUrl": "/docs/pre-auth.txt",
+          "uploadedFileName": "WhatsApp Image 2026-04-12 at 08.31.19.pdf",
+          "processingStatus": "ready"
+        }
+      ],
+      "timeline": [
+        {
+          "label": "Claim submitted",
+          "time": "2026-04-12T03:04:21.635882+00:00",
+          "actor": "hospital"
+        },
+        {
+          "label": "Claim queued for insurer review",
+          "time": "2026-04-12T03:04:21.635882+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T03:04:59.990963+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T03:05:00.006519+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T03:05:00.006552+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T03:05:00.006567+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T03:05:00.006588+00:00",
+          "actor": "system"
+        }
+      ],
+      "aiResults": {
+        "policy": {
+          "status": "flag",
+          "reason": "Disease 'fahhhh' not explicitly mapped in sub-limits. Requires manual review.",
+          "confidence": 78,
+          "durationMs": null,
+          "highlights": [
+            "unknown_disease"
+          ]
+        },
+        "medical": {
+          "status": "pass",
+          "reason": "Document set contains the core medical evidence required for review.",
+          "confidence": 89,
+          "durationMs": null,
+          "highlights": [
+            "Pre-authorisation Form"
+          ]
+        },
+        "cross": {
+          "status": "flag",
+          "reason": "Additional documents are required before the claim can move forward.",
+          "confidence": 73,
+          "durationMs": null,
+          "highlights": [
+            "Query owner: hospital",
+            "R5_FRAUD_VERDICT",
+            "R5_NO",
+            "R4_NEEDS_DOCUMENTS"
+          ]
+        }
+      },
+      "comments": [],
+      "emails": [],
+      "workflowCaseId": "case-1",
+      "caseLabel": "Waiting Period Rejection",
+      "policyNumber": "HDFC-ERGO-2025-991203",
+      "policyStartDate": "2025-01-25",
+      "insurerName": "HDFC ERGO General Insurance",
+      "hospitalRegNo": "MH-2019-HC-00472",
+      "attendingDoctor": "Dr. Priya Menon",
+      "decisionLetter": "Dear Simran,\n\nYour claim CLM-FDA8673B is under review.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: fahhhh\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+      "amountApproved": 0.0,
+      "workflowState": "completed",
+      "auditTrail": [
+        {
+          "time": "2026-04-12T03:04:21.635882+00:00",
+          "label": "Claim created from the hospital dashboard.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:04:59.991197+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:05:00.006541+00:00",
+          "label": "Policy agent marked the claim as flag. Disease 'fahhhh' not explicitly mapped in sub-limits. Requires manual review. Confidence 78%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:05:00.006560+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T03:05:00.006574+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T03:05:00.006581+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 34.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T03:05:00.006595+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        }
+      ],
+      "pipelineCompletedAt": "2026-04-12T03:05:00.006513+00:00",
+      "decisionNote": "More documents are required before the claim can be decided."
+    },
+    {
+      "id": "CLM-E60AAE81",
+      "claimProcessId": "Id-claim724eb9",
+      "patientId": "P-DEMO-002",
+      "patientName": "Arjun Mehta",
+      "patientEmail": "arjun.demo@claimheart.ai",
+      "hospital": "Kukreja Hospital",
+      "caseType": "emergency",
+      "serviceType": "cashless",
+      "diagnosis": "Dengue Fever with Thrombocytopenia",
+      "icdCode": "A97.1",
+      "amount": 22150.0,
+      "status": "approved",
+      "riskScore": 10,
+      "submittedAt": "2026-04-12T02:49:51.092133+00:00",
+      "documents": [
+        {
+          "name": "prescription-arjun.pdf",
+          "type": "application/pdf",
+          "size": 82558,
+          "uploadedAt": "2026-04-12T02:49:51.075Z",
+          "uploadedBy": "hospital",
+          "category": "Dengue Prescription",
+          "previewText": "CITY CARE HOSPITAL\nOutpatient Prescription\nDate: 05 April 2026\n\nPatient Name: Arjun Mehta\nAge: 32 years | Male\nOPD No.: CCH-OPD-2026-09341\n\nDiagnosis: Dengue Fever with Thrombocytopenia (ICD-10: A97.1)\n\nRx:\n1. Tab Paracetamol 650mg \u2014 TDS x 5 days\n2. Syp Electral \u2014 200ml twice daily\n3. Inj. PlateMax IV (Standard Dengue Protocol Injection)\n   Dose: 1 vial per administration\n   Frequency: As per dengue protocol (refer billing)\n4. Tab Pantoprazole 40mg \u2014 OD before food x 5 days\n5. Complete rest, high fluid intake\n\nFollow-up: 3 days\nDr. Rakesh Iyer | MBBS, MD (Internal Medicine)\nReg No.: MCI-2011-44892",
+          "sourceUrl": "/docs/Prescription.txt",
+          "uploadedFileName": "CV_Simran_Kukreja_Updated (1).pdf",
+          "processingStatus": "ready"
+        },
+        {
+          "name": "platelet-report.pdf",
+          "type": "application/pdf",
+          "size": 82558,
+          "uploadedAt": "2026-04-12T02:49:51.075Z",
+          "uploadedBy": "hospital",
+          "category": "Platelet Test Report",
+          "previewText": "METRO DIAGNOSTICS LAB\nNAABL Accredited | Lab Reg: MH-LAB-2018-00234\nDate: 05 April 2026 | Report Time: 11:30 AM\n\nPatient Name: Arjun Mehta\nAge/Sex: 32Y / Male\nRef. Doctor: Dr. Rakesh Iyer\nSample Type: Venous Blood\n\n--- COMPLETE BLOOD COUNT ---\nHaemoglobin: 13.2 g/dL        (Normal: 13-17)\nTotal WBC: 3,200 cells/mcL     (LOW \u2014 Normal: 4,000-11,000)\nPlatelet Count: 68,000/mcL     (CRITICALLY LOW \u2014 Normal: 1,50,000-4,00,000)\nHaematocrit: 41%               (Normal: 40-50%)\n\n--- DENGUE SEROLOGY ---\nNS1 Antigen: POSITIVE\nIgM Anti-Dengue: POSITIVE\nIgG Anti-Dengue: NEGATIVE\n\nRemarks: Platelet count critically low. Immediate medical supervision\nrecommended. Results consistent with early acute dengue infection.\n\nAuthorised by: Dr. Sunita Rao, MD Pathology",
+          "sourceUrl": "/docs/test-report.txt",
+          "uploadedFileName": "CV_Simran_Kukreja_Updated (1).pdf",
+          "processingStatus": "ready"
+        },
+        {
+          "name": "billing-invoice.pdf",
+          "type": "application/pdf",
+          "size": 82558,
+          "uploadedAt": "2026-04-12T02:49:51.075Z",
+          "uploadedBy": "hospital",
+          "category": "Hospital Billing Invoice",
+          "previewText": "CITY CARE HOSPITAL\nTAX INVOICE\nInvoice No.: CCH-INV-2026-003847\nDate: 06 April 2026\n\nPatient Name: Arjun Mehta\nIP No.: CCH-IP-2026-00892\nPolicy No.: HDFC-ERGO-2025-991203\nAdmission: 05 April 2026 | Discharge: 06 April 2026\n\n--- ITEMISED BILLING ---\nRoom Charges (General Ward, 1 night): INR 2,500\nDoctor Consultation (2 visits): INR 1,400\nNursing Charges: INR 800\nIV Fluids (NS 500ml x 3): INR 900\nTab Paracetamol 650mg x 15: INR 225\nTab Pantoprazole 40mg x 2: INR 80\nSyp Electral 200ml x 2: INR 140\n\nInj. PlateMax IV \u2014 Administration 1 (05 Apr, 08:00 AM): INR 4,200\nInj. PlateMax IV \u2014 Administration 2 (05 Apr, 02:00 PM): INR 4,200\nInj. PlateMax IV \u2014 Administration 3 (05 Apr, 09:00 PM): INR 4,200\n\nDiagnostic Tests (outsourced to Metro Diagnostics): INR 1,800\nConsumables & Disposables: INR 650\n\n--- TOTAL BILLED: INR 21,095 ---\nGST (5%): INR 1,055\nGRAND TOTAL: INR 22,150\n\nCashless Claim Amount Requested: INR 22,150",
+          "sourceUrl": "/docs/billings.txt",
+          "uploadedFileName": "CV_Simran_Kukreja_Updated (2).pdf",
+          "processingStatus": "ready"
+        }
+      ],
+      "timeline": [
+        {
+          "label": "Claim submitted",
+          "time": "2026-04-12T02:49:51.092133+00:00",
+          "actor": "hospital"
+        },
+        {
+          "label": "Claim queued for insurer review",
+          "time": "2026-04-12T02:49:51.092133+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:11.703925+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:11.736829+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:11.736897+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:11.736914+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:11.736966+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:12.370474+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:12.372757+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:12.372777+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:12.372792+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:12.372819+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:12.895603+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:12.899833+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:12.899874+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:12.899900+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:12.899940+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:13.490757+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:13.493913+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:13.493941+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:13.493958+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:13.493983+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:14.097733+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:14.100116+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:14.100139+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:14.100154+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:14.100175+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:15.706691+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:15.758210+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:15.758280+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:15.758315+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:15.758363+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T02:51:16.997518+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T02:51:17.035336+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T02:51:17.037378+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T02:51:17.037474+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T02:51:17.038032+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:51:26.006526+00:00",
+          "actor": "insurer"
+        }
+      ],
+      "aiResults": {
+        "policy": {
+          "status": "pass",
+          "reason": "Claim successfully validated against 'Dengue Fever' protocols.",
+          "confidence": 94,
+          "durationMs": null,
+          "highlights": []
+        },
+        "medical": {
+          "status": "pass",
+          "reason": "Document set contains the core medical evidence required for review.",
+          "confidence": 89,
+          "durationMs": null,
+          "highlights": [
+            "Dengue Prescription",
+            "Platelet Test Report",
+            "Hospital Billing Invoice"
+          ]
+        },
+        "cross": {
+          "status": "flag",
+          "reason": "Additional documents are required before the claim can move forward.",
+          "confidence": 73,
+          "durationMs": null,
+          "highlights": [
+            "Query owner: hospital",
+            "R5_FRAUD_VERDICT",
+            "R5_NO",
+            "R4_NEEDS_DOCUMENTS"
+          ]
+        }
+      },
+      "comments": [],
+      "emails": [
+        {
+          "id": "MAIL-24D1B7336E",
+          "to": "arjun.demo@claimheart.ai",
+          "subject": "Claim decision for CLM-E60AAE81",
+          "body": "Dear Arjun Mehta,\n\nYour claim CLM-E60AAE81 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:51:26.006815+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        }
+      ],
+      "workflowCaseId": "case-2",
+      "caseLabel": "Dengue Billing Fraud",
+      "policyNumber": "HDFC-ERGO-2025-991203",
+      "policyStartDate": "2023-03-10",
+      "insurerName": "HDFC ERGO General Insurance",
+      "hospitalRegNo": "MH-2019-HC-00472",
+      "attendingDoctor": "Dr. Rakesh Iyer",
+      "decisionLetter": "Dear Arjun Mehta,\n\nYour claim CLM-E60AAE81 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Kukreja Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nMore documents are required before the claim can be decided.\n\nRegards,\nClaimHeart Decision Desk",
+      "amountApproved": 22150.0,
+      "workflowState": "completed",
+      "auditTrail": [
+        {
+          "time": "2026-04-12T02:49:51.092133+00:00",
+          "label": "Claim created from the hospital dashboard.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:11.704543+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:11.736880+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:11.736906+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:11.736923+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:11.736957+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:11.736973+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:12.370547+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:12.372769+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:12.372785+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:12.372799+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:12.372806+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:12.372826+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:12.895673+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:12.899857+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:12.899888+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:12.899913+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:12.899926+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:12.899951+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:13.490815+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:13.493929+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:13.493950+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:13.493966+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:13.493975+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:13.493991+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:14.097781+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:14.100130+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:14.100147+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:14.100161+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:14.100168+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:14.100181+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:15.707712+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:15.758254+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:15.758299+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:15.758330+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:15.758347+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:15.758378+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:16.997975+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:17.037081+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:17.037455+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:51:17.037583+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:17.038001+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T02:51:17.038050+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:51:26.006690+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        }
+      ],
+      "pipelineCompletedAt": "2026-04-12T02:51:17.035307+00:00",
+      "decisionNote": "More documents are required before the claim can be decided."
+    },
+    {
+      "id": "CLM-91285CE9",
+      "claimProcessId": "Id-claim125d4b",
+      "patientId": "P-1D89083E",
+      "patientName": "Live Patient",
+      "patientEmail": "live-patient-1775958376@example.com",
+      "hospital": "Live Hospital",
+      "caseType": "emergency",
+      "serviceType": "cashless",
+      "diagnosis": "Dengue Fever with Thrombocytopenia",
+      "icdCode": "A97.1",
+      "amount": 22150.0,
+      "status": "denied",
+      "riskScore": 10,
+      "submittedAt": "2026-04-12T01:46:18.727000+00:00",
+      "documents": [
+        {
+          "name": "prescription-live.pdf",
+          "type": "application/pdf",
+          "size": 1024,
+          "uploadedAt": "2026-04-12T10:00:00Z",
+          "uploadedBy": "hospital",
+          "category": "Prescription",
+          "previewText": "Prescription for dengue treatment.",
+          "sourceUrl": null,
+          "uploadedFileName": null,
+          "processingStatus": "ready"
+        },
+        {
+          "name": "billing-live.pdf",
+          "type": "application/pdf",
+          "size": 2048,
+          "uploadedAt": "2026-04-12T10:02:00Z",
+          "uploadedBy": "hospital",
+          "category": "Billing",
+          "previewText": "Billing invoice for dengue admission.",
+          "sourceUrl": null,
+          "uploadedFileName": null,
+          "processingStatus": "ready"
+        }
+      ],
+      "timeline": [
+        {
+          "label": "Claim submitted",
+          "time": "2026-04-12T01:46:18.727000+00:00",
+          "actor": "hospital"
+        },
+        {
+          "label": "Claim queued for insurer review",
+          "time": "2026-04-12T01:46:18.727000+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Insurer workflow started",
+          "time": "2026-04-12T01:46:18.739638+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Policy agent decision published",
+          "time": "2026-04-12T01:46:18.776509+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Medical agent decision published",
+          "time": "2026-04-12T01:46:18.776579+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Cross-check agent decision published",
+          "time": "2026-04-12T01:46:18.776625+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Workflow requested more documents",
+          "time": "2026-04-12T01:46:18.776770+00:00",
+          "actor": "system"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T01:46:18.792059+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Denied by insurer",
+          "time": "2026-04-12T02:05:30.469829+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:05:35.560779+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Placed under manual review by insurer",
+          "time": "2026-04-12T02:05:54.924342+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Documents requested by insurer: Live HTTP approval smoke test.",
+          "time": "2026-04-12T02:06:04.036939+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Documents requested by insurer: Live HTTP approval smoke test.",
+          "time": "2026-04-12T02:06:33.978415+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:06:44.116050+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:06:45.476600+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:06:46.058808+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:06:46.926696+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:11:33.911024+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Approved by insurer",
+          "time": "2026-04-12T02:20:06.365328+00:00",
+          "actor": "insurer"
+        },
+        {
+          "label": "Denied by insurer",
+          "time": "2026-04-12T02:20:18.126855+00:00",
+          "actor": "insurer"
+        }
+      ],
+      "aiResults": {
+        "policy": {
+          "status": "pass",
+          "reason": "Claim successfully validated against 'Dengue Fever' protocols.",
+          "confidence": 94,
+          "durationMs": null,
+          "highlights": []
+        },
+        "medical": {
+          "status": "pass",
+          "reason": "Document set contains the core medical evidence required for review.",
+          "confidence": 89,
+          "durationMs": null,
+          "highlights": [
+            "Prescription",
+            "Billing"
+          ]
+        },
+        "cross": {
+          "status": "flag",
+          "reason": "Additional documents are required before the claim can move forward.",
+          "confidence": 73,
+          "durationMs": null,
+          "highlights": [
+            "Query owner: hospital",
+            "R5_FRAUD_VERDICT",
+            "R5_NO",
+            "R4_NEEDS_DOCUMENTS"
+          ]
+        }
+      },
+      "comments": [],
+      "emails": [
+        {
+          "id": "MAIL-B14E44C09F",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim update for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been denied.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:20:18.140366+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-D3A738B8AF",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:20:06.366852+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-7DFDC4AEFE",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:11:33.915922+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-E9F38F45D8",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:06:46.926792+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-93C08A4658",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:06:46.058905+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-840A2B114C",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:06:45.476731+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-E829648EBC",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:06:44.116465+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-805C7ABF22",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim update for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 is under review.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:05:54.924640+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-8A34AE320B",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:05:35.561085+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-F497283E1F",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim update for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been denied.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T02:05:30.471452+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        },
+        {
+          "id": "MAIL-501AC890AE",
+          "to": "live-patient-1775958376@example.com",
+          "subject": "Claim decision for CLM-91285CE9",
+          "body": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been approved for INR 22,150.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+          "sentAt": "2026-04-12T01:46:18.792252+00:00",
+          "sentBy": "ClaimHeart Decision Desk",
+          "status": "sent"
+        }
+      ],
+      "workflowCaseId": "case-2",
+      "caseLabel": "Manual review",
+      "policyNumber": "POL-LIVE-1001",
+      "policyStartDate": "2024-03-10",
+      "insurerName": "Live Insurer Desk",
+      "hospitalRegNo": null,
+      "attendingDoctor": null,
+      "decisionLetter": "Dear Live Patient,\n\nYour claim CLM-91285CE9 has been denied.\n\nService type: Cashless\nHospital: Live Hospital\nDiagnosis: Dengue Fever with Thrombocytopenia\n\nNotes:\nLive HTTP approval smoke test.\n\nRegards,\nClaimHeart Decision Desk",
+      "amountApproved": 22150.0,
+      "workflowState": "completed",
+      "auditTrail": [
+        {
+          "time": "2026-04-12T01:46:18.727000+00:00",
+          "label": "Claim created from the hospital dashboard.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T01:46:18.739758+00:00",
+          "label": "Insurer workflow started.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T01:46:18.776546+00:00",
+          "label": "Policy agent marked the claim as pass. Claim successfully validated against 'Dengue Fever' protocols. Confidence 94%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T01:46:18.776599+00:00",
+          "label": "Medical agent marked the claim as pass. Document set contains the core medical evidence required for review. Confidence 89%.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T01:46:18.776656+00:00",
+          "label": "Cross-check agent marked the claim as flag. Additional documents are required before the claim can move forward. Confidence 73%.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T01:46:18.776673+00:00",
+          "label": "Workflow routing verdict: NEEDS_DOCUMENTS with risk score 10.",
+          "level": "info"
+        },
+        {
+          "time": "2026-04-12T01:46:18.776785+00:00",
+          "label": "Workflow requested more supporting documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T01:46:18.792154+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:05:30.470864+00:00",
+          "label": "Insurer recorded a denied decision.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:05:35.560954+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:05:54.924520+00:00",
+          "label": "Insurer recorded a under_review decision.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:06:04.037205+00:00",
+          "label": "Insurer requested additional documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:06:33.979630+00:00",
+          "label": "Insurer requested additional documents.",
+          "level": "warning"
+        },
+        {
+          "time": "2026-04-12T02:06:44.116262+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:06:45.476674+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:06:46.058857+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:06:46.926747+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:11:33.915233+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:20:06.366413+00:00",
+          "label": "Insurer recorded a approved decision.",
+          "level": "success"
+        },
+        {
+          "time": "2026-04-12T02:20:18.140184+00:00",
+          "label": "Insurer recorded a denied decision.",
+          "level": "warning"
+        }
+      ],
+      "pipelineCompletedAt": "2026-04-12T01:46:18.776483+00:00",
+      "decisionNote": "Live HTTP approval smoke test."
+    }
+  ],
+  "notifications": [
+    {
+      "id": "N-AFBB802CC8",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-78196579",
+      "title": "Claim CLM-78196579 - approved",
+      "message": "dummy's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:38:30.772689+00:00"
+    },
+    {
+      "id": "N-CB06E002A0",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-78196579",
+      "title": "Claim update",
+      "message": "Your claim CLM-78196579 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T03:38:30.772651+00:00"
+    },
+    {
+      "id": "N-92709E418B",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-78196579",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-78196579 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T03:32:14.885578+00:00"
+    },
+    {
+      "id": "N-2DA5271CF5",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-78196579",
+      "title": "Documents required",
+      "message": "Claim CLM-78196579 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T03:32:14.885510+00:00"
+    },
+    {
+      "id": "N-5714D945A5",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-78196579",
+      "title": "Claim submitted",
+      "message": "Your claim CLM-78196579 has been submitted and is waiting for insurer review.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:31:33.825723+00:00"
+    },
+    {
+      "id": "N-4167538336",
+      "targetRole": "insurer",
+      "targetUserId": null,
+      "claimId": "CLM-78196579",
+      "title": "New claim received",
+      "message": "dummy - INR 22,150 from Kukreja Hospital",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:31:33.825668+00:00"
+    },
+    {
+      "id": "N-244D17682E",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-D6D2DC2F",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-D6D2DC2F needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T03:09:18.419301+00:00"
+    },
+    {
+      "id": "N-739916FCD9",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-D6D2DC2F",
+      "title": "Documents required",
+      "message": "Claim CLM-D6D2DC2F needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T03:09:18.419236+00:00"
+    },
+    {
+      "id": "N-04CAE91337",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-D6D2DC2F",
+      "title": "Claim submitted",
+      "message": "Your claim CLM-D6D2DC2F has been submitted and is waiting for insurer review.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:08:36.490235+00:00"
+    },
+    {
+      "id": "N-BAE525A27F",
+      "targetRole": "insurer",
+      "targetUserId": null,
+      "claimId": "CLM-D6D2DC2F",
+      "title": "New claim received",
+      "message": "Dummy - INR 22,150 from Kukreja Hospital",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:08:36.490031+00:00"
+    },
+    {
+      "id": "N-169A3B302C",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-FDA8673B",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-FDA8673B needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T03:05:00.006725+00:00"
+    },
+    {
+      "id": "N-1416E737EF",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-FDA8673B",
+      "title": "Documents required",
+      "message": "Claim CLM-FDA8673B needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T03:05:00.006696+00:00"
+    },
+    {
+      "id": "N-93A56B267E",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-001",
+      "claimId": "CLM-FDA8673B",
+      "title": "Claim submitted",
+      "message": "Your claim CLM-FDA8673B has been submitted and is waiting for insurer review.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:04:21.639645+00:00"
+    },
+    {
+      "id": "N-59F7C2B53A",
+      "targetRole": "insurer",
+      "targetUserId": null,
+      "claimId": "CLM-FDA8673B",
+      "title": "New claim received",
+      "message": "Simran - INR 22,150 from Kukreja Hospital",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T03:04:21.639178+00:00"
+    },
+    {
+      "id": "N-C0339423F0",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim CLM-E60AAE81 - approved",
+      "message": "Arjun Mehta's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:51:26.007311+00:00"
+    },
+    {
+      "id": "N-159F36E300",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim update",
+      "message": "Your claim CLM-E60AAE81 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:51:26.007263+00:00"
+    },
+    {
+      "id": "N-6369DC88DF",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:17.050842+00:00"
+    },
+    {
+      "id": "N-79FE215248",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:17.047442+00:00"
+    },
+    {
+      "id": "N-560DCF9FC7",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:15.760051+00:00"
+    },
+    {
+      "id": "N-CE2ED20D54",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:15.758546+00:00"
+    },
+    {
+      "id": "N-D42EC0C29C",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:14.100234+00:00"
+    },
+    {
+      "id": "N-1177DD35F3",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:14.100209+00:00"
+    },
+    {
+      "id": "N-3092426461",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:13.494062+00:00"
+    },
+    {
+      "id": "N-AB12B4A33E",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:13.494030+00:00"
+    },
+    {
+      "id": "N-527F50AE6C",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:12.900036+00:00"
+    },
+    {
+      "id": "N-AA377DA107",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:12.899993+00:00"
+    },
+    {
+      "id": "N-2F01B9594A",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:12.372875+00:00"
+    },
+    {
+      "id": "N-F13C34A547",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:12.372852+00:00"
+    },
+    {
+      "id": "N-19C24DCF15",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-E60AAE81 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:51:11.737206+00:00"
+    },
+    {
+      "id": "N-E68B7D6427",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "Documents required",
+      "message": "Claim CLM-E60AAE81 needs more documents before review can continue.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:51:11.737175+00:00"
+    },
+    {
+      "id": "N-BDCE00EF8F",
+      "targetRole": "patient",
+      "targetUserId": "P-DEMO-002",
+      "claimId": "CLM-E60AAE81",
+      "title": "Claim submitted",
+      "message": "Your claim CLM-E60AAE81 has been submitted and is waiting for insurer review.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:49:51.100868+00:00"
+    },
+    {
+      "id": "N-54FC68E63E",
+      "targetRole": "insurer",
+      "targetUserId": null,
+      "claimId": "CLM-E60AAE81",
+      "title": "New claim received",
+      "message": "Arjun Mehta - INR 22,150 from Kukreja Hospital",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:49:51.100801+00:00"
+    },
+    {
+      "id": "N-4003D9ACC0",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - denied",
+      "message": "Live Patient's claim has been marked denied by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:20:18.140449+00:00"
+    },
+    {
+      "id": "N-9D033BC14C",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now denied.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:20:18.140408+00:00"
+    },
+    {
+      "id": "N-EE4DBEF53E",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:20:06.366970+00:00"
+    },
+    {
+      "id": "N-F24D6401E1",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:20:06.366917+00:00"
+    },
+    {
+      "id": "N-C18A657DF1",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:11:33.915995+00:00"
+    },
+    {
+      "id": "N-AA8710A69A",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:11:33.915957+00:00"
+    },
+    {
+      "id": "N-04A61ABB7B",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:06:46.926841+00:00"
+    },
+    {
+      "id": "N-94526A00ED",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:06:46.926817+00:00"
+    },
+    {
+      "id": "N-BDC0C3FAF3",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:06:46.058969+00:00"
+    },
+    {
+      "id": "N-2656E3C221",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:06:46.058930+00:00"
+    },
+    {
+      "id": "N-E18546D631",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:06:45.476804+00:00"
+    },
+    {
+      "id": "N-7ACA1E5541",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:06:45.476767+00:00"
+    },
+    {
+      "id": "N-6204B943C2",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:06:44.116537+00:00"
+    },
+    {
+      "id": "N-6A6CFCB3A1",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:06:44.116504+00:00"
+    },
+    {
+      "id": "N-853BC874F3",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Action required - documents needed",
+      "message": "Additional documents were requested for claim CLM-91285CE9: Live HTTP approval smoke test.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:06:33.979768+00:00"
+    },
+    {
+      "id": "N-9F29ECF197",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Action required - documents needed",
+      "message": "Additional documents were requested for claim CLM-91285CE9: Live HTTP approval smoke test.",
+      "type": "action",
+      "read": false,
+      "time": "2026-04-12T02:06:04.037377+00:00"
+    },
+    {
+      "id": "N-C84CBB05E8",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - under review",
+      "message": "Live Patient's claim has been marked under review by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:05:54.924702+00:00"
+    },
+    {
+      "id": "N-0E1F1AA15A",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now under review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:05:54.924671+00:00"
+    },
+    {
+      "id": "N-BCC855ACE0",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:05:35.561146+00:00"
+    },
+    {
+      "id": "N-93C87EF096",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T02:05:35.561112+00:00"
+    },
+    {
+      "id": "N-65C3E470F2",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - denied",
+      "message": "Live Patient's claim has been marked denied by the insurer.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T02:05:30.471541+00:00"
+    },
+    {
+      "id": "N-020DE085B0",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now denied.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T02:05:30.471501+00:00"
+    },
+    {
+      "id": "N-843D4F4E4A",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Claim CLM-91285CE9 - approved",
+      "message": "Live Patient's claim has been marked approved by the insurer.",
+      "type": "info",
+      "read": true,
+      "time": "2026-04-12T01:46:18.792387+00:00"
+    },
+    {
+      "id": "N-4210F345A7",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim update",
+      "message": "Your claim CLM-91285CE9 is now approved.",
+      "type": "success",
+      "read": false,
+      "time": "2026-04-12T01:46:18.792332+00:00"
+    },
+    {
+      "id": "N-97714D1BE5",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim waiting for documents",
+      "message": "Claim CLM-91285CE9 needs more documents before the insurer can finish review.",
+      "type": "warning",
+      "read": false,
+      "time": "2026-04-12T01:46:18.776890+00:00"
+    },
+    {
+      "id": "N-1E271C907D",
+      "targetRole": "hospital",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "Documents required",
+      "message": "Claim CLM-91285CE9 needs more documents before review can continue.",
+      "type": "action",
+      "read": true,
+      "time": "2026-04-12T01:46:18.776842+00:00"
+    },
+    {
+      "id": "N-E3B927CEEC",
+      "targetRole": "patient",
+      "targetUserId": "P-1D89083E",
+      "claimId": "CLM-91285CE9",
+      "title": "Claim submitted",
+      "message": "Your claim CLM-91285CE9 has been submitted and is waiting for insurer review.",
+      "type": "info",
+      "read": false,
+      "time": "2026-04-12T01:46:18.728255+00:00"
+    },
+    {
+      "id": "N-1DA45476D7",
+      "targetRole": "insurer",
+      "targetUserId": null,
+      "claimId": "CLM-91285CE9",
+      "title": "New claim received",
+      "message": "Live Patient - INR 22,150 from Live Hospital",
+      "type": "info",
+      "read": true,
+      "time": "2026-04-12T01:46:18.728154+00:00"
+    }
+  ]
+}

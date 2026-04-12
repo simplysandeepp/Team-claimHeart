@@ -20,8 +20,9 @@ import { ActionPanel, ConfidenceBar, DashboardCard, MetricCard, StepTracker, Sta
 import { SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import usePageReady from "@/hooks/usePageReady";
 import { getCurrentUser } from "@/lib/api/auth";
-import { submitClaim } from "@/lib/api/claims";
+import { addClaimDocument, submitClaim } from "@/lib/api/claims";
 import { formatCurrency, formatRelativeTime } from "@/lib/claimUi";
+import { canRoleUploadForClaim, getLatestInsurerDocumentRequest, getQueryOwnerRole, getSharedDocuments, isPdfFile } from "@/lib/claimSync";
 import {
   MOCK_ONGOING_PATIENTS,
   PHASE_LABELS,
@@ -115,7 +116,13 @@ export default function HospitalDashboardPage() {
   const [dischargeDraft, setDischargeDraft] = useState<Partial<DischargeSummaryFields>>({});
 
   useEffect(() => {
-    getCurrentUser().then((currentUser) => setViewer(resolveViewerForRole("hospital", currentUser)));
+    getCurrentUser().then((currentUser) => {
+      const resolvedViewer = resolveViewerForRole("hospital", currentUser);
+      setViewer(resolvedViewer);
+      if (resolvedViewer?.name) {
+        setForm((current) => ({ ...current, hospital: resolvedViewer.name }));
+      }
+    });
     loadDemoDocumentCorpus().then(() => setCorpusLoaded(true));
   }, []);
 
@@ -123,11 +130,14 @@ export default function HospitalDashboardPage() {
   const demoCase = getDemoCaseById(scenarioId);
   const workflowClaims = useMemo(
     () => [...claims]
-      .filter((claim) => claim.workflowCaseId)
       .sort((left, right) => new Date(right.submittedAt).getTime() - new Date(left.submittedAt).getTime()),
     [claims],
   );
   const selectedClaim = workflowClaims.find((claim) => claim.id === selectedClaimId) ?? workflowClaims[0] ?? null;
+  const selectedClaimDocuments = selectedClaim ? getSharedDocuments(selectedClaim) : [];
+  const selectedClaimRequest = selectedClaim ? getLatestInsurerDocumentRequest(selectedClaim) : null;
+  const hospitalCanUploadToClaim = selectedClaim ? canRoleUploadForClaim(selectedClaim, "hospital") : false;
+  const selectedClaimQueryOwner = selectedClaim ? getQueryOwnerRole(selectedClaim) : "hospital";
   const selectedPatient = ongoingPatients.find((patient) => patient.id === selectedPatientId) ?? ongoingPatients[0] ?? null;
 
   // Metrics
@@ -217,12 +227,17 @@ export default function HospitalDashboardPage() {
       return;
     }
 
+    if (!isPdfFile(file)) {
+      toast.error("Upload a PDF file.");
+      return;
+    }
+
     setUploads((current) => ({
       ...current,
       [slotId]: {
         slotId,
         fileName: file.name,
-        type: file.type || "application/pdf",
+        type: "application/pdf",
         size: file.size,
         status: "scanning",
       },
@@ -240,6 +255,32 @@ export default function HospitalDashboardPage() {
       delete next[slotId];
       return next;
     });
+  };
+
+  const handleRespondToInsurerRequest = async (file?: File | null) => {
+    if (!selectedClaim || !file) {
+      return;
+    }
+
+    if (!isPdfFile(file)) {
+      toast.error("Upload a PDF file.");
+      return;
+    }
+
+    await addClaimDocument(
+      selectedClaim.id,
+      {
+        name: file.name,
+        type: "application/pdf",
+        size: file.size,
+        uploadedAt: new Date().toISOString(),
+        uploadedBy: "hospital",
+        category: "Hospital Response PDF",
+        processingStatus: "ready",
+      },
+      "hospital",
+    );
+    toast.success("Hospital PDF added to the shared claim record.");
   };
 
   const handleSubmit = async () => {
@@ -266,7 +307,7 @@ export default function HospitalDashboardPage() {
 
       claimInput.patientName = form.patientName;
       claimInput.policyNumber = form.policyNumber;
-      claimInput.hospital = form.hospital;
+      claimInput.hospital = viewer?.name || form.hospital;
       claimInput.diagnosis = form.diagnosis;
       claimInput.amount = Number(form.requestedAmount);
       claimInput.serviceType = claimServiceType;
@@ -831,7 +872,7 @@ export default function HospitalDashboardPage() {
                             <label className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] border border-slate-200 bg-white px-3 py-2 text-[12px] font-medium text-slate-700">
                               <Upload className="h-3.5 w-3.5" />
                               {upload ? "Replace" : "Upload"}
-                              <input type="file" className="hidden" onChange={(event) => handleFileSelect(requirement.slotId, event.target.files?.[0])} />
+                              <input type="file" accept=".pdf,application/pdf" className="hidden" onChange={(event) => handleFileSelect(requirement.slotId, event.target.files?.[0])} />
                             </label>
                             {status !== "missing" ? (
                               <button type="button" onClick={() => removeUpload(requirement.slotId)} className="rounded-[12px] border border-slate-200 bg-white px-3 py-2 text-[12px] font-medium text-slate-700">
@@ -891,6 +932,23 @@ export default function HospitalDashboardPage() {
                   <p className="mt-2 text-[11px] text-slate-500">Packet is complete. If the insurer asks a question later, the patient handles that reimbursement query directly.</p>
                 ) : null}
               </ActionPanel>
+
+              <DashboardCard className="bg-[linear-gradient(180deg,#ffffff_0%,#f7fbff_100%)]">
+                <p className="text-[14px] font-medium text-slate-900">Auto-fetched records</p>
+                <p className="mt-1 text-[12px] text-slate-500">These sections stay synced automatically, so hospital staff should not upload them again.</p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-[12px] border border-slate-200 bg-white p-3">
+                    <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Fetched from patient side</p>
+                    <p className="mt-2 text-sm text-slate-700">Policy number: {form.policyNumber}</p>
+                    <p className="mt-1 text-sm text-slate-700">Patient identity moves with the shared claim record.</p>
+                  </div>
+                  <div className="rounded-[12px] border border-slate-200 bg-white p-3">
+                    <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Fetched from hospital profile</p>
+                    <p className="mt-2 text-sm text-slate-700">Registration ID: {viewer.hospitalRegistrationId ?? "Missing"}</p>
+                    <p className="mt-1 text-sm text-slate-700">NPI: {viewer.npi ?? "Missing"}</p>
+                  </div>
+                </div>
+              </DashboardCard>
             </div>
           </div>
         </div>
@@ -992,6 +1050,51 @@ export default function HospitalDashboardPage() {
                             <p className="mt-1 text-[11px] text-slate-500">{formatRelativeTime(entry.time)}</p>
                           </div>
                         ))
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-[12px] font-medium text-slate-900">Shared claim documents</p>
+                  <div className="mt-3 space-y-2">
+                    {selectedClaimDocuments.length === 0 ? (
+                      <p className="text-sm text-slate-500">No shared documents yet.</p>
+                    ) : (
+                      selectedClaimDocuments.map((document) => (
+                        <div key={`${document.name}-${document.uploadedAt}`} className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                          <p className="text-sm text-slate-700">{document.category ?? document.name}</p>
+                          <p className="mt-1 text-[11px] text-slate-500">
+                            {document.uploadedBy} - {Math.max(1, Math.round(document.size / 1024))} KB - {formatRelativeTime(document.uploadedAt)}
+                          </p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                  <p className="text-[12px] font-medium text-slate-900">Query handling</p>
+                  <p className="mt-2 text-[12px] leading-6 text-slate-600">
+                    {selectedClaimRequest
+                      ? `Latest insurer request: ${selectedClaimRequest.note}`
+                      : "No insurer document request is active on this claim."}
+                  </p>
+                  <p className="mt-2 text-[12px] text-slate-500">
+                    {selectedClaimQueryOwner === "hospital"
+                      ? "Cashless clarification stays with the hospital."
+                      : "Reimbursement clarification stays with the patient."}
+                  </p>
+                  <div className="mt-3">
+                    {hospitalCanUploadToClaim ? (
+                      <label className="inline-flex cursor-pointer items-center gap-2 rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white">
+                        <Upload className="h-3.5 w-3.5" />
+                        Upload requested PDF
+                        <input type="file" accept=".pdf,application/pdf" className="hidden" onChange={(event) => handleRespondToInsurerRequest(event.target.files?.[0])} />
+                      </label>
+                    ) : (
+                      <span className="rounded-[12px] border border-slate-200 bg-white px-3 py-2 text-[12px] font-medium text-slate-600">
+                        {selectedClaimRequest ? "Patient handles this insurer request" : "No upload needed"}
+                      </span>
                     )}
                   </div>
                 </div>

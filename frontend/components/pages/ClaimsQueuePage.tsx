@@ -6,9 +6,9 @@ import MotionCard from "@/components/ui/MotionCard";
 import { SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import usePageReady from "@/hooks/usePageReady";
 import { useAppStore } from "@/store/useAppStore";
-import { isNewClaim } from "@/lib/claimUi";
+import { formatRelativeTime, isNewClaim } from "@/lib/claimUi";
 import StatusBadge from "@/components/claims/StatusBadge";
-import type { ClaimStatus } from "@/types";
+import type { AgentResult, Claim, ClaimStatus } from "@/types";
 
 const filters: { label: string; value: "all" | ClaimStatus }[] = [
   { label: "All Claims", value: "all" },
@@ -17,6 +17,28 @@ const filters: { label: string; value: "all" | ClaimStatus }[] = [
   { label: "Approved", value: "approved" },
   { label: "Denied", value: "denied" },
 ];
+
+const agentToneClasses: Record<AgentResult["status"], string> = {
+  pass: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  flag: "border-amber-200 bg-amber-50 text-amber-700",
+  pending: "border-slate-200 bg-slate-100 text-slate-600",
+};
+
+const buildAgentSummary = (claim: Claim) => [
+  { label: "Policy", status: claim.aiResults.policy.status },
+  { label: "Medical", status: claim.aiResults.medical.status },
+  { label: "Cross", status: claim.aiResults.cross.status },
+];
+
+const resolveWorkflowSummary = (claim: Claim) => {
+  const latestAudit = claim.auditTrail?.at(-1)?.label ?? claim.timeline.at(-1)?.label ?? "Waiting for the next workflow update.";
+  const workflowState = claim.workflowState ? claim.workflowState.replaceAll("_", " ") : "submitted";
+  return {
+    state: workflowState,
+    latestAudit,
+    updatedAt: claim.pipelineCompletedAt ?? claim.timeline.at(-1)?.time ?? claim.submittedAt,
+  };
+};
 
 export default function ClaimsQueuePage() {
   const claims = useAppStore((state) => state.claims);
@@ -63,24 +85,55 @@ export default function ClaimsQueuePage() {
         <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search claims, patients..." className="h-10 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none transition-all focus:border-[var(--ch-blue)] focus:shadow-[0_0_0_4px_rgba(74,142,219,0.12)] sm:h-12 xl:max-w-xs" />
       </div>
 
-      <div className="hidden overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)] md:block">
-        <div className="grid grid-cols-[1.1fr_1.15fr_1.15fr_0.85fr_0.85fr] gap-4 border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
-          <span>Claim ID</span><span>Patient</span><span>Hospital</span><span>Status</span><span>Action</span>
+      <div className="hidden overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)] xl:block">
+        <div className="grid grid-cols-[1fr_1fr_1.15fr_1.1fr_0.8fr_0.75fr] gap-4 border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
+          <span>Claim</span>
+          <span>Patient</span>
+          <span>Workflow</span>
+          <span>Agent Signals</span>
+          <span>Status</span>
+          <span>Action</span>
         </div>
         <div>
           {filteredClaims.map((claim) => {
             const selected = selectedClaimId === claim.id;
+            const workflow = resolveWorkflowSummary(claim);
             return (
-              <div key={claim.id} onMouseEnter={() => setSelectedClaimId(claim.id)} className={`grid cursor-pointer grid-cols-[1.1fr_1.15fr_1.15fr_0.85fr_0.85fr] gap-4 border-b border-slate-100 px-6 py-5 text-sm transition-all last:border-b-0 ${selected ? "bg-[var(--ch-blue-light)]" : "hover:bg-slate-50"}`}>
+              <div
+                key={claim.id}
+                onMouseEnter={() => setSelectedClaimId(claim.id)}
+                className={`grid cursor-pointer grid-cols-[1fr_1fr_1.15fr_1.1fr_0.8fr_0.75fr] gap-4 border-b border-slate-100 px-6 py-5 text-sm transition-all last:border-b-0 ${
+                  selected ? "bg-[var(--ch-blue-light)]" : "hover:bg-slate-50"
+                }`}
+              >
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-semibold text-[var(--ch-blue)]">{claim.id}</p>
                     {isNewClaim(claim.submittedAt) ? <span className="rounded-full bg-[var(--ch-blue-light)] px-2 py-0.5 text-[11px] font-semibold text-[var(--ch-blue-dark)]">New</span> : null}
                   </div>
                   <p className="mt-1 text-[var(--ch-subtle)]">Rs {claim.amount.toLocaleString("en-IN")}</p>
+                  <p className="mt-2 text-xs text-[var(--ch-subtle)]">Updated {formatRelativeTime(workflow.updatedAt)}</p>
                 </div>
-                <div><p className="font-semibold text-slate-900">{claim.patientName}</p><p className="mt-1 text-[var(--ch-subtle)]">{claim.diagnosis}</p></div>
-                <div><p className="font-medium text-slate-900">{claim.hospital}</p><p className="mt-1 text-[var(--ch-subtle)]">Risk {claim.riskScore}/100</p></div>
+                <div>
+                  <p className="font-semibold text-slate-900">{claim.patientName}</p>
+                  <p className="mt-1 text-[var(--ch-subtle)]">{claim.hospital}</p>
+                  <p className="mt-2 text-xs text-[var(--ch-subtle)]">{claim.diagnosis}</p>
+                </div>
+                <div>
+                  <p className="font-medium capitalize text-slate-900">{workflow.state}</p>
+                  <p className="mt-1 text-[var(--ch-subtle)]">Risk {claim.riskScore}/100</p>
+                  <p className="mt-2 line-clamp-2 text-xs leading-5 text-[var(--ch-muted)]">{workflow.latestAudit}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {buildAgentSummary(claim).map((agent) => (
+                    <span
+                      key={`${claim.id}-${agent.label}`}
+                      className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${agentToneClasses[agent.status]}`}
+                    >
+                      {agent.label}: {agent.status}
+                    </span>
+                  ))}
+                </div>
                 <div><StatusBadge status={claim.status} /></div>
                 <div><Link href={`/dashboard/insurer/review/${claim.id}`} className="text-sm font-semibold text-[var(--ch-blue)] transition-all hover:opacity-80">Review</Link></div>
               </div>
@@ -89,7 +142,7 @@ export default function ClaimsQueuePage() {
         </div>
       </div>
 
-      <div className="space-y-4 md:hidden">
+      <div className="space-y-4 xl:hidden">
         {filteredClaims.map((claim) => (
           <MotionCard key={`mobile-${claim.id}`} className={`rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] ${selectedClaimId === claim.id ? "ring-2 ring-[var(--ch-blue-border)]" : ""}`}>
             <div onMouseEnter={() => setSelectedClaimId(claim.id)}>
@@ -103,6 +156,18 @@ export default function ClaimsQueuePage() {
               <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                 <div><p className="text-[var(--ch-subtle)]">Hospital</p><p className="mt-1 font-medium text-slate-900">{claim.hospital}</p></div>
                 <div><p className="text-[var(--ch-subtle)]">Amount</p><p className="mt-1 font-medium text-slate-900">Rs {claim.amount.toLocaleString("en-IN")}</p></div>
+                <div><p className="text-[var(--ch-subtle)]">Workflow</p><p className="mt-1 font-medium capitalize text-slate-900">{resolveWorkflowSummary(claim).state}</p></div>
+                <div><p className="text-[var(--ch-subtle)]">Last update</p><p className="mt-1 font-medium text-slate-900">{formatRelativeTime(resolveWorkflowSummary(claim).updatedAt)}</p></div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {buildAgentSummary(claim).map((agent) => (
+                  <span
+                    key={`mobile-${claim.id}-${agent.label}`}
+                    className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${agentToneClasses[agent.status]}`}
+                  >
+                    {agent.label}: {agent.status}
+                  </span>
+                ))}
               </div>
               <Link href={`/dashboard/insurer/review/${claim.id}`} className="mt-4 inline-flex h-10 items-center rounded-2xl bg-[var(--ch-blue)] px-4 text-sm font-semibold text-white transition-all hover:opacity-95 sm:h-12">View Claim</Link>
             </div>

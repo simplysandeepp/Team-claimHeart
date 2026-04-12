@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Bell, BellRing, CheckCheck } from "lucide-react";
+import { markAllNotificationsRead } from "@/lib/api/notifications";
 import { formatDateTime, formatRelativeTime, notificationClasses } from "@/lib/claimUi";
 import { useAppStore } from "@/store/useAppStore";
 import type { AppUser, UserRole } from "@/types";
@@ -13,7 +14,6 @@ export default function NotifBell({ role, user }: { role: UserRole; user: AppUse
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement | null>(null);
   const notifications = useAppStore((state) => state.notifications);
-  const markAllNotificationsRead = useAppStore((state) => state.markAllNotificationsRead);
   const [open, setOpen] = useState(false);
 
   const filtered = useMemo(() => notifications.filter((notification) => {
@@ -101,7 +101,9 @@ export default function NotifBell({ role, user }: { role: UserRole; user: AppUse
                 </div>
                 <button
                   type="button"
-                  onClick={() => markAllNotificationsRead(role, user?.patientId ?? user?.id)}
+                  onClick={() => {
+                    void markAllNotificationsRead(role, user?.patientId ?? user?.id);
+                  }}
                   className="inline-flex h-10 shrink-0 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50"
                 >
                   <CheckCheck className="h-4 w-4" />
@@ -124,7 +126,7 @@ export default function NotifBell({ role, user }: { role: UserRole; user: AppUse
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="truncate font-semibold text-slate-900">{notification.title}</p>
-                          <p className="mt-2 text-xs text-[var(--ch-subtle)]">{formatRelativeTime(notification.time)} ? {formatDateTime(notification.time)}</p>
+                          <p className="mt-2 text-xs text-[var(--ch-subtle)]">{formatRelativeTime(notification.time)} | {formatDateTime(notification.time)}</p>
                         </div>
                         {!notification.read ? <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--ch-blue)]" /> : null}
                       </div>

@@ -38,7 +38,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   lastSyncAt: 0,
 
   setClaims: (claims: Claim[]) => {
-    set({ claims: dedupeById(claims), lastSyncAt: Date.now() });
+    const updated = dedupeById(claims);
+    set({ claims: updated, lastSyncAt: Date.now() });
+    localStorage.setItem(CLAIMS_KEY, JSON.stringify(updated));
   },
 
   addClaim: (claim: Claim) => {
@@ -54,7 +56,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
 
   setNotifications: (notifications: Notification[]) => {
-    set({ notifications: dedupeById(notifications), lastSyncAt: Date.now() });
+    const updated = dedupeById(notifications);
+    set({ notifications: updated, lastSyncAt: Date.now() });
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updated));
   },
 
   addNotification: (notification: Notification) => {

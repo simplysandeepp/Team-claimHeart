@@ -1,4 +1,4 @@
-﻿import type { AgentResult, AppUser, Claim, ClaimCaseType, ClaimStatus, UploadedDocument, UserRole } from "@/types";
+﻿import type { AgentResult, AppUser, Claim, ClaimCaseType, ClaimStatus, UploadedDocument, UserRole, WorkflowAuditEntry } from "@/types";
 
 export type DemoCaseId = "case-1" | "case-2" | "case-3";
 export type DemoDocSourceId = "policy" | "preAuth" | "prescription" | "report" | "billing";
@@ -15,6 +15,12 @@ export type DemoDocumentRequirement = {
   label: string;
   sourceId: DemoDocSourceId;
   fileHint: string;
+};
+
+export type DemoSuspiciousSignal = {
+  title: string;
+  detail: string;
+  severity: "low" | "medium" | "high";
 };
 
 export type DemoWorkflowCase = {
@@ -44,7 +50,9 @@ export type DemoWorkflowCase = {
   policyStartDate: string;
   requestedAtLabel: string;
   expectedOutcome: string;
+  reviewMode: "automatic" | "manual";
   requiredDocuments: DemoDocumentRequirement[];
+  suspiciousSignals: DemoSuspiciousSignal[];
   queueHighlights: string[];
   pipelineSummary: string[];
   finalDecisionLabel: string;
@@ -143,9 +151,11 @@ export const DEMO_WORKFLOW_CASES: DemoWorkflowCase[] = [
     policyStartDate: "2025-01-25",
     requestedAtLabel: "Pre-auth request submitted on 01 Apr 2026 for admission on 02 Apr 2026.",
     expectedOutcome: "Automatic denial after policy clause validation.",
+    reviewMode: "automatic",
     requiredDocuments: [
       { slotId: "pre-auth", label: "Pre-authorisation Form", sourceId: "preAuth", fileHint: "pre-auth-riya.pdf" },
     ],
+    suspiciousSignals: [],
     queueHighlights: [
       "Policy active, but only 14 months old against a 24-month waiting period.",
       "Diagnosis is a general hospitalisation event, not a critical illness exception.",
@@ -214,10 +224,28 @@ export const DEMO_WORKFLOW_CASES: DemoWorkflowCase[] = [
     policyStartDate: "2023-03-10",
     requestedAtLabel: "Cashless request submitted with discharge pack on 06 Apr 2026.",
     expectedOutcome: "Moved to manual review due to protocol-violating billing.",
+    reviewMode: "manual",
     requiredDocuments: [
       { slotId: "prescription", label: "Dengue Prescription", sourceId: "prescription", fileHint: "prescription-arjun.pdf" },
       { slotId: "report", label: "Platelet Test Report", sourceId: "report", fileHint: "platelet-report.pdf" },
       { slotId: "billing", label: "Hospital Billing Invoice", sourceId: "billing", fileHint: "billing-invoice.pdf" },
+    ],
+    suspiciousSignals: [
+      {
+        title: "Repeated injectable billing",
+        detail: "PlateMax appears three times within 24 hours, above the policy-supported protocol.",
+        severity: "high",
+      },
+      {
+        title: "Amount drift from expected treatment pattern",
+        detail: "The invoice total is higher than the expected dengue treatment basket for the submitted records.",
+        severity: "medium",
+      },
+      {
+        title: "Needs supporting administration proof",
+        detail: "The insurer should request nursing notes or a physician addendum before settlement.",
+        severity: "medium",
+      },
     ],
     queueHighlights: [
       "Policy waiting period is already completed, so claim is otherwise eligible.",
@@ -288,11 +316,13 @@ export const DEMO_WORKFLOW_CASES: DemoWorkflowCase[] = [
     policyStartDate: "2023-03-10",
     requestedAtLabel: "Corrected discharge pack submitted on 06 Apr 2026.",
     expectedOutcome: "Straight-through approval with full payable amount.",
+    reviewMode: "automatic",
     requiredDocuments: [
       { slotId: "prescription", label: "Dengue Prescription", sourceId: "prescription", fileHint: "prescription-arjun.pdf" },
       { slotId: "report", label: "Platelet Test Report", sourceId: "report", fileHint: "platelet-report.pdf" },
       { slotId: "billing", label: "Corrected Billing Invoice", sourceId: "billing", fileHint: "billing-corrected.pdf" },
     ],
+    suspiciousSignals: [],
     queueHighlights: [
       "Policy eligibility and diagnosis remain unchanged from the manual-review scenario.",
       "Corrected bill aligns with protocol: two PlateMax administrations only.",
@@ -443,6 +473,119 @@ export const buildWorkflowDocuments = ({
     };
   });
 
+const buildSeededDocuments = (demoCase: DemoWorkflowCase): UploadedDocument[] => {
+  const now = Date.now();
+  const primaryDocuments = demoCase.requiredDocuments.map((requirement, index) => ({
+    name: requirement.fileHint,
+    type: "application/pdf",
+    size: 132_000 + index * 18_500,
+    uploadedAt: new Date(now - (index + 2) * 60_000).toISOString(),
+    uploadedBy: "hospital",
+    category: requirement.label,
+    previewText: `${requirement.label} uploaded for ${demoCase.patient.name}.`,
+    sourceUrl: DEMO_DOC_URLS[requirement.sourceId],
+    processingStatus: "ready" as const,
+  }));
+
+  return [
+    ...primaryDocuments,
+    {
+      name: `${demoCase.patient.name.toLowerCase().replace(/\s+/g, "-")}-member-id.png`,
+      type: "image/png",
+      size: 68_420,
+      uploadedAt: new Date(now - 45_000).toISOString(),
+      uploadedBy: "patient",
+      category: "Member ID",
+      previewText: "Identity proof uploaded by the claimant for match verification.",
+      processingStatus: "ready",
+    },
+  ];
+};
+
+export const createInsurerDemoWorkflowClaims = (): Claim[] => {
+  const timeAnchors = {
+    "case-1": { submittedOffsetMs: 28 * 60_000, completedOffsetMs: null },
+    "case-2": { submittedOffsetMs: 115 * 60_000, completedOffsetMs: 72 * 60_000 },
+    "case-3": { submittedOffsetMs: 215 * 60_000, completedOffsetMs: 172 * 60_000 },
+  } as const;
+
+  return DEMO_WORKFLOW_CASES.map((demoCase) => {
+    const anchor = timeAnchors[demoCase.id];
+    const submittedAt = new Date(Date.now() - anchor.submittedOffsetMs);
+    const intakeAt = new Date(submittedAt.getTime() - 8 * 60_000).toISOString();
+    const queuedAt = new Date(submittedAt.getTime() + 90_000).toISOString();
+    const completedAt = anchor.completedOffsetMs ? new Date(Date.now() - anchor.completedOffsetMs).toISOString() : undefined;
+    const isCompleted = Boolean(completedAt);
+    const seededStatus = demoCase.id === "case-1" ? "pending" : demoCase.finalStatus;
+    const auditTrail: WorkflowAuditEntry[] = [
+      { time: intakeAt, label: "Uploaded files synced into the insurer-facing review queue.", level: "info" },
+      { time: queuedAt, label: "Four-agent verification bundle created for this claim.", level: "info" },
+      ...(isCompleted
+        ? [
+            {
+              time: completedAt!,
+              label: demoCase.reviewMode === "manual" ? "Verification finished with suspicious signals and manual routing." : "Verification finished with automatic recommendation.",
+              level: demoCase.reviewMode === "manual" ? "warning" : "success",
+            } satisfies WorkflowAuditEntry,
+          ]
+        : []),
+    ];
+
+    return {
+      id: `WF-${demoCase.id.toUpperCase()}`,
+      claimProcessId: `FLOW-${demoCase.id.toUpperCase()}`,
+      patientId: demoCase.patient.patientId ?? demoCase.patient.id,
+      patientName: demoCase.patient.name,
+      patientEmail: demoCase.patient.email,
+      hospital: demoCase.hospital.name,
+      caseType: demoCase.caseType,
+      serviceType: "cashless",
+      diagnosis: demoCase.diagnosis,
+      icdCode: demoCase.icdCode,
+      amount: demoCase.amount,
+      status: seededStatus,
+      riskScore: demoCase.riskScore,
+      submittedAt: submittedAt.toISOString(),
+      documents: buildSeededDocuments(demoCase),
+      timeline: [
+        { label: "Uploaded documents fetched into insurer queue", time: intakeAt, actor: "system" },
+        { label: "Claim submitted for insurer review", time: submittedAt.toISOString(), actor: "hospital" },
+        { label: "Four-agent verification queued", time: queuedAt, actor: "system" },
+        ...(isCompleted
+          ? [
+              { label: demoCase.reviewMode === "manual" ? "Suspicious signals raised" : "Automated verification cleared", time: completedAt!, actor: "system" as const },
+              {
+                label:
+                  demoCase.finalStatus === "approved"
+                    ? "Approved by insurer"
+                    : demoCase.finalStatus === "denied"
+                      ? "Denied by insurer"
+                      : "Moved to manual review by insurer",
+                time: new Date(new Date(completedAt!).getTime() + 2 * 60_000).toISOString(),
+                actor: "insurer" as const,
+              },
+            ]
+          : []),
+      ],
+      aiResults: isCompleted ? demoCase.agentResults : { policy: pendingAgent, medical: pendingAgent, cross: pendingAgent },
+      comments: [],
+      workflowCaseId: demoCase.id,
+      caseLabel: demoCase.title,
+      policyNumber: demoCase.patient.policyNumber,
+      policyStartDate: demoCase.policyStartDate,
+      insurerName: demoCase.insurer.name,
+      hospitalRegNo: demoCase.hospital.regNo,
+      attendingDoctor: demoCase.hospital.doctor,
+      decisionLetter: isCompleted ? demoCase.decisionLetter : undefined,
+      amountApproved: isCompleted ? demoCase.amountApproved : 0,
+      workflowState: isCompleted ? "completed" : "submitted",
+      auditTrail,
+      pipelineCompletedAt: completedAt,
+      decisionNote: isCompleted ? demoCase.decisionNote : undefined,
+    } satisfies Claim;
+  });
+};
+
 export const createWorkflowClaimInput = ({
   demoCase,
   uploads,
@@ -499,8 +642,6 @@ export const getLatestWorkflowClaim = (claims: Claim[]) =>
     .sort((left, right) => new Date(right.submittedAt).getTime() - new Date(left.submittedAt).getTime())[0] ?? null;
 
 export const hasCompletedWorkflow = (claim: Claim | null) => Boolean(claim?.pipelineCompletedAt || claim?.workflowState === "completed");
-
-
 
 
 

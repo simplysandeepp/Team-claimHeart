@@ -9,6 +9,7 @@ import usePageReady from "@/hooks/usePageReady";
 import { getCurrentUser, subscribeToCurrentUser } from "@/lib/api/auth";
 import { addClaimDocument } from "@/lib/api/claims";
 import { formatCurrency, formatRelativeTime } from "@/lib/claimUi";
+import { canRoleUploadForClaim, getDocumentsUploadedBy, getLatestInsurerDocumentRequest, getSharedDocuments, getQueryOwnerRole, isPdfFile } from "@/lib/claimSync";
 import { buildClaimActivity, buildPatientSteps, dashboardCoverageByCase, type PatientJourneyMode } from "@/lib/dashboardContent";
 import { getActiveDemoCaseId, getDemoCaseById, resolveViewerForRole, type DemoCaseId } from "@/lib/demoWorkflow";
 import { useAppStore } from "@/store/useAppStore";
@@ -110,6 +111,13 @@ export default function PatientDashboardPage() {
   const latestTimelineTime = activeClaim?.timeline.length ? activeClaim.timeline[activeClaim.timeline.length - 1]?.time : activeClaim?.submittedAt;
   const steps = buildPatientSteps(activeClaim ?? ({ status } as typeof activeClaim), journeyMode);
   const activeStepIndex = steps.findIndex((step) => step.state === "active");
+  const sharedDocuments = activeClaim ? getSharedDocuments(activeClaim) : [];
+  const patientUploadedDocs = activeClaim ? getDocumentsUploadedBy(activeClaim, "patient") : [];
+  const hospitalUploadedDocs = activeClaim ? getDocumentsUploadedBy(activeClaim, "hospital") : [];
+  const latestDocumentRequest = activeClaim ? getLatestInsurerDocumentRequest(activeClaim) : null;
+  const queryOwnerRole = activeClaim ? getQueryOwnerRole(activeClaim) : "hospital";
+  const patientCanUpload = activeClaim ? canRoleUploadForClaim(activeClaim, "patient") : false;
+  const decisionReason = activeClaim?.decisionNote ?? demoCase.decisionNote;
   const claimReference = activeClaim?.id ?? demoCase.shortLabel;
   const isDemoViewer = viewer?.id.startsWith("P-DEMO") ?? false;
   const policyName = viewer?.policyName ?? coverage.policyName ?? demoCase.insurer.planName;
@@ -316,10 +324,10 @@ export default function PatientDashboardPage() {
     status === "denied"
       ? "Upload appeal proof"
       : journeyMode === "reimbursement"
-        ? "Upload reimbursement proof"
-        : coverage.documentRequest
-          ? "Upload requested file"
-          : "Upload supporting file";
+        ? "Upload requested PDF"
+        : latestDocumentRequest
+          ? "Upload requested PDF"
+          : "Upload supporting PDF";
 
   const uploadSuccessMessage =
     journeyMode === "cashless"
@@ -331,12 +339,23 @@ export default function PatientDashboardPage() {
       return;
     }
 
-    const mapped = Array.from(incoming).map<UploadedDocument>((file) => ({
+    const pdfFiles = Array.from(incoming).filter((file) => {
+      if (isPdfFile(file)) {
+        return true;
+      }
+
+      toast.error(`${file.name} is not a PDF.`);
+      return false;
+    });
+
+    const mapped = pdfFiles.map<UploadedDocument>((file) => ({
       name: file.name,
-      type: file.type || "application/octet-stream",
+      type: "application/pdf",
       size: file.size,
       uploadedAt: new Date().toISOString(),
       uploadedBy: "patient",
+      category: status === "denied" ? "Appeal PDF" : "Patient Response PDF",
+      processingStatus: "ready",
     }));
     setAppealFiles((current) => [...current, ...mapped]);
   };
@@ -401,6 +420,40 @@ export default function PatientDashboardPage() {
           />
         ))}
       </div>
+
+      <DashboardCard
+        className={
+          status === "approved"
+            ? "bg-[linear-gradient(180deg,#ffffff_0%,#ecfbf1_100%)]"
+            : status === "denied"
+              ? "bg-[linear-gradient(180deg,#ffffff_0%,#fff1ef_100%)]"
+              : "bg-[linear-gradient(180deg,#ffffff_0%,#fff8eb_100%)]"
+        }
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">Live Claim Status</p>
+            <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.04em] text-slate-900">
+              {status === "approved" ? "Insurer approved this claim" : status === "denied" ? "Insurer denied this claim" : "Insurer review is active"}
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-700">
+              {decisionReason}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <StatusChip label={bannerTitle} tone={bannerTone} />
+            <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600">
+              Updated {formatRelativeTime(activeClaim?.pipelineCompletedAt ?? latestTimelineTime ?? new Date().toISOString())}
+            </span>
+          </div>
+        </div>
+        {status === "denied" ? (
+          <div className="mt-4 rounded-[14px] border border-red-200 bg-white/80 p-4">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-red-600">Reason For Denial</p>
+            <p className="mt-2 text-sm leading-7 text-slate-700">{decisionReason}</p>
+          </div>
+        ) : null}
+      </DashboardCard>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
         <DecisionSupportCard
@@ -607,23 +660,50 @@ export default function PatientDashboardPage() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(event) => selectAppealFiles(event.target.files)} />
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`rounded-[12px] px-3 py-2 text-[12px] font-semibold ${coverage.documentRequest || status === "denied" ? "bg-amber-500 text-white" : "border border-slate-200 bg-white text-slate-700"}`}
-                  >
-                    {documentButtonLabel}
-                  </button>
-                  {appealFiles.length ? (
-                    <button
-                      type="button"
-                      onClick={uploadAppealFiles}
-                      className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.22)]"
-                    >
-                      Send
-                    </button>
-                  ) : null}
+                  {patientCanUpload ? (
+                    <>
+                      <input ref={fileInputRef} type="file" accept=".pdf,application/pdf" multiple className="hidden" onChange={(event) => selectAppealFiles(event.target.files)} />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className={`rounded-[12px] px-3 py-2 text-[12px] font-semibold ${latestDocumentRequest || status === "denied" ? "bg-amber-500 text-white" : "border border-slate-200 bg-white text-slate-700"}`}
+                      >
+                        {documentButtonLabel}
+                      </button>
+                      {appealFiles.length ? (
+                        <button
+                          type="button"
+                          onClick={uploadAppealFiles}
+                          className="rounded-[12px] bg-[var(--ch-blue)] px-3 py-2 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(90,151,216,0.22)]"
+                        >
+                          Send
+                        </button>
+                      ) : null}
+                    </>
+                  ) : (
+                    <span className="rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-medium text-slate-600">
+                      {latestDocumentRequest && queryOwnerRole === "hospital" ? "Hospital is handling this request" : "No patient upload needed"}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Fetched automatically</p>
+                  <div className="mt-3 space-y-2 text-[12px] text-slate-600">
+                    <p>Policy number from patient profile: {policyNumber}</p>
+                    <p>Hospital upload bundle: {hospitalUploadedDocs.length} PDF{hospitalUploadedDocs.length === 1 ? "" : "s"}</p>
+                    <p>Hospital registration: {activeClaim?.hospitalRegNo ?? demoCase.hospital.regNo}</p>
+                  </div>
+                </div>
+                <div className="rounded-[14px] border border-slate-200 bg-slate-50 p-3">
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Your shared uploads</p>
+                  <div className="mt-3 space-y-2 text-[12px] text-slate-600">
+                    <p>Uploaded by you: {patientUploadedDocs.length} PDF{patientUploadedDocs.length === 1 ? "" : "s"}</p>
+                    <p>Current query owner: {queryOwnerRole === "patient" ? "Patient" : "Hospital"}</p>
+                    <p>{latestDocumentRequest ? `Latest insurer request: ${latestDocumentRequest.note}` : "No active insurer request right now."}</p>
+                  </div>
                 </div>
               </div>
 
@@ -638,6 +718,22 @@ export default function PatientDashboardPage() {
                       <button type="button" onClick={() => removeAppealFile(file.name)} className="text-slate-500 hover:text-slate-900">
                         Remove
                       </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {sharedDocuments.length ? (
+                <div className="mt-4 space-y-2">
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-slate-500">Shared claim PDFs</p>
+                  {sharedDocuments.map((file) => (
+                    <div key={`${file.name}-${file.uploadedAt}`} className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-[12px]">
+                      <div>
+                        <p className="font-medium text-slate-900">{file.category ?? file.name}</p>
+                        <p className="text-slate-500">
+                          {file.uploadedBy} - {Math.max(1, Math.round(file.size / 1024))} KB - {formatRelativeTime(file.uploadedAt)}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>

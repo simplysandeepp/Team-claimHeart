@@ -4,11 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getDashboardPath, signupUser, signupWithGoogle, type SignupPayload } from "@/lib/api/auth";
-import AuthProviderButtons, {
-  AUTH_PROVIDER_LABELS,
-  type AuthProvider,
-} from "@/components/pages/AuthProviderButtons";
+import { getDashboardPath, signupUser, type SignupPayload } from "@/lib/api/auth";
 import AuthShowcase from "@/components/pages/AuthShowcase";
 import { AUTH_ROLE_META } from "@/components/pages/authMeta";
 import ClaimHeartLogo from "@/components/ui/ClaimHeartLogo";
@@ -61,7 +57,6 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
 
   const activeStep = stepMeta[role];
 
@@ -118,29 +113,6 @@ export default function SignupPage() {
     };
   };
 
-  const handleSocialSignup = async (provider: AuthProvider) => {
-    if (provider !== "google") {
-      toast.info(`${AUTH_PROVIDER_LABELS[provider]} signup is not wired in this build yet.`);
-      return;
-    }
-
-    if (isGoogleSubmitting || isSubmitting) {
-      return;
-    }
-
-    setIsGoogleSubmitting(true);
-
-    try {
-      const user = await signupWithGoogle(buildSignupPayload());
-      toast.success(`${AUTH_ROLE_META[user.role].label} account is ready. You can complete more workspace details later in Profile.`);
-      router.push(getDashboardPath(user.role));
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Unable to create the account with Google right now.");
-    } finally {
-      setIsGoogleSubmitting(false);
-    }
-  };
-
   const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -184,23 +156,8 @@ export default function SignupPage() {
               </div>
 
               <div className="mt-2 rounded-[1.5rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4 shadow-[0_14px_34px_rgba(15,23,42,0.06)] sm:p-5 xl:flex xl:min-h-0 xl:flex-col">
-                <div className="space-y-2">
-                  <AuthProviderButtons
-                    mode="signup"
-                    onSelect={(provider) => {
-                      void handleSocialSignup(provider);
-                    }}
-                    providers={["google"]}
-                    variant="full"
-                    showLabel={false}
-                  />
-                  <div className="flex items-center gap-3">
-                    <div className="h-px flex-1 bg-slate-200" />
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                      or sign up with email
-                    </span>
-                    <div className="h-px flex-1 bg-slate-200" />
-                  </div>
+                <div className="rounded-[1.2rem] border border-slate-200 bg-white px-3.5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Email and password registration
                 </div>
 
                 <form onSubmit={handleSignup} className="mt-2 space-y-2.5 xl:flex-1">
@@ -302,7 +259,7 @@ export default function SignupPage() {
 
                     <button
                       type="submit"
-                      disabled={isSubmitting || isGoogleSubmitting}
+                      disabled={isSubmitting}
                       className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-[var(--ch-blue)] px-5 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(74,142,219,0.18)] transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-55"
                     >
                       {isSubmitting ? "Creating..." : "Create account"}

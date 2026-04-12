@@ -4,12 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import {
-  getDashboardPath,
-  loginUser,
-  loginWithGoogle,
-} from "@/lib/api/auth";
-import AuthProviderButtons, { AUTH_PROVIDER_LABELS, type AuthProvider } from "@/components/pages/AuthProviderButtons";
+import { getDashboardPath, loginUser } from "@/lib/api/auth";
 import AuthShowcase from "@/components/pages/AuthShowcase";
 import { AUTH_ROLE_META } from "@/components/pages/authMeta";
 import ClaimHeartLogo from "@/components/ui/ClaimHeartLogo";
@@ -23,34 +18,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
 
   useEffect(() => {
     router.prefetch(getDashboardPath(role));
   }, [role, router]);
-
-  const handleSocialLogin = async (provider: AuthProvider) => {
-    if (provider !== "google") {
-      toast.info(`${AUTH_PROVIDER_LABELS[provider]} sign-in is not wired in this build yet.`);
-      return;
-    }
-
-    if (isGoogleSubmitting || isSubmitting) {
-      return;
-    }
-
-    setIsGoogleSubmitting(true);
-
-    try {
-      const user = await loginWithGoogle(role);
-      toast.success(`Welcome back to the ${AUTH_ROLE_META[user.role].label.toLowerCase()} workspace.`);
-      router.push(getDashboardPath(user.role));
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Unable to sign in with Google right now.");
-    } finally {
-      setIsGoogleSubmitting(false);
-    }
-  };
 
   const handleRole = (nextRole: UserRole) => {
     setRole(nextRole);
@@ -94,20 +65,8 @@ export default function LoginPage() {
               </div>
 
               <div className="mt-4 rounded-[1.6rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4 shadow-[0_14px_34px_rgba(15,23,42,0.06)] sm:p-5">
-                <div className="rounded-[1.2rem] border border-slate-200 bg-white p-3.5">
-                  <AuthProviderButtons
-                    mode="login"
-                    onSelect={(provider) => {
-                      void handleSocialLogin(provider);
-                    }}
-                    providers={["google"]}
-                    variant="full"
-                  />
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="h-px flex-1 bg-slate-200" />
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">or continue with email</span>
-                    <div className="h-px flex-1 bg-slate-200" />
-                  </div>
+                <div className="rounded-[1.2rem] border border-slate-200 bg-white px-3.5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Email and password login
                 </div>
 
                 <form onSubmit={handleLogin} className="mt-5 space-y-4">
@@ -176,7 +135,7 @@ export default function LoginPage() {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting || isGoogleSubmitting}
+                    disabled={isSubmitting}
                     className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--ch-blue)] px-4 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(74,142,219,0.18)] transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-55"
                   >
                     {isSubmitting ? "Signing in..." : "Sign in"}

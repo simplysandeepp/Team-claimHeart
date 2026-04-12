@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Toaster } from "sonner";
-import { seedIfEmpty } from "@/lib/mockData";
 import { getCurrentUser, getDashboardPath, subscribeToAuthState } from "@/lib/api/auth";
 import type { AppUser, UserRole } from "@/types";
 
@@ -78,7 +77,7 @@ function BootstrapGate({
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ch-blue-dark)]">ClaimHeart</p>
           <h1 className="mt-3 text-2xl font-bold tracking-[-0.04em] text-slate-900">Restoring your workspace</h1>
-          <p className="mt-2 text-sm text-slate-500">Checking your Firebase session and route access.</p>
+          <p className="mt-2 text-sm text-slate-500">Checking your session and route access.</p>
         </div>
       </div>
     );
@@ -92,7 +91,6 @@ export default function AppBootstrap({ children }: { children: React.ReactNode }
   const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
 
   useEffect(() => {
-    seedIfEmpty();
     let active = true;
 
     getCurrentUser().then((user) => {

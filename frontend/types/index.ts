@@ -35,6 +35,21 @@ export interface Comment {
   visibleTo: NotifTarget[];
 }
 
+export interface OcrExtractedData {
+  raw_text?: string;
+  structured_data?: Record<string, unknown>;
+  diagnosis?: string;
+  icdCode?: string;
+  admissionDate?: string;
+  dischargeDate?: string;
+  totalAmount?: string;
+  patientName?: string;
+  hospitalName?: string;
+  doctorName?: string;
+  note?: string;
+  [key: string]: unknown;
+}
+
 export interface UploadedDocument {
   name: string;
   type: string;
@@ -46,6 +61,8 @@ export interface UploadedDocument {
   sourceUrl?: string;
   uploadedFileName?: string;
   processingStatus?: "queued" | "processing" | "ready";
+  ocrResult?: OcrExtractedData;
+  ocrStatus?: "idle" | "running" | "done" | "error";
 }
 
 export interface ClaimEmail {

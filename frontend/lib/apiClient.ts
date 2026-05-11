@@ -6,6 +6,9 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 30000;
 
+export const buildApiUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
+export const getApiBaseUrl = () => API_BASE_URL;
+
 export class APIError extends Error {
   constructor(
     message: string,
@@ -216,6 +219,24 @@ export function getAuthHeaders(token: string): Record<string, string> {
  */
 export async function healthCheck(): Promise<{ status: string; service: string }> {
   return get("/api/health");
+}
+
+export async function apiRequest<T = any>(
+  endpoint: string,
+  options: RequestInit & { timeout?: number; body?: any } = {}
+): Promise<T> {
+  const { body, ...rest } = options;
+  const finalOptions: RequestInit & { timeout?: number } = { ...rest };
+  
+  if (body) {
+    if (typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob) && !(body instanceof URLSearchParams)) {
+      finalOptions.body = JSON.stringify(body);
+    } else {
+      finalOptions.body = body;
+    }
+  }
+
+  return request<T>(endpoint, finalOptions);
 }
 
 export default {
